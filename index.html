@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Para Tata, com Amor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para a Tata 💖</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <nav class="menu">
     <ul>
       <li><a href="#hero">Início</a></li>
       <li><a href="#history">História</a></li>
-      <li><a href="#bilhetes">Bilhetes</a></li>
+      <li><a href="#poema">Poema</a></li>
       <li><a href="#musicas">Músicas</a></li>
       <li><a href="#sonhos">Sonhos</a></li>
       <li><a href="#footer">Fim</a></li>
@@ -21,62 +20,92 @@
 
   <section id="hero" class="hero">
     <h1>Amar você é minha forma favorita de existir</h1>
+    <p>Feito com amor por Kyrell 🖤</p>
     <button onclick="document.querySelector('#history').scrollIntoView({behavior:'smooth'})">Começar</button>
   </section>
 
-  <section id="history" class="section timeline">
-    <h2>Nossa História</h2>
-    <div class="timeline-container">
-      <div class="event left">
-        <div class="date">05 Set 2024</div>
-        <p>Nos conhecemos no Hopi Hari, dia inesquecível.</p>
+  <main>
+    <section id="history" class="section timeline">
+      <h2>Nossa História</h2>
+      <div class="timeline-container">
+        <div class="event left">
+          <div class="date">05 Set 2024</div>
+          <p>Nos conhecemos no Hopi Hari, numa noite de chuva, LEDs vermelhos e olhos castanhos esverdeados. Foi na cabine amarela da roda-gigante que meu mundo parou.</p>
+        </div>
+        <div class="event right">
+          <div class="date">06 Set 2024</div>
+          <p>Primeira conversa, a roda-gigante, o começo da nossa conexão.</p>
+        </div>
+        <div class="event left">
+          <div class="date">Set 2024</div>
+          <p>Várias trocas de mensagens, fortalecendo o laço que nos une.</p>
+        </div>
+        <div class="event right">
+          <div class="date">11 Dez 2024</div>
+          <p>Nosso primeiro encontro de verdade no Wet. O toque virou abraço, e o abraço virou lar.</p>
+        </div>
+        <div class="event left">
+          <div class="date">Jul 2025</div>
+          <p>Construindo planos, sonhando juntos e firmes no amor.</p>
+        </div>
       </div>
-      <div class="event right">
-        <div class="date">06 Set 2024</div>
-        <p>Primeira conversa, a roda-gigante, o começo da conexão.</p>
-      </div>
-      <div class="event left">
-        <div class="date">Set 2024</div>
-        <p>Várias trocas de mensagens, fortalecendo o laço.</p>
-      </div>
-      <div class="event right">
-        <div class="date">Nov 2024</div>
-        <p>Primeiro encontro oficial, a certeza do que sentimos.</p>
-      </div>
-      <div class="event left">
-        <div class="date">Jul 2025</div>
-        <p>Construindo planos, sonhando juntos e firmes no amor.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="bilhetes" class="section">
-    <h2>Bilhetinhos</h2>
-    <div class="bilhete-wrapper">
-      <button class="btn scroll-left" aria-label="Scroll Left">◀</button>
-      <div class="bilhete-area" id="bilheteArea" tabindex="0"></div>
-      <button class="btn scroll-right" aria-label="Scroll Right">▶</button>
-    </div>
-  </section>
+    <section id="poema" class="section poema">
+      <h2>Um Poema Pra Você</h2>
+      <p>Te encontrei numa roda-gigante, mas foi no meu peito que você fez morada.</p>
+      <p>Você não é só meu amor, é meu ponto de paz num mundo que grita.</p>
+      <p>E mesmo nos dias nublados, tua risada é sol.</p>
+    </section>
 
-  <section id="musicas" class="section">
-    <h2>Músicas Nossas</h2>
-    <div class="cards" id="musicCards"></div>
-  </section>
+    <section id="musicas" class="section musicas">
+      <h2>Músicas que são a nossa cara 🎵</h2>
+      <div class="player-container" id="musicCards">
+        <div class="musica">
+          <h3>Sunshine</h3>
+          <audio controls src="musicas/sunshine.mp3"></audio>
+        </div>
+        <div class="musica">
+          <h3>A meta é ficar bem</h3>
+          <audio controls src="musicas/a_meta_e_ficar_bem.mp3"></audio>
+        </div>
+        <div class="musica">
+          <h3>Afrodite</h3>
+          <audio controls src="musicas/afrodite.mp3"></audio>
+        </div>
+        <div class="musica">
+          <h3>Aliança</h3>
+          <audio controls src="musicas/alianca.mp3"></audio>
+        </div>
+        <div class="musica">
+          <h3>Boyfriend</h3>
+          <audio controls src="musicas/boyfriend.mp3"></audio>
+        </div>
+        <div class="musica">
+          <h3>Die With a Smile</h3>
+          <audio controls src="musicas/die_with_a_smile.mp3"></audio>
+        </div>
+        <div class="musica">
+          <h3>Just The Way You Are</h3>
+          <audio controls src="musicas/just_the_way_you_are.mp3"></audio>
+        </div>
+      </div>
+    </section>
 
-  <section id="sonhos" class="section">
-    <h2>Nossos Sonhos</h2>
-    <ul>
-      <li>Adotar um gato</li>
-      <li>Viajar sem destino</li>
-      <li>Construir nossa casa</li>
-      <li>Ter filhos</li>
-      <li>Envelhecer ouvindo música juntos</li>
-    </ul>
-  </section>
+    <section id="sonhos" class="section sonhos">
+      <h2>Nossos Sonhos</h2>
+      <ul>
+        <li>Adotar um gato</li>
+        <li>Viajar sem destino</li>
+        <li>Construir nossa casa</li>
+        <li>Ter filhos</li>
+        <li>Envelhecer ouvindo música juntos</li>
+      </ul>
+    </section>
+  </main>
 
   <footer id="footer">
-    <p>Feito com todo o meu amor — Kyrell 💌</p>
+    <p>Feito por Kyrell com todo o amor do mundo 💌</p>
   </footer>
 
   <script src="script.js"></script>
