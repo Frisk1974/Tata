@@ -190,15 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Download Birthday Card
-  const downloadButton = document.querySelector('.download-card');
-  downloadButton.addEventListener('click', () => {
-    const link = document.createElement('a');
-    link.href = 'birthday_card.pdf';
-    link.download = 'Cartao_Aniversario_Tata.pdf';
-    link.click();
-  });
-
   // Back to Top Button
   const backToTopButton = document.querySelector('.back-to-top');
   window.addEventListener('scroll', () => {
