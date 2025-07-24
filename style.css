@@ -114,6 +114,7 @@ body {
   border-radius: 1rem;
   box-shadow: 0 0.3rem 0.6rem var(--sombra);
   animation: fadeInUp 0.8s ease forwards;
+  position: relative;
 }
 
 h2 {
@@ -133,12 +134,96 @@ h2 {
   animation: heartPulse 2s ease-in-out infinite;
 }
 
+.aniversario .download-card {
+  display: block;
+  margin: 1rem auto;
+  padding: 0.6rem 1.5rem;
+  background: var(--rosa-escuro);
+  color: var(--branco);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.aniversario .download-card:hover,
+.aniversario .download-card:focus {
+  background: #b02a58;
+  transform: translateY(-0.2rem);
+}
+
+.confetti-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
 /* História */
 .history-content p {
   font-size: 1rem;
   margin-bottom: 1rem;
   line-height: 1.8;
   color: var(--texto);
+}
+
+/* Galeria */
+.gallery-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem;
+  max-width: 56rem;
+  margin: auto;
+}
+
+.gallery-img {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 0.2rem 0.4rem var(--sombra);
+  transition: transform 0.3s ease;
+}
+
+.gallery-img:hover {
+  transform: scale(1.05);
+}
+
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.lightbox.active {
+  display: flex;
+}
+
+.lightbox-img {
+  max-width: 90%;
+  max-height: 80vh;
+  border-radius: 0.5rem;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 2rem;
+  color: var(--branco);
+  cursor: pointer;
 }
 
 /* Poema */
@@ -243,6 +328,125 @@ audio {
   font-size: 1.2rem;
 }
 
+/* Parque de Diversões */
+.parque p {
+  font-size: 1.1rem;
+  text-align: center;
+  color: var(--texto);
+  margin-bottom: 1.5rem;
+}
+
+.toggle-animations {
+  display: block;
+  margin: 1rem auto;
+  padding: 0.6rem 1.5rem;
+  background: var(--rosa-escuro);
+  color: var(--branco);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.toggle-animations:hover,
+.toggle-animations:focus {
+  background: #b02a58;
+  transform: translateY(-0.2rem);
+}
+
+.parque-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  max-width: 56rem;
+  margin: auto;
+}
+
+/* Ferris Wheel */
+.ferris-wheel {
+  position: relative;
+  width: 20rem;
+  height: 20rem;
+  margin: 1rem auto;
+}
+
+.wheel {
+  width: 100%;
+  height: 100%;
+  border: 0.3rem solid var(--rosa-escuro);
+  border-radius: 50%;
+  position: relative;
+  animation: rotateWheel 20s linear infinite;
+  background: radial-gradient(circle, var(--rosa-suave) 10%, transparent 11%);
+}
+
+.wheel.paused {
+  animation-play-state: paused;
+}
+
+.cabin {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  background: #FFD700; /* Yellow cabins */
+  border-radius: 0.3rem;
+  box-shadow: 0 0 0.5rem rgba(255, 0, 0, 0.5); /* Red LED glow */
+  transform-origin: center center;
+}
+
+.cabin:nth-child(1) { transform: rotate(0deg) translate(9rem) rotate(0deg); }
+.cabin:nth-child(2) { transform: rotate(60deg) translate(9rem) rotate(-60deg); }
+.cabin:nth-child(3) { transform: rotate(120deg) translate(9rem) rotate(-120deg); }
+.cabin:nth-child(4) { transform: rotate(180deg) translate(9rem) rotate(-180deg); }
+.cabin:nth-child(5) { transform: rotate(240deg) translate(9rem) rotate(-240deg); }
+.cabin:nth-child(6) { transform: rotate(300deg) translate(9rem) rotate(-300deg); }
+
+.stand {
+  position: absolute;
+  bottom: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4rem;
+  height: 2rem;
+  background: var(--rosa-escuro);
+  clip-path: polygon(0 100%, 50% 0, 100% 100%);
+}
+
+/* Roller Coaster */
+.roller-coaster {
+  position: relative;
+  width: 20rem;
+  height: 10rem;
+  margin: 1rem auto;
+}
+
+.track {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 0.3rem solid var(--rosa-escuro);
+  border-radius: 2rem;
+  background: linear-gradient(to right, var(--rosa-suave), transparent);
+  clip-path: path('M0,80 Q50,20 100,80 T200,80 T300,20 T400,80');
+}
+
+.cart {
+  position: absolute;
+  width: 2rem;
+  height: 1.5rem;
+  background: var(--rosa-escuro);
+  border-radius: 0.3rem;
+  box-shadow: 0 0 0.5rem var(--sombra);
+  animation: rideCoaster 5s ease-in-out infinite;
+}
+
+.cart.paused {
+  animation-play-state: paused;
+}
+
 /* Footer */
 footer {
   background: var(--rosa-escuro);
@@ -300,6 +504,19 @@ footer {
   50% { transform: scale(1.2); }
 }
 
+@keyframes rotateWheel {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes rideCoaster {
+  0% { transform: translate(0, 6rem); }
+  25% { transform: translate(5rem, 1rem); }
+  50% { transform: translate(10rem, 6rem); }
+  75% { transform: translate(15rem, 1rem); }
+  100% { transform: translate(20rem, 6rem); }
+}
+
 /* Responsividade */
 @media (max-width: 48rem) {
   .hero {
@@ -314,6 +531,51 @@ footer {
 
   .player-container {
     grid-template-columns: 1fr;
+  }
+
+  .gallery-container {
+    grid-template-columns: 1fr;
+  }
+
+  .parque-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ferris-wheel,
+  .roller-coaster {
+    width: 15rem;
+    height: 15rem;
+  }
+
+  .roller-coaster {
+    height: 8rem;
+  }
+
+  .cabin {
+    width: 1.5rem;
+    height: 1.5rem;
+    transform-origin: center center;
+  }
+
+  .cabin:nth-child(1) { transform: rotate(0deg) translate(6.75rem) rotate(0deg); }
+  .cabin:nth-child(2) { transform: rotate(60deg) translate(6.75rem) rotate(-60deg); }
+  .cabin:nth-child(3) { transform: rotate(120deg) translate(6.75rem) rotate(-120deg); }
+  .cabin:nth-child(4) { transform: rotate(180deg) translate(6.75rem) rotate(-180deg); }
+  .cabin:nth-child(5) { transform: rotate(240deg) translate(6.75rem) rotate(-240deg); }
+  .cabin:nth-child(6) { transform: rotate(300deg) translate(6.75rem) rotate(-300deg); }
+
+  .cart {
+    width: 1.5rem;
+    height: 1rem;
+  }
+
+  @keyframes rideCoaster {
+    0% { transform: translate(0, 4.5rem); }
+    25% { transform: translate(3.75rem, 0.75rem); }
+    50% { transform: translate(7.5rem, 4.5rem); }
+    75% { transform: translate(11.25rem, 0.75rem); }
+    100% { transform: translate(15rem, 4.5rem); }
   }
 }
 

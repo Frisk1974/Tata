@@ -28,9 +28,11 @@
       <li><a href="#hero" aria-current="page">Início</a></li>
       <li><a href="#aniversario">Aniversário</a></li>
       <li><a href="#history">História</a></li>
+      <li><a href="#galeria">Galeria</a></li>
       <li><a href="#poema">Poema</a></li>
       <li><a href="#musicas">Músicas</a></li>
       <li><a href="#sonhos">Sonhos</a></li>
+      <li><a href="#parque">Parque</a></li>
     </ul>
   </nav>
 
@@ -42,8 +44,10 @@
 
   <main>
     <section id="aniversario" class="section aniversario" aria-labelledby="aniversario-title">
+      <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
       <h2 id="aniversario-title">Feliz Aniversário, Pequena!</h2>
       <p>Hoje é o dia de celebrar você, a pessoa que trouxe luz e amor para minha vida. Cada momento com você é um presente, e este site é minha forma de dizer o quanto você é especial. Que seu dia seja tão lindo quanto seu sorriso! 🥰</p>
+      <button class="download-card" aria-label="Baixar cartão de aniversário">Baixar Cartão de Aniversário</button>
     </section>
 
     <section id="history" class="section history" aria-labelledby="history-title">
@@ -57,6 +61,19 @@
         <p>A gente tem apelidos só nossos — Tai, momor, tomatinho — e isso é mais que carinho, é nossa cumplicidade. Você é intensa, cheia de sentimento, e mesmo quando explode, é o lugar onde eu encontro paz.</p>
         <p>Sonho com a gente adotando um gato, tendo filhos, viajando sem destino, construindo nossa vida no nosso tempo. Porque nosso amor é feito das pequenas coisas que se tornam tudo.</p>
         <p>Essa é nossa história, meu amor, e eu quero continuar escrevendo ela do seu lado.</p>
+      </div>
+    </section>
+
+    <section id="galeria" class="section galeria" aria-labelledby="galeria-title">
+      <h2 id="galeria-title">Nossos Momentos</h2>
+      <div class="gallery-container">
+        <img src="images/moment1.jpg" alt="Nosso encontro no Hopi Hari" loading="lazy" class="gallery-img">
+        <img src="images/moment2.jpg" alt="Abraço no Wet’n Wild" loading="lazy" class="gallery-img">
+        <img src="images/moment3.jpg" alt="Bolo de limão do meu aniversário" loading="lazy" class="gallery-img">
+      </div>
+      <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" aria-label="Fechar lightbox">×</span>
+        <img class="lightbox-img" alt="Imagem ampliada">
       </div>
     </section>
 
@@ -126,6 +143,29 @@ em alguém só?</p>
         <li>Envelhecer ouvindo música juntos</li>
       </ul>
     </section>
+
+    <section id="parque" class="section parque" aria-labelledby="parque-title">
+      <h2 id="parque-title">Nosso Parque de Diversões</h2>
+      <p>Nosso amor começou no Hopi Hari, entre a chuva e a roda-gigante. Aqui está um pedacinho daquele momento mágico, com a roda-gigante que parou meu mundo e uma montanha-russa para nosso futuro cheio de aventuras!</p>
+      <button class="toggle-animations" aria-label="Pausar animações" data-state="playing">Pausar Animações</button>
+      <div class="parque-container">
+        <div class="ferris-wheel">
+          <div class="wheel">
+            <div class="cabin"></div>
+            <div class="cabin"></div>
+            <div class="cabin"></div>
+            <div class="cabin"></div>
+            <div class="cabin"></div>
+            <div class="cabin"></div>
+          </div>
+          <div class="stand"></div>
+        </div>
+        <div class="roller-coaster">
+          <div class="track"></div>
+          <div class="cart"></div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer id="footer" aria-label="Rodapé">
@@ -134,6 +174,7 @@ em alguém só?</p>
 
   <button class="back-to-top" aria-label="Voltar ao topo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
 
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
