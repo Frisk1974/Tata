@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Para Tata, com Amor</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
   <nav class="menu">
     <ul>
       <li><a href="#hero">Início</a></li>
@@ -20,22 +21,42 @@
 
   <section id="hero" class="hero">
     <h1>Amar você é minha forma favorita de existir</h1>
-    <button onclick="document.querySelector('#history').scrollIntoView({behavior:'smooth'})">
-      Começar
-    </button>
+    <button onclick="document.querySelector('#history').scrollIntoView({behavior:'smooth'})">Começar</button>
   </section>
 
   <section id="history" class="section timeline">
     <h2>Nossa História</h2>
     <div class="timeline-container">
-      <div class="event left"><div class="date">05 Set 2024</div><p>Primeiro olhar no Hopi Hari...</p></div>
-      <div class="event right"><div class="date">…</div><p>...</p></div>
+      <div class="event left">
+        <div class="date">05 Set 2024</div>
+        <p>Nos conhecemos no Hopi Hari, dia inesquecível.</p>
+      </div>
+      <div class="event right">
+        <div class="date">06 Set 2024</div>
+        <p>Primeira conversa, a roda-gigante, o começo da conexão.</p>
+      </div>
+      <div class="event left">
+        <div class="date">Set 2024</div>
+        <p>Várias trocas de mensagens, fortalecendo o laço.</p>
+      </div>
+      <div class="event right">
+        <div class="date">Nov 2024</div>
+        <p>Primeiro encontro oficial, a certeza do que sentimos.</p>
+      </div>
+      <div class="event left">
+        <div class="date">Jul 2025</div>
+        <p>Construindo planos, sonhando juntos e firmes no amor.</p>
+      </div>
     </div>
   </section>
 
   <section id="bilhetes" class="section">
     <h2>Bilhetinhos</h2>
-    <div class="bilhete-area" id="bilheteArea"></div>
+    <div class="bilhete-wrapper">
+      <button class="btn scroll-left" aria-label="Scroll Left">◀</button>
+      <div class="bilhete-area" id="bilheteArea" tabindex="0"></div>
+      <button class="btn scroll-right" aria-label="Scroll Right">▶</button>
+    </div>
   </section>
 
   <section id="musicas" class="section">
@@ -55,7 +76,7 @@
   </section>
 
   <footer id="footer">
-    <p>Feito com todo o meu amor — Heron 💌</p>
+    <p>Feito com todo o meu amor — Kyrell 💌</p>
   </footer>
 
   <script src="script.js"></script>

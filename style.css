@@ -1,25 +1,303 @@
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:sans-serif;background:#fdeff9;color:#333;scroll-behavior:smooth;}
-.menu{position:fixed;top:0;width:100%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.1);z-index:1000;}
-.menu ul{display:flex;justify-content:center;gap:1.5rem;padding:1rem 0;}
-.menu a{color:#333;text-decoration:none;font-weight:600;}
-.hero{height:90vh;background:#ffccd7;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:1rem;}
-.hero h1{font-size:2.5rem;color:#cc3366;}
-.hero button{margin-top:1rem;padding:.8rem 2rem;background:#cc3366;color:#fff;border:none;border-radius:8px;cursor:pointer;transition:background .3s;}
-.hero button:hover{background:#b32d5c;}
-.section{padding:4rem 1rem;max-width:800px;margin:auto;}
-.timeline-container{position:relative;padding:2rem 0;}
-.timeline-container::before{content:'';position:absolute;left:50%;width:4px;height:100%;background:#cc3366;transform:translateX(-50%);}
-.event{position:relative;width:45%;padding:1rem;background:#fff;border-radius:8px;margin-bottom:2rem;box-shadow:0 4px 8px rgba(0,0,0,0.05);}
-.event.left{left:0;}
-.event.right{left:55%;}
-.event .date{font-weight:600;color:#cc3366;margin-bottom:.5rem;}
-.bilhete-area{display:flex;overflow-x:auto;gap:1rem;padding:1rem 0;}
-.bilhete{min-width:200px;background:#fff0f5;padding:1rem;border:2px dashed #cc3366;border-radius:8px;flex-shrink:0;}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;}
-.cards .card{background:#ffe4e1;padding:1rem;border-radius:8px;}
-footer{background:#cc3366;color:white;text-align:center;padding:2rem;}
-@media(max-width:768px){
-  .event,.event.right{left:0;width:100%!important;}
-  .timeline-container::before{left:20px;}
+/* Variáveis de cor e tipografia */
+:root {
+  --rosa-claro: #F8CFE8;
+  --rosa-escuro: #CC3366;
+  --fundo: #fff0f5;
+  --texto: #333;
+  --branco: #fff;
+  --sombra: rgba(204, 51, 102, 0.2);
+  --font-titulo: 'Segoe Script', cursive, sans-serif;
+  --font-corpo: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-corpo);
+  background: var(--fundo);
+  color: var(--texto);
+  scroll-behavior: smooth;
+  line-height: 1.5;
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: var(--branco);
+  box-shadow: 0 2px 6px var(--sombra);
+  z-index: 1000;
+}
+
+.menu ul {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  list-style: none;
+}
+
+.menu a {
+  color: var(--texto);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+.menu a:hover {
+  color: var(--rosa-escuro);
+}
+
+.hero {
+  height: 90vh;
+  background: var(--rosa-claro);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 3.5rem;
+}
+
+.hero h1 {
+  font-family: var(--font-titulo);
+  font-size: 2.8rem;
+  color: var(--rosa-escuro);
+}
+
+.hero button {
+  margin-top: 1.5rem;
+  padding: 0.8rem 2.5rem;
+  background: var(--rosa-escuro);
+  color: var(--branco);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 6px var(--sombra);
+  transition: background 0.3s ease;
+}
+
+.hero button:hover {
+  background: #b02a58;
+}
+
+.section {
+  max-width: 900px;
+  margin: 4rem auto;
+  padding: 0 1rem;
+}
+
+h2 {
+  font-family: var(--font-titulo);
+  color: var(--rosa-escuro);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 2rem;
+}
+
+/* Timeline */
+.timeline-container {
+  position: relative;
+  padding: 2rem 0;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.timeline-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 4px;
+  height: 100%;
+  background: var(--rosa-escuro);
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.event {
+  position: relative;
+  width: 45%;
+  background: var(--branco);
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 4px 8px var(--sombra);
+  margin-bottom: 2rem;
+}
+
+.event .date {
+  font-weight: 700;
+  color: var(--rosa-escuro);
+  margin-bottom: 0.7rem;
+}
+
+.event.left {
+  left: 0;
+}
+
+.event.right {
+  left: 55%;
+}
+
+@media (max-width: 768px) {
+  .event,
+  .event.right {
+    width: 90% !important;
+    left: 0 !important;
+  }
+
+  .timeline-container::before {
+    left: 20px;
+  }
+}
+
+/* Bilhetes */
+.bilhete-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  max-width: 900px;
+  margin: auto;
+}
+
+.bilhete-area {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem 0;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+}
+
+.bilhete-area::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+.bilhete {
+  min-width: 220px;
+  background: var(--branco);
+  border: 2px dashed var(--rosa-escuro);
+  border-radius: 10px;
+  padding: 1rem;
+  flex-shrink: 0;
+  font-style: italic;
+  color: var(--rosa-escuro);
+  box-shadow: 0 4px 6px var(--sombra);
+  transition: transform 0.3s ease;
+}
+
+.bilhete:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.btn {
+  border: none;
+  background: var(--rosa-escuro);
+  color: var(--branco);
+  font-size: 1.6rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: #b02a58;
+}
+
+/* Música */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  max-width: 900px;
+  margin: auto;
+}
+
+.card {
+  background: #ffe4e1;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 8px var(--sombra);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  cursor: pointer;
+}
+
+.card p {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--rosa-escuro);
+}
+
+.card small {
+  font-style: italic;
+  color: #7a2a4a;
+}
+
+/* Sonhos */
+#sonhos ul {
+  list-style: none;
+  max-width: 600px;
+  margin: auto;
+  padding: 0;
+}
+
+#sonhos ul li {
+  background: var(--branco);
+  padding: 0.8rem 1.2rem;
+  margin-bottom: 0.8rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px var(--sombra);
+  font-weight: 600;
+  color: var(--rosa-escuro);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+#sonhos ul li::before {
+  content: "🌟";
+  font-size: 1.3rem;
+}
+
+/* Footer */
+footer {
+  background: var(--rosa-escuro);
+  color: var(--branco);
+  text-align: center;
+  padding: 2rem 1rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-top: 4rem;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+  .menu ul {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .bilhete {
+    min-width: 180px;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
 }
