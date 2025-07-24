@@ -148,27 +148,6 @@ h2 {
   animation: heartPulse 2s ease-in-out infinite;
 }
 
-.aniversario .download-card {
-  display: block;
-  margin: 1rem auto;
-  padding: 0.6rem 1.5rem;
-  background: var(--rosa-escuro);
-  color: var(--branco);
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
-  font-weight: 600;
-  transition: background 0.3s ease, transform 0.2s ease;
-  touch-action: manipulation;
-}
-
-.aniversario .download-card:hover,
-.aniversario .download-card:focus {
-  background: #b02a58;
-  transform: translateY(-0.2rem);
-}
-
 .confetti-canvas {
   position: absolute;
   top: 0;
