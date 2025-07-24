@@ -32,14 +32,13 @@ body {
   background: var(--branco);
   box-shadow: 0 0.2rem 0.6rem var(--sombra);
   z-index: 1000;
-  padding: 0.5rem 0;
 }
 
 .menu ul {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
+  gap: 1.5rem;
+  padding: 1rem 0;
   list-style: none;
 }
 
@@ -47,7 +46,7 @@ body {
   color: var(--texto);
   text-decoration: none;
   font-weight: 600;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  font-size: 1.1rem;
   transition: color 0.3s ease;
 }
 
@@ -58,22 +57,22 @@ body {
 
 /* Hero Section */
 .hero {
-  min-height: 70vh;
+  min-height: 80vh;
   background: linear-gradient(to bottom, var(--rosa-suave), var(--fundo));
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 1.5rem;
-  margin-top: 3rem;
-  border-radius: 0.75rem;
+  padding: 2rem;
+  margin-top: 3.5rem;
+  border-radius: 1rem;
   animation: fadeIn 1s ease-in;
 }
 
 .hero h1 {
   font-family: var(--font-titulo);
-  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  font-size: clamp(2rem, 5vw, 3rem);
   color: var(--rosa-escuro);
   margin-bottom: 0.5rem;
 }
@@ -81,152 +80,65 @@ body {
 .hero p {
   font-family: var(--font-corpo);
   font-style: italic;
-  font-size: clamp(0.9rem, 3vw, 1.1rem);
+  font-size: clamp(1rem, 3vw, 1.2rem);
   color: var(--texto);
 }
 
 .hero button {
-  margin-top: 1rem;
-  padding: 0.6rem 1.5rem;
+  margin-top: 1.5rem;
+  padding: 0.8rem 2rem;
   background: var(--rosa-escuro);
   color: var(--branco);
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  font-size: 1rem;
   font-weight: 600;
-  box-shadow: 0 0.2rem 0.4rem var(--sombra);
+  box-shadow: 0 0.3rem 0.6rem var(--sombra);
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  touch-action: manipulation;
 }
 
 .hero button:hover,
 .hero button:focus {
   background: #b02a58;
   transform: translateY(-0.2rem);
-  box-shadow: 0 0.3rem 0.6rem var(--sombra);
+  box-shadow: 0 0.4rem 0.8rem var(--sombra);
 }
 
 /* Seções Gerais */
 .section {
-  max-width: 90%;
-  margin: 3rem auto;
-  padding: 1.5rem;
+  max-width: 56rem;
+  margin: 4rem auto;
+  padding: 2rem;
   background: var(--branco);
-  border-radius: 0.75rem;
-  box-shadow: 0 0.2rem 0.5rem var(--sombra);
+  border-radius: 1rem;
+  box-shadow: 0 0.3rem 0.6rem var(--sombra);
   animation: fadeInUp 0.8s ease forwards;
-  position: relative;
 }
 
 h2 {
   font-family: var(--font-titulo);
   color: var(--rosa-escuro);
-  font-size: clamp(1.5rem, 4vw, 1.8rem);
+  font-size: clamp(1.8rem, 4vw, 2.2rem);
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 /* Aniversário */
 .aniversario p {
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  font-size: 1.1rem;
   text-align: center;
   color: var(--texto);
   margin-bottom: 1rem;
   animation: heartPulse 2s ease-in-out infinite;
 }
 
-.aniversario .download-card {
-  display: block;
-  margin: 1rem auto;
-  padding: 0.6rem 1.5rem;
-  background: var(--rosa-escuro);
-  color: var(--branco);
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
-  font-weight: 600;
-  transition: background 0.3s ease, transform 0.2s ease;
-  touch-action: manipulation;
-}
-
-.aniversario .download-card:hover,
-.aniversario .download-card:focus {
-  background: #b02a58;
-  transform: translateY(-0.2rem);
-}
-
-.confetti-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-}
-
 /* História */
 .history-content p {
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
-  margin-bottom: 0.8rem;
-  line-height: 1.7;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  line-height: 1.8;
   color: var(--texto);
-}
-
-/* Galeria */
-.gallery-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-  gap: 1rem;
-  max-width: 100%;
-  margin: auto;
-}
-
-.gallery-img {
-  width: 100%;
-  height: 10rem;
-  object-fit: cover;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  box-shadow: 0 0.2rem 0.4rem var(--sombra);
-  transition: transform 0.3s ease;
-}
-
-.gallery-img:hover {
-  transform: scale(1.05);
-}
-
-.lightbox {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-}
-
-.lightbox.active {
-  display: flex;
-}
-
-.lightbox-img {
-  max-width: 90%;
-  max-height: 80vh;
-  border-radius: 0.5rem;
-}
-
-.lightbox-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: clamp(1.5rem, 4vw, 2rem);
-  color: var(--branco);
-  cursor: pointer;
 }
 
 /* Poema */
@@ -235,24 +147,23 @@ h2 {
   font-style: italic;
   color: var(--rosa-escuro);
   text-align: center;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
-  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
 }
 
 /* Músicas */
 .musicas .play-all {
   display: block;
-  margin: 0 auto 1rem;
+  margin: 0 auto 1.5rem;
   padding: 0.6rem 1.5rem;
   background: var(--rosa-escuro);
   color: var(--branco);
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  font-size: 1rem;
   font-weight: 600;
   transition: background 0.3s ease, transform 0.2s ease;
-  touch-action: manipulation;
 }
 
 .musicas .play-all:hover,
@@ -263,30 +174,30 @@ h2 {
 
 .player-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  gap: 1rem;
-  max-width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1.5rem;
+  max-width: 56rem;
   margin: auto;
 }
 
 .musica {
   position: relative;
   background: var(--rosa-suave);
-  border-radius: 0.5rem;
-  padding: 0.8rem;
-  box-shadow: 0 0.2rem 0.4rem var(--sombra);
+  border-radius: 0.6rem;
+  padding: 1rem;
+  box-shadow: 0 0.3rem 0.6rem var(--sombra);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .musica:hover {
-  transform: translateY(-0.2rem);
-  box-shadow: 0 0.3rem 0.6rem var(--sombra);
+  transform: translateY(-0.3rem);
+  box-shadow: 0 0.4rem 0.8rem var(--sombra);
 }
 
 .musica h3 {
   font-family: var(--font-titulo);
   color: var(--rosa-escuro);
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  font-size: 1rem;
   margin-bottom: 0.5rem;
 }
 
@@ -295,7 +206,7 @@ h2 {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  font-size: 1rem;
+  font-size: 1.2rem;
   animation: heartPulse 1s ease-in-out infinite;
 }
 
@@ -308,165 +219,28 @@ audio {
 /* Sonhos */
 #sonhos ul {
   list-style: none;
-  max-width: 32rem;
+  max-width: 38rem;
   margin: auto;
   padding: 0;
 }
 
 #sonhos ul li {
   background: var(--rosa-suave);
-  padding: 0.6rem 1rem;
-  margin-bottom: 0.6rem;
+  padding: 0.8rem 1.2rem;
+  margin-bottom: 0.8rem;
   border-radius: 0.5rem;
-  box-shadow: 0 0.2rem 0.4rem var(--sombra);
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  box-shadow: 0 0.3rem 0.6rem var(--sombra);
+  font-size: 1rem;
   font-weight: 600;
   color: var(--rosa-escuro);
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.8rem;
 }
 
 #sonhos ul li::before {
   content: "🌟";
-  font-size: 1rem;
-}
-
-/* Parque de Diversões */
-.parque p {
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
-  text-align: center;
-  color: var(--texto);
-  margin-bottom: 1rem;
-}
-
-.toggle-animations {
-  display: block;
-  margin: 1rem auto;
-  padding: 0.6rem 1.5rem;
-  background: var(--rosa-escuro);
-  color: var(--branco);
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
-  font-weight: 600;
-  transition: background 0.3s ease, transform 0.2s ease;
-  touch-action: manipulation;
-}
-
-.toggle-animations:hover,
-.toggle-animations:focus {
-  background: #b02a58;
-  transform: translateY(-0.2rem);
-}
-
-.parque-container {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  align-items: center;
-  max-width: 100%;
-  margin: auto;
-}
-
-/* Ferris Wheel */
-.ferris-wheel {
-  position: relative;
-  width: clamp(12rem, 40vw, 18rem);
-  height: clamp(12rem, 40vw, 18rem);
-  margin: 1rem auto;
-  background: linear-gradient(to top, var(--rosa-suave), #4B0082);
-  border-radius: 0.5rem;
-  overflow: hidden;
-}
-
-.wheel {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  border: 0.2rem solid var(--rosa-escuro);
-  border-radius: 50%;
-  animation: rotateWheel 15s linear infinite;
-  will-change: transform;
-}
-
-.wheel.paused {
-  animation-play-state: paused;
-}
-
-.spokes {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: repeating-radial-gradient(circle, var(--rosa-escuro) 0, var(--rosa-escuro) 0.1rem, transparent 0.1rem, transparent 0.3rem);
-  border-radius: 50%;
-  opacity: 0.3;
-}
-
-.cabin {
-  position: absolute;
-  width: 1.5rem;
-  height: 1.5rem;
-  background: #FFD700;
-  border-radius: 0.3rem;
-  box-shadow: 0 0 0.4rem rgba(255, 0, 0, 0.6);
-  transform-origin: center center;
-  animation: swayCabin 2s ease-in-out infinite;
-}
-
-.cabin:nth-child(2) { transform: rotate(45deg) translate(8rem) rotate(-45deg); }
-.cabin:nth-child(3) { transform: rotate(90deg) translate(8rem) rotate(-90deg); }
-.cabin:nth-child(4) { transform: rotate(135deg) translate(8rem) rotate(-135deg); }
-.cabin:nth-child(5) { transform: rotate(180deg) translate(8rem) rotate(-180deg); }
-.cabin:nth-child(6) { transform: rotate(225deg) translate(8rem) rotate(-225deg); }
-.cabin:nth-child(7) { transform: rotate(270deg) translate(8rem) rotate(-270deg); }
-.cabin:nth-child(8) { transform: rotate(315deg) translate(8rem) rotate(-315deg); }
-.cabin:nth-child(9) { transform: rotate(360deg) translate(8rem) rotate(-360deg); }
-
-.stand {
-  position: absolute;
-  bottom: -1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 3rem;
-  height: 1.5rem;
-  background: var(--rosa-escuro);
-  clip-path: polygon(0 100%, 50% 0, 100% 100%);
-  box-shadow: 0 0.2rem 0.4rem var(--sombra);
-}
-
-/* Roller Coaster */
-.roller-coaster {
-  position: relative;
-  width: clamp(12rem, 40vw, 18rem);
-  height: clamp(6rem, 20vw, 8rem);
-  margin: 1rem auto;
-  background: linear-gradient(to top, var(--rosa-suave), #4B0082);
-  border-radius: 0.5rem;
-  overflow: hidden;
-}
-
-.track {
-  width: 100%;
-  height: 100%;
-}
-
-.cart {
-  position: absolute;
-  width: 2rem;
-  height: 2rem;
-  font-size: 1.5rem;
-  text-align: center;
-  line-height: 2rem;
-  animation: rideCoaster 4s ease-in-out infinite;
-  will-change: transform;
-  offset-path: path('M0,80 Q50,20 100,80 T200,80 T300,20 T400,80');
-  offset-rotate: auto 90deg;
-}
-
-.cart.paused {
-  animation-play-state: paused;
+  font-size: 1.2rem;
 }
 
 /* Footer */
@@ -474,31 +248,30 @@ footer {
   background: var(--rosa-escuro);
   color: var(--branco);
   text-align: center;
-  padding: 1.5rem 1rem;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  padding: 2rem 1rem;
+  font-size: 1rem;
   font-weight: 600;
-  margin-top: 3rem;
-  border-radius: 0.75rem;
+  margin-top: 4rem;
+  border-radius: 1rem;
 }
 
 /* Back to Top Button */
 .back-to-top {
   position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
+  bottom: 2rem;
+  right: 2rem;
   background: var(--rosa-escuro);
   color: var(--branco);
   border: none;
   border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.2rem;
   cursor: pointer;
-  box-shadow: 0 0.2rem 0.4rem var(--sombra);
+  box-shadow: 0 0.3rem 0.6rem var(--sombra);
   transition: opacity 0.3s ease, transform 0.3s ease;
   opacity: 0;
   pointer-events: none;
-  touch-action: manipulation;
 }
 
 .back-to-top.visible {
@@ -518,7 +291,7 @@ footer {
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(1rem); }
+  from { opacity: 0; transform: translateY(1.2rem); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -527,39 +300,30 @@ footer {
   50% { transform: scale(1.2); }
 }
 
-@keyframes rotateWheel {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes swayCabin {
-  0%, 100% { transform: rotate(0deg); }
-  50% { transform: rotate(5deg); }
-}
-
-@keyframes rideCoaster {
-  0% { offset-distance: 0%; }
-  100% { offset-distance: 100%; }
-}
-
-/* Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  .wheel, .cart, .aniversario p, .musica.playing::after {
-    animation: none;
-  }
-}
-
 /* Responsividade */
 @media (max-width: 48rem) {
   .hero {
     min-height: 60vh;
-    padding: 1rem;
-    margin-top: 2.5rem;
+    padding: 1.5rem;
   }
 
   .menu ul {
-    gap: 0.8rem;
-    padding: 0.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .player-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 30rem) {
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero p {
+    font-size: 0.9rem;
   }
 
   .section {
@@ -567,66 +331,13 @@ footer {
     padding: 1rem;
   }
 
-  .player-container {
-    grid-template-columns: 1fr;
-  }
-
-  .gallery-container {
-    grid-template-columns: 1fr;
-  }
-
-  .ferris-wheel,
-  .roller-coaster {
-    width: clamp(10rem, 35vw, 12rem);
-    height: clamp(10rem, 35vw, 12rem);
-  }
-
-  .roller-coaster {
-    height: clamp(5rem, 15vw, 6rem);
-  }
-
-  .cabin {
-    width: 1rem;
-    height: 1rem;
-  }
-
-  .cabin:nth-child(2) { transform: rotate(45deg) translate(5.5rem) rotate(-45deg); }
-  .cabin:nth-child(3) { transform: rotate(90deg) translate(5.5rem) rotate(-90deg); }
-  .cabin:nth-child(4) { transform: rotate(135deg) translate(5.5rem) rotate(-135deg); }
-  .cabin:nth-child(5) { transform: rotate(180deg) translate(5.5rem) rotate(-180deg); }
-  .cabin:nth-child(6) { transform: rotate(225deg) translate(5.5rem) rotate(-225deg); }
-  .cabin:nth-child(7) { transform: rotate(270deg) translate(5.5rem) rotate(-270deg); }
-  .cabin:nth-child(8) { transform: rotate(315deg) translate(5.5rem) rotate(-315deg); }
-  .cabin:nth-child(9) { transform: rotate(360deg) translate(5.5rem) rotate(-360deg); }
-
-  .cart {
-    width: 1.5rem;
-    height: 1.5rem;
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 30rem) {
-  .hero h1 {
-    font-size: clamp(1.5rem, 4vw, 1.8rem);
-  }
-
-  .hero p {
-    font-size: clamp(0.8rem, 2vw, 0.9rem);
-  }
-
-  .section {
-    margin: 1.5rem auto;
-    padding: 0.8rem;
-  }
-
   h2 {
-    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    font-size: 1.6rem;
   }
 
   .back-to-top {
-    width: 2rem;
-    height: 2rem;
-    font-size: clamp(0.8rem, 2vw, 0.9rem);
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
   }
 }
