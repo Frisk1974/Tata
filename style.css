@@ -133,53 +133,12 @@ h2 {
   animation: heartPulse 2s ease-in-out infinite;
 }
 
-/* Timeline */
-.timeline-container {
-  position: relative;
-  padding: 2rem 0;
-  max-width: 44rem;
-  margin: 0 auto;
-}
-
-.timeline-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 0.3rem;
-  height: 100%;
-  background: var(--rosa-escuro);
-  transform: translateX(-50%);
-  border-radius: 0.2rem;
-}
-
-.event {
-  position: relative;
-  width: 45%;
-  background: var(--rosa-suave);
-  border-radius: 0.5rem;
-  padding: 1rem 1.5rem;
-  box-shadow: 0 0.3rem 0.6rem var(--sombra);
-  margin-bottom: 2rem;
-}
-
-.event .date {
-  font-weight: 700;
-  color: var(--rosa-escuro);
+/* História */
+.history-content p {
   font-size: 1rem;
-  margin-bottom: 0.7rem;
-}
-
-.event p {
-  font-size: 1rem;
-}
-
-.event.left {
-  left: 0;
-}
-
-.event.right {
-  left: 55%;
+  margin-bottom: 1rem;
+  line-height: 1.8;
+  color: var(--texto);
 }
 
 /* Poema */
@@ -343,16 +302,6 @@ footer {
 
 /* Responsividade */
 @media (max-width: 48rem) {
-  .event,
-  .event.right {
-    width: 90%;
-    left: 0 !important;
-  }
-
-  .timeline-container::before {
-    left: 1.2rem;
-  }
-
   .hero {
     min-height: 60vh;
     padding: 1.5rem;
