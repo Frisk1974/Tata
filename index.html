@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para Tata, com amor</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="intro" class="screen">
+    <h1>“Te amar é minha forma favorita de existir.”</h1>
+    <button onclick="enterSite()">Entrar</button>
+  </div>
+
+  <div id="mainContent" class="screen hidden">
+    <h2>Oi, pequena ❤️</h2>
+    <p>Esse é um cantinho só nosso. Aqui vai ter tudo: os bilhetes, músicas, momentos e tudo que representa o quanto eu te amo.</p>
+    <div class="buttons">
+      <button onclick="showSection('bilhetes')">Ver Bilhetes</button>
+      <button onclick="showSection('musicas')">Músicas Nossas</button>
+    </div>
+
+    <div id="bilhetes" class="hidden">
+      <h3>Bilhetinhos</h3>
+      <p>Aqui vão os bilhetes. (Vamos colocar todos depois, relaxa.)</p>
+    </div>
+
+    <div id="musicas" class="hidden">
+      <h3>Músicas que são a nossa cara</h3>
+      <ul>
+        <li>Ventura – Los Hermanos</li>
+        <li>Porque Eu Te Amo – Anavitória</li>
+        <li>Te Ver Superar – Lagum</li>
+        <!-- Dá pra completar com tudo que ela curte -->
+      </ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
