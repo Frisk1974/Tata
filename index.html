@@ -3,46 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Para a Tata 💖</title>
+  <meta name="description" content="Um presente de aniversário especial para Tata, feito com amor por Heron, celebrando nossa história e sonhos juntos." />
+  <meta name="keywords" content="aniversário, amor, Tata, Heron, história romântica" />
+  <meta name="author" content="Heron" />
+  <!-- Open Graph for Social Sharing -->
+  <meta property="og:title" content="Para a Tata 💖 - Presente de Aniversário" />
+  <meta property="og:description" content="Um site romântico feito por Heron para celebrar o aniversário da Tata." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://your-site.com/images/birthday-heart.jpg" />
+  <meta property="og:url" content="https://your-site.com" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Para a Tata 💖 - Presente de Aniversário" />
+  <meta name="twitter:description" content="Um site romântico feito por Heron para celebrar o aniversário da Tata." />
+  <meta name="twitter:image" content="https://your-site.com/images/birthday-heart.jpg" />
+  <title>Para a Tata 💖 - Presente de Aniversário</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="preload" href="musicas/sunshine.mp3" as="audio" />
 </head>
 <body>
-  <nav class="menu">
+  <nav class="menu" aria-label="Navegação principal">
     <ul>
-      <li><a href="#hero">Início</a></li>
+      <li><a href="#hero" aria-current="page">Início</a></li>
+      <li><a href="#aniversario">Aniversário</a></li>
       <li><a href="#history">História</a></li>
       <li><a href="#poema">Poema</a></li>
       <li><a href="#musicas">Músicas</a></li>
       <li><a href="#sonhos">Sonhos</a></li>
-      <li><a href="#footer">Fim</a></li>
     </ul>
   </nav>
 
   <section id="hero" class="hero">
-    <h1>Amar você é minha forma favorita de existir</h1>
-    <p>Feito com amor por Kyrell 🖤</p>
-    <button onclick="document.querySelector('#history').scrollIntoView({behavior:'smooth'})">Começar</button>
+    <h1>Para a Tata, meu amor 💖</h1>
+    <p>Um presente de aniversário feito com todo o meu coração</p>
+    <button onclick="document.querySelector('#aniversario').scrollIntoView({behavior:'smooth'})" aria-label="Ir para a mensagem de aniversário">Começar</button>
   </section>
 
   <main>
-    <section id="history" class="section timeline">
-      <h2>Nossa História</h2>
+    <section id="aniversario" class="section aniversario" aria-labelledby="aniversario-title">
+      <h2 id="aniversario-title">Feliz Aniversário, Pequena!</h2>
+      <p>Hoje é o dia de celebrar você, a pessoa que trouxe luz e amor para minha vida. Cada momento com você é um presente, e este site é minha forma de dizer o quanto você é especial. Que seu dia seja tão lindo quanto seu sorriso! 🥰</p>
+    </section>
+
+    <section id="history" class="section timeline" aria-labelledby="history-title">
+      <h2 id="history-title">Nossa História</h2>
       <div class="timeline-container">
         <div class="event left">
           <div class="date">05 Set 2024</div>
-          <p>Nos conhecemos no Hopi Hari, numa noite de chuva, LEDs vermelhos e olhos castanhos esverdeados. Foi na cabine amarela da roda-gigante que meu mundo parou.</p>
+          <p>Nos conhecemos no Hopi Hari, numa noite de chuva, LEDs vermelhos e seus olhos castanhos esverdeados. Na cabine amarela da roda-gigante, meu mundo parou.</p>
         </div>
         <div class="event right">
           <div class="date">06 Set 2024</div>
-          <p>Primeira conversa, a roda-gigante, o começo da nossa conexão.</p>
+          <p>Primeira conversa na roda-gigante, o começo da nossa conexão.</p>
         </div>
         <div class="event left">
           <div class="date">Set 2024</div>
-          <p>Várias trocas de mensagens, fortalecendo o laço que nos une.</p>
+          <p>Trocas de mensagens que fortaleceram nosso laço.</p>
         </div>
         <div class="event right">
           <div class="date">11 Dez 2024</div>
-          <p>Nosso primeiro encontro de verdade no Wet. O toque virou abraço, e o abraço virou lar.</p>
+          <p>Nosso primeiro encontro no Wet, onde o toque virou abraço, e o abraço virou lar.</p>
         </div>
         <div class="event left">
           <div class="date">Jul 2025</div>
@@ -51,49 +72,67 @@
       </div>
     </section>
 
-    <section id="poema" class="section poema">
-      <h2>Um Poema Pra Você</h2>
-      <p>Te encontrei numa roda-gigante, mas foi no meu peito que você fez morada.</p>
-      <p>Você não é só meu amor, é meu ponto de paz num mundo que grita.</p>
-      <p>E mesmo nos dias nublados, tua risada é sol.</p>
+    <section id="poema" class="section poema" aria-labelledby="poema-title">
+      <h2 id="poema-title">Um Poema Pra Você</h2>
+      <p><p>Chovia.<br/>
+E o mundo parecia desacordado.<br/>
+Mas então você surgiu —<br/>
+entre a névoa da roda-gigante,<br/>
+numa cabine amarela,<br/>
+com olhos que não eram só verdes:<br/>
+eram tempestade e farol,<br/>
+no mesmo olhar.</p>
+
+<p>A cidade girava, os fogos explodiam,<br/>
+mas tudo parou.<br/>
+Porque foi ali que minha história<br/>
+começou a sair do eixo —<br/>
+no instante em que você me viu,<br/>
+e nem sabia.</p>
+
+<p>Eu te olhava e pensava:<br/>
+como é que cabe tanto universo<br/>
+em alguém só?</p>
+
     </section>
 
-    <section id="musicas" class="section musicas">
-      <h2>Músicas que são a nossa cara 🎵</h2>
+    <section id="musicas" class="section musicas" aria-labelledby="musicas-title">
+      <h2 id="musicas-title">Músicas que são a nossa cara 🎵</h2>
+      <button class="play-all" aria-label="Tocar todas as músicas">Tocar Todas</button>
       <div class="player-container" id="musicCards">
         <div class="musica">
           <h3>Sunshine</h3>
-          <audio controls src="musicas/sunshine.mp3"></audio>
+          <audio controls src="musicas/sunshine.mp3" preload="metadata"></audio>
         </div>
         <div class="musica">
           <h3>A meta é ficar bem</h3>
-          <audio controls src="musicas/a_meta_e_ficar_bem.mp3"></audio>
+          <audio controls src="musicas/a_meta_e_ficar_bem.mp3" preload="metadata"></audio>
         </div>
         <div class="musica">
           <h3>Afrodite</h3>
-          <audio controls src="musicas/afrodite.mp3"></audio>
+          <audio controls src="musicas/afrodite.mp3" preload="metadata"></audio>
         </div>
         <div class="musica">
           <h3>Aliança</h3>
-          <audio controls src="musicas/alianca.mp3"></audio>
+          <audio controls src="musicas/alianca.mp3" preload="metadata"></audio>
         </div>
         <div class="musica">
           <h3>Boyfriend</h3>
-          <audio controls src="musicas/boyfriend.mp3"></audio>
+          <audio controls src="musicas/boyfriend.mp3" preload="metadata"></audio>
         </div>
         <div class="musica">
           <h3>Die With a Smile</h3>
-          <audio controls src="musicas/die_with_a_smile.mp3"></audio>
+          <audio controls src="musicas/die_with_a_smile.mp3" preload="metadata"></audio>
         </div>
         <div class="musica">
           <h3>Just The Way You Are</h3>
-          <audio controls src="musicas/just_the_way_you_are.mp3"></audio>
+          <audio controls src="musicas/just_the_way_you_are.mp3" preload="metadata"></audio>
         </div>
       </div>
     </section>
 
-    <section id="sonhos" class="section sonhos">
-      <h2>Nossos Sonhos</h2>
+    <section id="sonhos" class="section sonhos" aria-labelledby="sonhos-title">
+      <h2 id="sonhos-title">Nossos Sonhos</h2>
       <ul>
         <li>Adotar um gato</li>
         <li>Viajar sem destino</li>
@@ -104,9 +143,11 @@
     </section>
   </main>
 
-  <footer id="footer">
-    <p>Feito por Kyrell com todo o amor do mundo 💌</p>
+  <footer id="footer" aria-label="Rodapé">
+    <p>Feito por Heron com todo o amor do mundo 💌</p>
   </footer>
+
+  <button class="back-to-top" aria-label="Voltar ao topo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
 
   <script src="script.js"></script>
 </body>

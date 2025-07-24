@@ -1,10 +1,9 @@
-/* Variáveis de cor e tipografia */
 :root {
-  --rosa-claro: #F8CFE8;
+  --rosa-suave: #F8CFE8;
   --rosa-escuro: #CC3366;
-  --fundo: #fff0f5;
+  --fundo: #FFF0F5;
+  --branco: #FFF;
   --texto: #333;
-  --branco: #fff;
   --sombra: rgba(204, 51, 102, 0.2);
   --font-titulo: 'Segoe Script', cursive, sans-serif;
   --font-corpo: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -22,7 +21,7 @@ body {
   color: var(--texto);
   scroll-behavior: smooth;
   line-height: 1.6;
-  padding: 20px;
+  font-size: 1rem;
 }
 
 /* Menu de Navegação */
@@ -31,7 +30,7 @@ body {
   top: 0;
   width: 100%;
   background: var(--branco);
-  box-shadow: 0 2px 6px var(--sombra);
+  box-shadow: 0 0.2rem 0.6rem var(--sombra);
   z-index: 1000;
 }
 
@@ -51,78 +50,94 @@ body {
   transition: color 0.3s ease;
 }
 
-.menu a:hover {
+.menu a:hover,
+.menu a[aria-current="page"] {
   color: var(--rosa-escuro);
 }
 
 /* Hero Section */
 .hero {
-  height: 90vh;
-  background: var(--rosa-claro);
+  min-height: 80vh;
+  background: linear-gradient(to bottom, var(--rosa-suave), var(--fundo));
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 1rem;
+  padding: 2rem;
   margin-top: 3.5rem;
-  border-radius: 15px;
+  border-radius: 1rem;
+  animation: fadeIn 1s ease-in;
 }
 
 .hero h1 {
   font-family: var(--font-titulo);
-  font-size: 2.8rem;
+  font-size: clamp(2rem, 5vw, 3rem);
   color: var(--rosa-escuro);
   margin-bottom: 0.5rem;
 }
 
 .hero p {
+  font-family: var(--font-corpo);
   font-style: italic;
+  font-size: clamp(1rem, 3vw, 1.2rem);
   color: var(--texto);
-  font-size: 1.2rem;
 }
 
 .hero button {
   margin-top: 1.5rem;
-  padding: 0.8rem 2.5rem;
+  padding: 0.8rem 2rem;
   background: var(--rosa-escuro);
   color: var(--branco);
   border: none;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   cursor: pointer;
+  font-size: 1rem;
   font-weight: 600;
-  font-size: 1.1rem;
-  box-shadow: 0 4px 6px var(--sombra);
-  transition: background 0.3s ease;
+  box-shadow: 0 0.3rem 0.6rem var(--sombra);
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-.hero button:hover {
+.hero button:hover,
+.hero button:focus {
   background: #b02a58;
+  transform: translateY(-0.2rem);
+  box-shadow: 0 0.4rem 0.8rem var(--sombra);
 }
 
 /* Seções Gerais */
 .section {
-  max-width: 900px;
+  max-width: 56rem;
   margin: 4rem auto;
-  padding: 1.5rem;
+  padding: 2rem;
   background: var(--branco);
-  border-radius: 15px;
-  box-shadow: 0 4px 8px var(--sombra);
+  border-radius: 1rem;
+  box-shadow: 0 0.3rem 0.6rem var(--sombra);
+  animation: fadeInUp 0.8s ease forwards;
 }
 
 h2 {
   font-family: var(--font-titulo);
   color: var(--rosa-escuro);
-  margin-bottom: 1.5rem;
+  font-size: clamp(1.8rem, 4vw, 2.2rem);
   text-align: center;
-  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Aniversário */
+.aniversario p {
+  font-size: 1.1rem;
+  text-align: center;
+  color: var(--texto);
+  margin-bottom: 1rem;
+  animation: heartPulse 2s ease-in-out infinite;
 }
 
 /* Timeline */
 .timeline-container {
   position: relative;
   padding: 2rem 0;
-  max-width: 700px;
+  max-width: 44rem;
   margin: 0 auto;
 }
 
@@ -131,27 +146,32 @@ h2 {
   position: absolute;
   top: 0;
   left: 50%;
-  width: 4px;
+  width: 0.3rem;
   height: 100%;
   background: var(--rosa-escuro);
   transform: translateX(-50%);
-  border-radius: 2px;
+  border-radius: 0.2rem;
 }
 
 .event {
   position: relative;
   width: 45%;
-  background: var(--rosa-claro);
-  border-radius: 8px;
+  background: var(--rosa-suave);
+  border-radius: 0.5rem;
   padding: 1rem 1.5rem;
-  box-shadow: 0 4px 8px var(--sombra);
+  box-shadow: 0 0.3rem 0.6rem var(--sombra);
   margin-bottom: 2rem;
 }
 
 .event .date {
   font-weight: 700;
   color: var(--rosa-escuro);
+  font-size: 1rem;
   margin-bottom: 0.7rem;
+}
+
+.event p {
+  font-size: 1rem;
 }
 
 .event.left {
@@ -164,60 +184,94 @@ h2 {
 
 /* Poema */
 .poema p {
+  font-family: var(--font-corpo);
   font-style: italic;
   color: var(--rosa-escuro);
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   margin-bottom: 1rem;
 }
 
 /* Músicas */
+.musicas .play-all {
+  display: block;
+  margin: 0 auto 1.5rem;
+  padding: 0.6rem 1.5rem;
+  background: var(--rosa-escuro);
+  color: var(--branco);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.musicas .play-all:hover,
+.musicas .play-all:focus {
+  background: #b02a58;
+  transform: translateY(-0.2rem);
+}
+
 .player-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-  max-width: 900px;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1.5rem;
+  max-width: 56rem;
   margin: auto;
 }
 
 .musica {
-  background: var(--rosa-claro);
-  border-radius: 10px;
+  position: relative;
+  background: var(--rosa-suave);
+  border-radius: 0.6rem;
   padding: 1rem;
-  box-shadow: 0 4px 8px var(--sombra);
-  transition: transform 0.3s ease;
+  box-shadow: 0 0.3rem 0.6rem var(--sombra);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .musica:hover {
-  transform: translateY(-5px);
+  transform: translateY(-0.3rem);
+  box-shadow: 0 0.4rem 0.8rem var(--sombra);
 }
 
 .musica h3 {
-  font-weight: 700;
+  font-family: var(--font-titulo);
   color: var(--rosa-escuro);
+  font-size: 1rem;
   margin-bottom: 0.5rem;
-  font-size: 1.1rem;
+}
+
+.musica.playing::after {
+  content: "💖";
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 1.2rem;
+  animation: heartPulse 1s ease-in-out infinite;
 }
 
 audio {
   width: 100%;
   outline: none;
+  border-radius: 0.3rem;
 }
 
 /* Sonhos */
 #sonhos ul {
   list-style: none;
-  max-width: 600px;
+  max-width: 38rem;
   margin: auto;
   padding: 0;
 }
 
 #sonhos ul li {
-  background: var(--rosa-claro);
+  background: var(--rosa-suave);
   padding: 0.8rem 1.2rem;
   margin-bottom: 0.8rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px var(--sombra);
+  border-radius: 0.5rem;
+  box-shadow: 0 0.3rem 0.6rem var(--sombra);
+  font-size: 1rem;
   font-weight: 600;
   color: var(--rosa-escuro);
   display: flex;
@@ -227,7 +281,7 @@ audio {
 
 #sonhos ul li::before {
   content: "🌟";
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 
 /* Footer */
@@ -236,30 +290,72 @@ footer {
   color: var(--branco);
   text-align: center;
   padding: 2rem 1rem;
+  font-size: 1rem;
   font-weight: 600;
-  font-size: 1.1rem;
   margin-top: 4rem;
-  border-radius: 15px;
+  border-radius: 1rem;
+}
+
+/* Back to Top Button */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--rosa-escuro);
+  color: var(--branco);
+  border: none;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 0.3rem 0.6rem var(--sombra);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.back-to-top:hover,
+.back-to-top:focus {
+  transform: scale(1.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(1.2rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heartPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
 }
 
 /* Responsividade */
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
   .event,
   .event.right {
-    width: 90% !important;
+    width: 90%;
     left: 0 !important;
   }
 
   .timeline-container::before {
-    left: 20px;
+    left: 1.2rem;
   }
 
   .hero {
-    height: 80vh;
-  }
-
-  .hero h1 {
-    font-size: 2rem;
+    min-height: 60vh;
+    padding: 1.5rem;
   }
 
   .menu ul {
@@ -272,13 +368,13 @@ footer {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
   .hero h1 {
     font-size: 1.8rem;
   }
 
   .hero p {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .section {
@@ -287,6 +383,12 @@ footer {
   }
 
   h2 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
+  }
+
+  .back-to-top {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
   }
 }
