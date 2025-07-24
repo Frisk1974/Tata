@@ -6,13 +6,11 @@
   <meta name="description" content="Um presente de aniversário especial para Tata, feito com amor por Heron, celebrando nossa história e sonhos juntos." />
   <meta name="keywords" content="aniversário, amor, Tata, Heron, história romântica" />
   <meta name="author" content="Heron" />
-  <!-- Open Graph for Social Sharing -->
   <meta property="og:title" content="Para a Tata 💖 - Presente de Aniversário" />
   <meta property="og:description" content="Um site romântico feito por Heron para celebrar o aniversário da Tata." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://your-site.com/images/birthday-heart.jpg" />
   <meta property="og:url" content="https://your-site.com" />
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Para a Tata 💖 - Presente de Aniversário" />
   <meta name="twitter:description" content="Um site romântico feito por Heron para celebrar o aniversário da Tata." />
@@ -23,6 +21,7 @@
   <link rel="preload" href="musicas/sunshine.mp3" as="audio" />
 </head>
 <body>
+  <canvas id="fogosCanvas"></canvas>
   <nav class="menu" aria-label="Navegação principal">
     <ul>
       <li><a href="#hero" aria-current="page">Início</a></li>
@@ -32,7 +31,7 @@
       <li><a href="#poema">Poema</a></li>
       <li><a href="#musicas">Músicas</a></li>
       <li><a href="#sonhos">Sonhos</a></li>
-      <li><a href="#parque">Parque</a></li>
+      <li><a href="#recado">Recado</a></li>
     </ul>
   </nav>
 
@@ -47,7 +46,6 @@
       <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
       <h2 id="aniversario-title">Feliz Aniversário, Pequena!</h2>
       <p>Hoje é o dia de celebrar você, a pessoa que trouxe luz e amor para minha vida. Cada momento com você é um presente, e este site é minha forma de dizer o quanto você é especial. Que seu dia seja tão lindo quanto seu sorriso! 🥰</p>
-      <button class="download-card" aria-label="Baixar cartão de aniversário">Baixar Cartão de Aniversário</button>
     </section>
 
     <section id="history" class="section history" aria-labelledby="history-title">
@@ -144,31 +142,11 @@ em alguém só?</p>
       </ul>
     </section>
 
-    <section id="parque" class="section parque" aria-labelledby="parque-title">
-      <h2 id="parque-title">Nosso Parque de Diversões</h2>
-      <p>Nosso amor começou no Hopi Hari, entre a chuva e a roda-gigante. Aqui está um pedacinho daquele momento mágico, com a roda-gigante que parou meu mundo e uma montanha-russa para nossas aventuras juntos!</p>
-      <button class="toggle-animations" aria-label="Pausar animações" data-state="playing">Pausar Animações</button>
-      <div class="parque-container">
-        <div class="ferris-wheel" role="img" aria-label="Animação de uma roda-gigante com cabines amarelas">
-          <div class="wheel">
-            <div class="spokes"></div>
-            <div class="cabin"></div>
-            <div class="cabin"></div>
-            <div class="cabin"></div>
-            <div class="cabin"></div>
-            <div class="cabin"></div>
-            <div class="cabin"></div>
-            <div class="cabin"></div>
-            <div class="cabin"></div>
-          </div>
-          <div class="stand"></div>
-        </div>
-        <div class="roller-coaster" role="img" aria-label="Animação de uma montanha-russa com trilho rosa e carrinho em forma de coração">
-          <svg class="track" viewBox="0 0 400 100" preserveAspectRatio="xMidYMid meet">
-            <path d="M0,80 Q50,20 100,80 T200,80 T300,20 T400,80" fill="none" stroke="#CC3366" stroke-width="6"/>
-          </svg>
-          <div class="cart">💖</div>
-        </div>
+    <section id="recado" class="section recado" aria-labelledby="recado-title" role="region">
+      <div class="recado-container">
+        <h2 id="recado-title">🌙 Área de Recados pra Ela</h2>
+        <p id="mensagem-recado">O que eu diria pra você agora:</p>
+        <p class="recado-dinamico" id="mensagemAleatoria" aria-live="polite"></p>
       </div>
     </section>
   </main>
