@@ -24,6 +24,18 @@ body {
   font-size: 1rem;
 }
 
+/* Fireworks Canvas */
+#fogosCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  background: transparent;
+}
+
 /* Menu de Navegação */
 .menu {
   position: fixed;
@@ -32,13 +44,14 @@ body {
   background: var(--branco);
   box-shadow: 0 0.2rem 0.6rem var(--sombra);
   z-index: 1000;
+  padding: 0.5rem 0;
 }
 
 .menu ul {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 1.5rem;
-  padding: 1rem 0;
+  gap: 1rem;
   list-style: none;
 }
 
@@ -46,7 +59,7 @@ body {
   color: var(--texto);
   text-decoration: none;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
   transition: color 0.3s ease;
 }
 
@@ -57,22 +70,22 @@ body {
 
 /* Hero Section */
 .hero {
-  min-height: 80vh;
+  min-height: 70vh;
   background: linear-gradient(to bottom, var(--rosa-suave), var(--fundo));
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 2rem;
-  margin-top: 3.5rem;
-  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-top: 3rem;
+  border-radius: 0.75rem;
   animation: fadeIn 1s ease-in;
 }
 
 .hero h1 {
   font-family: var(--font-titulo);
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
   color: var(--rosa-escuro);
   margin-bottom: 0.5rem;
 }
@@ -80,65 +93,152 @@ body {
 .hero p {
   font-family: var(--font-corpo);
   font-style: italic;
-  font-size: clamp(1rem, 3vw, 1.2rem);
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
   color: var(--texto);
 }
 
 .hero button {
-  margin-top: 1.5rem;
-  padding: 0.8rem 2rem;
+  margin-top: 1rem;
+  padding: 0.6rem 1.5rem;
   background: var(--rosa-escuro);
   color: var(--branco);
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
   font-weight: 600;
-  box-shadow: 0 0.3rem 0.6rem var(--sombra);
+  box-shadow: 0 0.2rem 0.4rem var(--sombra);
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  touch-action: manipulation;
 }
 
 .hero button:hover,
 .hero button:focus {
   background: #b02a58;
   transform: translateY(-0.2rem);
-  box-shadow: 0 0.4rem 0.8rem var(--sombra);
+  box-shadow: 0 0.3rem 0.6rem var(--sombra);
 }
 
 /* Seções Gerais */
 .section {
-  max-width: 56rem;
-  margin: 4rem auto;
-  padding: 2rem;
+  max-width: 90%;
+  margin: 3rem auto;
+  padding: 1.5rem;
   background: var(--branco);
-  border-radius: 1rem;
-  box-shadow: 0 0.3rem 0.6rem var(--sombra);
+  border-radius: 0.75rem;
+  box-shadow: 0 0.2rem 0.5rem var(--sombra);
   animation: fadeInUp 0.8s ease forwards;
+  position: relative;
 }
 
 h2 {
   font-family: var(--font-titulo);
   color: var(--rosa-escuro);
-  font-size: clamp(1.8rem, 4vw, 2.2rem);
+  font-size: clamp(1.5rem, 4vw, 1.8rem);
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 /* Aniversário */
 .aniversario p {
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
   text-align: center;
   color: var(--texto);
   margin-bottom: 1rem;
   animation: heartPulse 2s ease-in-out infinite;
 }
 
+.aniversario .download-card {
+  display: block;
+  margin: 1rem auto;
+  padding: 0.6rem 1.5rem;
+  background: var(--rosa-escuro);
+  color: var(--branco);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  font-weight: 600;
+  transition: background 0.3s ease, transform 0.2s ease;
+  touch-action: manipulation;
+}
+
+.aniversario .download-card:hover,
+.aniversario .download-card:focus {
+  background: #b02a58;
+  transform: translateY(-0.2rem);
+}
+
+.confetti-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
 /* História */
 .history-content p {
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  line-height: 1.8;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  margin-bottom: 0.8rem;
+  line-height: 1.7;
   color: var(--texto);
+}
+
+/* Galeria */
+.gallery-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 1rem;
+  max-width: 100%;
+  margin: auto;
+}
+
+.gallery-img {
+  width: 100%;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 0.2rem 0.4rem var(--sombra);
+  transition: transform 0.3s ease;
+}
+
+.gallery-img:hover {
+  transform: scale(1.05);
+}
+
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.lightbox.active {
+  display: flex;
+}
+
+.lightbox-img {
+  max-width: 90%;
+  max-height: 80vh;
+  border-radius: 0.5rem;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: var(--branco);
+  cursor: pointer;
 }
 
 /* Poema */
@@ -147,23 +247,24 @@ h2 {
   font-style: italic;
   color: var(--rosa-escuro);
   text-align: center;
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  margin-bottom: 0.8rem;
 }
 
 /* Músicas */
 .musicas .play-all {
   display: block;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 1rem;
   padding: 0.6rem 1.5rem;
   background: var(--rosa-escuro);
   color: var(--branco);
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
   font-weight: 600;
   transition: background 0.3s ease, transform 0.2s ease;
+  touch-action: manipulation;
 }
 
 .musicas .play-all:hover,
@@ -174,30 +275,30 @@ h2 {
 
 .player-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-  gap: 1.5rem;
-  max-width: 56rem;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem;
+  max-width: 100%;
   margin: auto;
 }
 
 .musica {
   position: relative;
   background: var(--rosa-suave);
-  border-radius: 0.6rem;
-  padding: 1rem;
-  box-shadow: 0 0.3rem 0.6rem var(--sombra);
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  box-shadow: 0 0.2rem 0.4rem var(--sombra);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .musica:hover {
-  transform: translateY(-0.3rem);
-  box-shadow: 0 0.4rem 0.8rem var(--sombra);
+  transform: translateY(-0.2rem);
+  box-shadow: 0 0.3rem 0.6rem var(--sombra);
 }
 
 .musica h3 {
   font-family: var(--font-titulo);
   color: var(--rosa-escuro);
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
   margin-bottom: 0.5rem;
 }
 
@@ -206,7 +307,7 @@ h2 {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  font-size: 1.2rem;
+  font-size: 1rem;
   animation: heartPulse 1s ease-in-out infinite;
 }
 
@@ -219,28 +320,67 @@ audio {
 /* Sonhos */
 #sonhos ul {
   list-style: none;
-  max-width: 38rem;
+  max-width: 32rem;
   margin: auto;
   padding: 0;
 }
 
 #sonhos ul li {
   background: var(--rosa-suave);
-  padding: 0.8rem 1.2rem;
-  margin-bottom: 0.8rem;
+  padding: 0.6rem 1rem;
+  margin-bottom: 0.6rem;
   border-radius: 0.5rem;
-  box-shadow: 0 0.3rem 0.6rem var(--sombra);
-  font-size: 1rem;
+  box-shadow: 0 0.2rem 0.4rem var(--sombra);
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
   font-weight: 600;
   color: var(--rosa-escuro);
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.6rem;
 }
 
 #sonhos ul li::before {
   content: "🌟";
-  font-size: 1.2rem;
+  font-size: 1rem;
+}
+
+/* Recado */
+.recado {
+  position: relative;
+  z-index: 2;
+}
+
+.recado-container {
+  position: relative;
+  z-index: 2;
+  background: rgba(248, 207, 232, 0.2);
+  padding: clamp(0.8rem, 2vw, 1.2rem);
+  border-radius: 0.75rem;
+  margin: 2rem auto;
+  text-align: center;
+  max-width: clamp(20rem, 80vw, 30rem);
+  color: var(--rosa-escuro);
+  font-family: var(--font-corpo);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0.2rem 0.4rem var(--sombra);
+}
+
+.recado-container h2 {
+  font-family: var(--font-titulo);
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  margin-bottom: 0.5rem;
+}
+
+#mensagem-recado {
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  margin-bottom: 0.5rem;
+}
+
+.recado-dinamico {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-style: italic;
+  animation: fadeIn 1s ease-in-out;
+  will-change: opacity, transform;
 }
 
 /* Footer */
@@ -248,30 +388,31 @@ footer {
   background: var(--rosa-escuro);
   color: var(--branco);
   text-align: center;
-  padding: 2rem 1rem;
-  font-size: 1rem;
+  padding: 1.5rem 1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
   font-weight: 600;
-  margin-top: 4rem;
-  border-radius: 1rem;
+  margin-top: 3rem;
+  border-radius: 0.75rem;
 }
 
 /* Back to Top Button */
 .back-to-top {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  bottom: 1.5rem;
+  right: 1.5rem;
   background: var(--rosa-escuro);
   color: var(--branco);
   border: none;
   border-radius: 50%;
-  width: 3rem;
-  height: 3rem;
-  font-size: 1.2rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
   cursor: pointer;
-  box-shadow: 0 0.3rem 0.6rem var(--sombra);
+  box-shadow: 0 0.2rem 0.4rem var(--sombra);
   transition: opacity 0.3s ease, transform 0.3s ease;
   opacity: 0;
   pointer-events: none;
+  touch-action: manipulation;
 }
 
 .back-to-top.visible {
@@ -286,12 +427,7 @@ footer {
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(1.2rem); }
+  from { opacity: 0; transform: translateY(0.5rem); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -300,30 +436,24 @@ footer {
   50% { transform: scale(1.2); }
 }
 
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .aniversario p, .musica.playing::after, .recado-dinamico, #fogosCanvas {
+    animation: none;
+  }
+}
+
 /* Responsividade */
 @media (max-width: 48rem) {
   .hero {
     min-height: 60vh;
-    padding: 1.5rem;
+    padding: 1rem;
+    margin-top: 2.5rem;
   }
 
   .menu ul {
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  .player-container {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 30rem) {
-  .hero h1 {
-    font-size: 1.8rem;
-  }
-
-  .hero p {
-    font-size: 0.9rem;
+    gap: 0.8rem;
+    padding: 0.5rem;
   }
 
   .section {
@@ -331,13 +461,45 @@ footer {
     padding: 1rem;
   }
 
+  .player-container {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-container {
+    grid-template-columns: 1fr;
+  }
+
+  .recado-container {
+    max-width: 90%;
+    padding: 0.8rem;
+  }
+}
+
+@media (max-width: 30rem) {
+  .hero h1 {
+    font-size: clamp(1.5rem, 4vw, 1.8rem);
+  }
+
+  .hero p {
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+  }
+
+  .section {
+    margin: 1.5rem auto;
+    padding: 0.8rem;
+  }
+
   h2 {
-    font-size: 1.6rem;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
   }
 
   .back-to-top {
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: 1rem;
+    width: 2rem;
+    height: 2rem;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+  }
+
+  .recado-dinamico {
+    font-size: clamp(0.9rem, 2vw, 1rem);
   }
 }
