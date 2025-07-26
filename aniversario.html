@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Mensagem de aniversário para Tata, feita com amor por Heron." />
+  <meta name="keywords" content="aniversário, amor, Tata, Heron" />
+  <meta name="author" content="Heron" />
+  <meta property="og:title" content="Feliz Aniversário, Tata! 💖" />
+  <meta property="og:description" content="Uma mensagem especial de aniversário para Tata." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://your-site.com/images/birthday-heart.jpg" />
+  <meta property="og:url" content="https://your-site.com/aniversario.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Feliz Aniversário, Tata! 💖" />
+  <meta name="twitter:description" content="Uma mensagem especial de aniversário para Tata." />
+  <meta name="twitter:image" content="https://your-site.com/images/birthday-heart.jpg" />
+  <title>Feliz Aniversário, Tata! 💖</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="preload" href="musicas/sunshine.mp3" as="audio" />
+</head>
+<body>
+  <canvas id="fogosCanvas"></canvas>
+  <nav class="menu" aria-label="Navegação principal">
+    <ul>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="aniversario.html" aria-current="page">Aniversário</a></li>
+      <li><a href="history.html">História</a></li>
+      <li><a href="galeria.html">Galeria</a></li>
+      <li><a href="poema.html">Poema</a></li>
+      <li><a href="musicas.html">Músicas</a></li>
+      <li><a href="sonhos.html">Sonhos</a></li>
+      <li><a href="contador.html">Contador</a></li>
+      <li><a href="motivos.html">Motivos</a></li>
+      <li><a href="recado.html">Recado</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="aniversario" class="section aniversario" aria-labelledby="aniversario-title">
+      <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
+      <h2 id="aniversario-title">Feliz Aniversário, Pequena!</h2>
+      <p>Hoje é o dia de celebrar você, a pessoa que trouxe luz e amor para minha vida. Cada momento com você é um presente, e este site é minha forma de dizer o quanto você é especial. Que seu dia seja tão lindo quanto seu sorriso! 🥰</p>
+    </section>
+  </main>
+
+  <footer id="footer" aria-label="Rodapé">
+    <p>Feito por Heron com todo o amor do mundo 💌</p>
+  </footer>
+
+  <button class="back-to-top" aria-label="Voltar ao topo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

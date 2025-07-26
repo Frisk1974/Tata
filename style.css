@@ -70,7 +70,7 @@ body {
 
 /* Hero Section */
 .hero {
-  min-height: 70vh;
+  min-height: 100vh;
   background: linear-gradient(to bottom, var(--rosa-suave), var(--fundo));
   display: flex;
   flex-direction: column;
@@ -78,7 +78,6 @@ body {
   align-items: center;
   text-align: center;
   padding: 1.5rem;
-  margin-top: 3rem;
   border-radius: 0.75rem;
   animation: fadeIn 1s ease-in;
 }
@@ -323,6 +322,62 @@ audio {
   font-size: 1rem;
 }
 
+/* Contador */
+.contador {
+  position: relative;
+  z-index: 2;
+  background: rgba(248, 207, 232, 0.2);
+  padding: clamp(0.8rem, 2vw, 1.2rem);
+  border-radius: 0.75rem;
+  margin: 2rem auto;
+  text-align: center;
+  max-width: clamp(20rem, 80vw, 30rem);
+  color: var(--rosa-escuro);
+  font-family: var(--font-corpo);
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 0.6rem rgba(204, 51, 102, 0.3);
+}
+
+/* Motivos */
+.motivos {
+  position: relative;
+  z-index: 2;
+}
+
+.motivos div#motivo {
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  max-width: clamp(20rem, 80vw, 30rem);
+  color: var(--rosa-escuro);
+  font-family: var(--font-corpo);
+  margin: 1rem auto;
+  animation: fadeIn 1s ease-in-out;
+  will-change: opacity, transform;
+}
+
+.motivos button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.5rem;
+  background: var(--rosa-escuro);
+  color: var(--branco);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  font-weight: 600;
+  box-shadow: 0 0.2rem 0.4rem var(--sombra);
+  transition: background 0.3s ease, transform 0.2s ease;
+  touch-action: manipulation;
+}
+
+.motivos button:hover,
+.motivos button:focus {
+  background: #b02a58;
+  transform: translateY(-0.2rem);
+}
+
 /* Recado */
 .recado {
   position: relative;
@@ -417,7 +472,7 @@ footer {
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  .aniversario p, .musica.playing::after, .recado-dinamico, #fogosCanvas {
+  .aniversario p, .musica.playing::after, .recado-dinamico, #fogosCanvas, .motivos div#motivo {
     animation: none;
   }
 }
@@ -425,9 +480,8 @@ footer {
 /* Responsividade */
 @media (max-width: 48rem) {
   .hero {
-    min-height: 60vh;
+    min-height: 80vh;
     padding: 1rem;
-    margin-top: 2.5rem;
   }
 
   .menu ul {
@@ -448,7 +502,7 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .recado-container {
+  .recado-container, .contador, .motivos div#motivo {
     max-width: 90%;
     padding: 0.8rem;
   }
@@ -478,7 +532,7 @@ footer {
     font-size: clamp(0.8rem, 2vw, 0.9rem);
   }
 
-  .recado-dinamico {
+  .recado-dinamico, .contador, .motivos div#motivo {
     font-size: clamp(0.9rem, 2vw, 1rem);
   }
 }
