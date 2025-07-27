@@ -40,7 +40,7 @@ body.no-scroll {
   background: transparent;
 }
 
-/* Menu Toggle Button */
+/* Menu Toggle Button (used on pages other than index.html) */
 .menu-toggle {
   position: fixed;
   top: 1rem;
@@ -85,8 +85,13 @@ body.no-scroll {
   box-shadow: -0.2rem 0 0.6rem var(--sombra);
   z-index: 1500;
   padding: 1rem;
-  transform: translateX(100%);
   transition: transform 0.3s ease;
+}
+
+/* Ensure menu is always visible on index.html */
+body.index .menu {
+  transform: translateX(0);
+  display: block;
 }
 
 .menu.open {
@@ -143,6 +148,7 @@ body.no-scroll {
   border-radius: 0.5rem;
   transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
   min-height: 48px;
+  touch-action: manipulation;
 }
 
 .menu a:hover,
@@ -233,8 +239,8 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem; /* Add space between text and emoji */
-  flex-wrap: wrap; /* Allow wrapping to prevent overflow */
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 /* Aniversário */
@@ -423,6 +429,7 @@ audio {
   gap: 0.6rem;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
+  position: relative;
 }
 
 #sonhos ul li:hover {
@@ -446,6 +453,8 @@ audio {
   border-radius: 0.5rem;
   box-shadow: 0 0.2rem 0.4rem var(--sombra);
   animation: fadeIn 0.5s ease-in-out;
+  position: relative;
+  z-index: 10;
 }
 
 .dream-description.active {
@@ -540,6 +549,11 @@ audio {
   font-family: var(--font-titulo);
   font-size: clamp(1.2rem, 4vw, 1.5rem);
   margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 #mensagem-recado {
@@ -636,6 +650,29 @@ footer {
     display: none;
   }
 
+  /* Ensure menu is always visible on index.html for mobile */
+  body.index .menu {
+    display: block;
+    transform: translateX(0);
+    position: static;
+    max-width: 100%;
+    height: auto;
+    background: var(--branco);
+    backdrop-filter: none;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  body.index .menu ul {
+    flex-direction: column;
+    margin-top: 0;
+    padding: 0.5rem;
+  }
+
+  body.index .menu-close {
+    display: none;
+  }
+
   .hero {
     min-height: 80vh;
     padding: clamp(0.8rem, 4vw, 1rem);
@@ -664,7 +701,14 @@ footer {
   }
 
   .recado-container h2 {
-    font-size: clamp(1rem, 3.5vw, 1.3rem); /* Smaller font on mobile */
+    font-size: clamp(1rem, 3.5vw, 1.3rem);
+  }
+
+  .dream-description {
+    font-size: clamp(0.7rem, 2vw, 0.8rem);
+    max-width: 100%;
+    margin: 0.5rem 0;
+    padding: 0.6rem;
   }
 }
 
@@ -739,6 +783,15 @@ footer {
   }
 
   .recado-container h2 {
-    font-size: clamp(0.9rem, 3vw, 1.1rem); /* Even smaller for very small screens */
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
+  }
+
+  .dream-description {
+    font-size: clamp(0.6rem, 1.8vw, 0.7rem);
+    padding: 0.5rem;
+  }
+
+  body.index .menu ul {
+    padding: 0.3rem;
   }
 }
