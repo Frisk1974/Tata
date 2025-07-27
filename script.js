@@ -1,72 +1,69 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Menu Toggle Functionality (skip for index.html)
-  const isIndexPage = document.body.classList.contains('index');
-  if (!isIndexPage) {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const menu = document.querySelector('.menu');
-    const menuClose = document.querySelector('.menu-close');
+  // Menu Toggle Functionality
+  const menuToggle = document.querySelector('.menu-toggle');
+  const menu = document.querySelector('.menu');
+  const menuClose = document.querySelector('.menu-close');
 
-    if (menuToggle && menu && menuClose) {
-      // Handle both click and touchstart for better mobile support
-      menuToggle.addEventListener('click', toggleMenu);
-      menuToggle.addEventListener('touchstart', toggleMenu, { passive: true });
+  if (menuToggle && menu && menuClose) {
+    // Handle both click and touchstart for better mobile support
+    menuToggle.addEventListener('click', toggleMenu);
+    menuToggle.addEventListener('touchstart', toggleMenu, { passive: true });
 
-      menuClose.addEventListener('click', closeMenu);
-      menuClose.addEventListener('touchstart', closeMenu, { passive: true });
+    menuClose.addEventListener('click', closeMenu);
+    menuClose.addEventListener('touchstart', closeMenu, { passive: true });
 
-      // Ensure menu links navigate correctly
-      const menuLinks = document.querySelectorAll('.menu a');
-      menuLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-          // Close menu on mobile after clicking a link
-          if (window.innerWidth <= 768) {
-            menu.classList.remove('open');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            document.body.classList.remove('no-scroll');
-          }
-        });
-      });
-
-      // Close menu on clicking outside
-      document.addEventListener('click', (e) => {
-        if (!menu.contains(e.target) && !menuToggle.contains(e.target) && menu.classList.contains('open')) {
-          closeMenu();
+    // Ensure menu links navigate correctly
+    const menuLinks = document.querySelectorAll('.menu a');
+    menuLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        // Close menu on mobile after clicking a link
+        if (window.innerWidth <= 768) {
+          menu.classList.remove('open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          document.body.classList.remove('no-scroll');
         }
       });
+    });
 
-      // Close menu on touch outside (mobile)
-      document.addEventListener('touchstart', (e) => {
-        if (!menu.contains(e.target) && !menuToggle.contains(e.target) && menu.classList.contains('open')) {
-          closeMenu();
-        }
-      }, { passive: true });
-
-      // Keyboard navigation
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && menu.classList.contains('open')) {
-          closeMenu();
-        }
-      });
-
-      function toggleMenu(e) {
-        e.preventDefault();
-        const isOpen = menu.classList.toggle('open');
-        menuToggle.setAttribute('aria-expanded', isOpen);
-        document.body.classList.toggle('no-scroll', isOpen);
-        if (isOpen) {
-          menu.querySelector('a').focus();
-        }
+    // Close menu on clicking outside
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && !menuToggle.contains(e.target) && menu.classList.contains('open')) {
+        closeMenu();
       }
+    });
 
-      function closeMenu() {
-        menu.classList.remove('open');
-        menuToggle.setAttribute('aria-expanded', 'false');
-        document.body.classList.remove('no-scroll');
-        menuToggle.focus();
+    // Close menu on touch outside (mobile)
+    document.addEventListener('touchstart', (e) => {
+      if (!menu.contains(e.target) && !menuToggle.contains(e.target) && menu.classList.contains('open')) {
+        closeMenu();
       }
-    } else {
-      console.warn('Menu toggle elements not found on this page');
+    }, { passive: true });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.classList.contains('open')) {
+        closeMenu();
+      }
+    });
+
+    function toggleMenu(e) {
+      e.preventDefault();
+      const isOpen = menu.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', isOpen);
+      document.body.classList.toggle('no-scroll', isOpen);
+      if (isOpen) {
+        menu.querySelector('a').focus();
+      }
     }
+
+    function closeMenu() {
+      menu.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('no-scroll');
+      menuToggle.focus();
+    }
+  } else {
+    console.warn('Menu toggle elements not found on this page');
   }
 
   // Fireworks Animation (runs on all pages)
@@ -272,15 +269,15 @@ document.addEventListener('DOMContentLoaded', () => {
       "Porque seu sorriso ilumina meu mundo.",
       "Porque você me faz querer ser uma pessoa melhor.",
       "Porque cada momento com você é inesquecível.",
-      "Porque sua felicidade é minha música favorita.",
+      "Porque sua risada é minha música favorita.",
       "Porque você é meu porto seguro.",
-      "Porque sonhar com você é melhor do que qualquer realidade.",
+      "Porque sonhar com você é melhor que qualquer realidade.",
       "Porque seu carinho me faz sentir completo.",
       "Porque você é a razão do meu coração bater mais forte.",
       "Porque cada detalhe seu é perfeito pra mim.",
       "Porque te amo mais a cada dia."
     ];
-    const motivoElemento = document.querySelector('#motivo');
+    const motivoElement = document.getElementById('motivo');
     window.mostrarOutroMotivo = function() {
       const randomIndex = Math.floor(Math.random() * motivos.length);
       motivoElement.textContent = motivos[randomIndex];

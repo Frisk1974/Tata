@@ -40,7 +40,7 @@ body.no-scroll {
   background: transparent;
 }
 
-/* Menu Toggle Button (used on pages other than index.html) */
+/* Menu Toggle Button */
 .menu-toggle {
   position: fixed;
   top: 1rem;
@@ -85,13 +85,8 @@ body.no-scroll {
   box-shadow: -0.2rem 0 0.6rem var(--sombra);
   z-index: 1500;
   padding: 1rem;
+  transform: translateX(100%);
   transition: transform 0.3s ease;
-}
-
-/* Ensure menu is always visible on index.html */
-body.index .menu {
-  transform: translateX(0);
-  display: block;
 }
 
 .menu.open {
@@ -650,29 +645,6 @@ footer {
     display: none;
   }
 
-  /* Ensure menu is always visible on index.html for mobile */
-  body.index .menu {
-    display: block;
-    transform: translateX(0);
-    position: static;
-    max-width: 100%;
-    height: auto;
-    background: var(--branco);
-    backdrop-filter: none;
-    box-shadow: none;
-    padding: 0;
-  }
-
-  body.index .menu ul {
-    flex-direction: column;
-    margin-top: 0;
-    padding: 0.5rem;
-  }
-
-  body.index .menu-close {
-    display: none;
-  }
-
   .hero {
     min-height: 80vh;
     padding: clamp(0.8rem, 4vw, 1rem);
@@ -705,10 +677,10 @@ footer {
   }
 
   .dream-description {
-    font-size: clamp(0.7rem, 2vw, 0.8rem);
-    max-width: 100%;
-    margin: 0.5rem 0;
-    padding: 0.6rem;
+    font-size: clamp(0.7rem, 2vw, 0.8rem); /* Smaller font for mobile */
+    max-width: 100%; /* Ensure it fits within parent */
+    margin: 0.5rem 0; /* Adjust margin for mobile */
+    padding: 0.6rem; /* Slightly less padding */
   }
 }
 
@@ -787,11 +759,7 @@ footer {
   }
 
   .dream-description {
-    font-size: clamp(0.6rem, 1.8vw, 0.7rem);
+    font-size: clamp(0.6rem, 1.8vw, 0.7rem); /* Even smaller for very small screens */
     padding: 0.5rem;
-  }
-
-  body.index .menu ul {
-    padding: 0.3rem;
   }
 }
