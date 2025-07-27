@@ -2,61 +2,50 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Um poema romântico para Tata, escrito por Heron." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Um poema para Tata, escrito por Heron." />
   <meta name="keywords" content="poema, amor, Tata, Heron" />
   <meta name="author" content="Heron" />
-  <meta property="og:title" content="Um Poema para Tata 💖" />
+  <meta property="og:title" content="Poema para Tata 💖" />
   <meta property="og:description" content="Um poema romântico escrito por Heron para Tata." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://your-site.com/images/birthday-heart.jpg" />
   <meta property="og:url" content="https://your-site.com/poema.html" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Um Poema para Tata 💖" />
+  <meta name="twitter:title" content="Poema para Tata 💖" />
   <meta name="twitter:description" content="Um poema romântico escrito por Heron para Tata." />
   <meta name="twitter:image" content="https://your-site.com/images/birthday-heart.jpg" />
-  <title>Um Poema para Tata 💖</title>
+  <title>Poema - Tata 💖</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="preload" href="musicas/sunshine.mp3" as="audio" />
 </head>
 <body>
   <canvas id="fogosCanvas"></canvas>
-  <nav class="menu" aria-label="Navegação principal">
+  <button class="menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="menu">☰</button>
+  <nav class="menu" id="menu" role="navigation" aria-label="Navegação principal">
+    <button class="menu-close" aria-label="Fechar menu">×</button>
     <ul>
-      <li><a href="index.html">Início</a></li>
-      <li><a href="aniversario.html">Aniversário</a></li>
-      <li><a href="history.html">História</a></li>
-      <li><a href="galeria.html">Galeria</a></li>
-      <li><a href="poema.html" aria-current="page">Poema</a></li>
-      <li><a href="musicas.html">Músicas</a></li>
-      <li><a href="sonhos.html">Sonhos</a></li>
-      <li><a href="contador.html">Contador</a></li>
-      <li><a href="motivos.html">Motivos</a></li>
-      <li><a href="recado.html">Recado</a></li>
+      <li><a href="index.html"><span class="menu-icon">🏠</span> Início</a></li>
+      <li><a href="aniversario.html"><span class="menu-icon">🎉</span> Aniversário</a></li>
+      <li><a href="history.html"><span class="menu-icon">📖</span> História</a></li>
+      <li><a href="galeria.html"><span class="menu-icon">📸</span> Galeria</a></li>
+      <li><a href="poema.html" aria-current="page"><span class="menu-icon">✍️</span> Poema</a></li>
+      <li><a href="musicas.html"><span class="menu-icon">🎵</span> Músicas</a></li>
+      <li><a href="sonhos.html"><span class="menu-icon">🌟</span> Sonhos</a></li>
+      <li><a href="contador.html"><span class="menu-icon">⏳</span> Contador</a></li>
+      <li><a href="motivos.html"><span class="menu-icon">💖</span> Motivos</a></li>
+      <li><a href="recado.html"><span class="menu-icon">💌</span> Recado</a></li>
     </ul>
   </nav>
 
   <main>
     <section id="poema" class="section poema" aria-labelledby="poema-title">
-      <h2 id="poema-title">Um Poema Pra Você</h2>
-      <p>Chovia.<br/>
-E o mundo parecia desacordado.<br/>
-Mas então você surgiu —<br/>
-entre a névoa da roda-gigante,<br/>
-numa cabine amarela,<br/>
-com olhos que não eram só verdes:<br/>
-eram tempestade e farol,<br/>
-no mesmo olhar.</p>
-      <p>A cidade girava, os fogos explodiam,<br/>
-mas tudo parou.<br/>
-Porque foi ali que minha história<br/>
-começou a sair do eixo —<br/>
-no instante em que você me viu,<br/>
-e nem sabia.</p>
-      <p>Eu te olhava e pensava:<br/>
-como é que cabe tanto universo<br/>
-em alguém só?</p>
+      <h2 id="poema-title">Um Poema para Você 💖</h2>
+      <p>Seu sorriso é a luz que guia meu caminho,</p>
+      <p>Seu olhar, o lar onde encontro meu ninho.</p>
+      <p>Tata, meu amor, minha razão de viver,</p>
+      <p>Com você, cada dia é um sonho a acontecer.</p>
     </section>
   </main>
 

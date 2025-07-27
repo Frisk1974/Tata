@@ -2,52 +2,54 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="description" content="Galeria de momentos especiais de Tata e Heron." />
-  <meta name="keywords" content="momentos, Tata, Heron, galeria" />
+  <meta name="keywords" content="galeria, amor, Tata, Heron, fotos" />
   <meta name="author" content="Heron" />
-  <meta property="og:title" content="Nossos Momentos - Tata & Heron 💖" />
-  <meta property="og:description" content="Galeria de momentos especiais de Tata e Heron." />
+  <meta property="og:title" content="Galeria de Momentos - Tata & Heron 💖" />
+  <meta property="og:description" content="Fotos dos momentos especiais de Tata e Heron." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://your-site.com/images/birthday-heart.jpg" />
   <meta property="og:url" content="https://your-site.com/galeria.html" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Nossos Momentos - Tata & Heron 💖" />
-  <meta name="twitter:description" content="Galeria de momentos especiais de Tata e Heron." />
+  <meta name="twitter:title" content="Galeria de Momentos - Tata & Heron 💖" />
+  <meta name="twitter:description" content="Fotos dos momentos especiais de Tata e Heron." />
   <meta name="twitter:image" content="https://your-site.com/images/birthday-heart.jpg" />
-  <title>Nossos Momentos - Tata & Heron 💖</title>
+  <title>Galeria - Tata & Heron 💖</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="preload" href="musicas/sunshine.mp3" as="audio" />
 </head>
 <body>
   <canvas id="fogosCanvas"></canvas>
-  <nav class="menu" aria-label="Navegação principal">
+  <button class="menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="menu">☰</button>
+  <nav class="menu" id="menu" role="navigation" aria-label="Navegação principal">
+    <button class="menu-close" aria-label="Fechar menu">×</button>
     <ul>
-      <li><a href="index.html">Início</a></li>
-      <li><a href="aniversario.html">Aniversário</a></li>
-      <li><a href="history.html">História</a></li>
-      <li><a href="galeria.html" aria-current="page">Galeria</a></li>
-      <li><a href="poema.html">Poema</a></li>
-      <li><a href="musicas.html">Músicas</a></li>
-      <li><a href="sonhos.html">Sonhos</a></li>
-      <li><a href="contador.html">Contador</a></li>
-      <li><a href="motivos.html">Motivos</a></li>
-      <li><a href="recado.html">Recado</a></li>
+      <li><a href="index.html"><span class="menu-icon">🏠</span> Início</a></li>
+      <li><a href="aniversario.html"><span class="menu-icon">🎉</span> Aniversário</a></li>
+      <li><a href="history.html"><span class="menu-icon">📖</span> História</a></li>
+      <li><a href="galeria.html" aria-current="page"><span class="menu-icon">📸</span> Galeria</a></li>
+      <li><a href="poema.html"><span class="menu-icon">✍️</span> Poema</a></li>
+      <li><a href="musicas.html"><span class="menu-icon">🎵</span> Músicas</a></li>
+      <li><a href="sonhos.html"><span class="menu-icon">🌟</span> Sonhos</a></li>
+      <li><a href="contador.html"><span class="menu-icon">⏳</span> Contador</a></li>
+      <li><a href="motivos.html"><span class="menu-icon">💖</span> Motivos</a></li>
+      <li><a href="recado.html"><span class="menu-icon">💌</span> Recado</a></li>
     </ul>
   </nav>
 
   <main>
     <section id="galeria" class="section galeria" aria-labelledby="galeria-title">
-      <h2 id="galeria-title">Nossos Momentos</h2>
+      <h2 id="galeria-title">Nossos Momentos 📸</h2>
       <div class="gallery-container">
-        <img src="images/moment1.jpg" alt="Nosso encontro no Hopi Hari" loading="lazy" class="gallery-img">
-        <img src="images/moment2.jpg" alt="Abraço no Wet’n Wild" loading="lazy" class="gallery-img">
-        <img src="images/moment3.jpg" alt="Bolo de limão do meu aniversário" loading="lazy" class="gallery-img">
+        <img src="images/moment1.jpg" alt="Momento especial 1" class="gallery-img" loading="lazy" />
+        <img src="images/moment2.jpg" alt="Momento especial 2" class="gallery-img" loading="lazy" />
+        <img src="images/moment3.jpg" alt="Momento especial 3" class="gallery-img" loading="lazy" />
       </div>
-      <div class="lightbox" id="lightbox">
-        <span class="lightbox-close" aria-label="Fechar lightbox">×</span>
-        <img class="lightbox-img" alt="Imagem ampliada">
+      <div id="lightbox" class="lightbox">
+        <span class="lightbox-close" aria-label="Fechar galeria">×</span>
+        <img class="lightbox-img" src="" alt="" />
       </div>
     </section>
   </main>

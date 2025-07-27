@@ -2,18 +2,18 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Nossa história de amor, escrita por Heron para Tata." />
-  <meta name="keywords" content="amor, Tata, Heron, história romântica" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Nossa história de amor, Tata e Heron." />
+  <meta name="keywords" content="história, amor, Tata, Heron" />
   <meta name="author" content="Heron" />
   <meta property="og:title" content="Nossa História - Tata & Heron 💖" />
-  <meta property="og:description" content="A história de amor entre Tata e Heron." />
+  <meta property="og:description" content="A história romântica de Tata e Heron." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://your-site.com/images/birthday-heart.jpg" />
   <meta property="og:url" content="https://your-site.com/history.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Nossa História - Tata & Heron 💖" />
-  <meta name="twitter:description" content="A história de amor entre Tata e Heron." />
+  <meta name="twitter:description" content="A história romântica de Tata e Heron." />
   <meta name="twitter:image" content="https://your-site.com/images/birthday-heart.jpg" />
   <title>Nossa História - Tata & Heron 💖</title>
   <link rel="stylesheet" href="style.css" />
@@ -22,33 +22,29 @@
 </head>
 <body>
   <canvas id="fogosCanvas"></canvas>
-  <nav class="menu" aria-label="Navegação principal">
+  <button class="menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="menu">☰</button>
+  <nav class="menu" id="menu" role="navigation" aria-label="Navegação principal">
+    <button class="menu-close" aria-label="Fechar menu">×</button>
     <ul>
-      <li><a href="index.html">Início</a></li>
-      <li><a href="aniversario.html">Aniversário</a></li>
-      <li><a href="history.html" aria-current="page">História</a></li>
-      <li><a href="galeria.html">Galeria</a></li>
-      <li><a href="poema.html">Poema</a></li>
-      <li><a href="musicas.html">Músicas</a></li>
-      <li><a href="sonhos.html">Sonhos</a></li>
-      <li><a href="contador.html">Contador</a></li>
-      <li><a href="motivos.html">Motivos</a></li>
-      <li><a href="recado.html">Recado</a></li>
+      <li><a href="index.html"><span class="menu-icon">🏠</span> Início</a></li>
+      <li><a href="aniversario.html"><span class="menu-icon">🎉</span> Aniversário</a></li>
+      <li><a href="history.html" aria-current="page"><span class="menu-icon">📖</span> História</a></li>
+      <li><a href="galeria.html"><span class="menu-icon">📸</span> Galeria</a></li>
+      <li><a href="poema.html"><span class="menu-icon">✍️</span> Poema</a></li>
+      <li><a href="musicas.html"><span class="menu-icon">🎵</span> Músicas</a></li>
+      <li><a href="sonhos.html"><span class="menu-icon">🌟</span> Sonhos</a></li>
+      <li><a href="contador.html"><span class="menu-icon">⏳</span> Contador</a></li>
+      <li><a href="motivos.html"><span class="menu-icon">💖</span> Motivos</a></li>
+      <li><a href="recado.html"><span class="menu-icon">💌</span> Recado</a></li>
     </ul>
   </nav>
 
   <main>
-    <section id="history" class="section history" aria-labelledby="history-title">
-      <h2 id="history-title">Nossa História</h2>
+    <section id="historia" class="section history" aria-labelledby="historia-title">
+      <h2 id="historia-title">Nossa História 💞</h2>
       <div class="history-content">
-        <p>Eu já sentia algo por você há muito tempo antes da gente se falar de verdade. Te via na escola, aquela energia toda que você tem, e eu ali, com medo, travado, sem coragem de chegar. Só observando, querendo, mas sem saber como.</p>
-        <p>A primeira vez que a gente conversou foi naquele dia no Hopi Hari, 5 de novembro de 2025. A chuva leve, as luzes vermelhas da roda-gigante, você com a Shirou, e eu achando que vocês eram um casal. Fiquei parado, cheio de frio na barriga, mas mesmo assim a gente falou. Você com aquele shorts curto, camisa preta, cabelo raspado, e aqueles olhos que pareciam esverdeados com a luz. Eu não conseguia tirar o olhar de você. Foi ali, naquela cabine amarela, que tudo mudou.</p>
-        <p>Depois, no dia 11 de dezembro, no Wet’n Wild, a gente teve nosso primeiro encontro de verdade. Eu tava nervoso, mas feliz demais. A gente riu, se abraçou, e ali eu soube que era você. Que eu queria estar perto de você pra sempre.</p>
-        <p>Você virou mais do que minha namorada. Você é meu lugar seguro no meio do caos que é minha cabeça. Você cuidou de mim quando eu tava quebrado, me deu colo, fez bolo de limão no meu aniversário, e me fez querer ser melhor, mesmo quando eu duvidava disso.</p>
-        <p>Às vezes eu sinto que não faço o suficiente por você, e isso pesa demais. Mas saiba que meu amor é gigante, mesmo quando eu não sei dizer direito. Você é meu orgulho, minha força, meu motivo pra continuar tentando.</p>
-        <p>A gente tem apelidos só nossos — Tai, momor, tomatinho — e isso é mais que carinho, é nossa cumplicidade. Você é intensa, cheia de sentimento, e mesmo quando explode, é o lugar onde eu encontro paz.</p>
-        <p>Sonho com a gente adotando um gato, tendo filhos, viajando sem destino, construindo nossa vida no nosso tempo. Porque nosso amor é feito das pequenas coisas que se tornam tudo.</p>
-        <p>Essa é nossa história, meu amor, e eu quero continuar escrevendo ela do seu lado.</p>
+        <p>Desde o primeiro momento que te vi, Tata, soube que você seria especial. Cada risada, cada conversa, cada instante juntos construiu algo que nunca imaginei ser possível. Nossa história é feita de pequenos momentos que parecem mágicos, como as noites no Hopi Hari ou as horas que passamos falando sobre tudo e nada. Você é minha melhor amiga, meu amor, meu lar. 🥰</p>
+        <p>Quero continuar escrevendo essa história com você, página por página, com todo o amor do mundo.</p>
       </div>
     </section>
   </main>
@@ -59,7 +55,7 @@
 
   <button class="back-to-top" aria-label="Voltar ao topo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
 
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser186c2" />
   <script src="script.js"></script>
 </body>
 </html>

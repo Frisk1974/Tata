@@ -350,7 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
       "Como você sempre dá um jeito de me ver ou falar comigo",
       "Como você me coloca acima dos seus amigos",
       "O jeito que você chama minha atenção",
-      "O jeito que eu te deixo excitado sem nem fazer nada",
+      "O jeito que eu te deixo excitada sem nem fazer nada",
       "Como você não tem medo de me contar o que sente",
       "Como você deixa de ir pra festas só pra ficar a noite toda comigo em casa",
       "Como a gente passa a noite toda no telefone",

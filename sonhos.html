@@ -2,50 +2,52 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Sonhos compartilhados de Tata e Heron para o futuro." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Sonhos que Tata e Heron compartilham para o futuro." />
   <meta name="keywords" content="sonhos, amor, Tata, Heron" />
   <meta name="author" content="Heron" />
   <meta property="og:title" content="Nossos Sonhos - Tata & Heron 💖" />
-  <meta property="og:description" content="Sonhos compartilhados de Tata e Heron para o futuro." />
+  <meta property="og:description" content="Os sonhos que Tata e Heron planejam juntos." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://your-site.com/images/birthday-heart.jpg" />
   <meta property="og:url" content="https://your-site.com/sonhos.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Nossos Sonhos - Tata & Heron 💖" />
-  <meta name="twitter:description" content="Sonhos compartilhados de Tata e Heron para o futuro." />
+  <meta name="twitter:description" content="Os sonhos que Tata e Heron planejam juntos." />
   <meta name="twitter:image" content="https://your-site.com/images/birthday-heart.jpg" />
-  <title>Nossos Sonhos - Tata & Heron 💖</title>
+  <title>Sonhos - Tata & Heron 💖</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="preload" href="musicas/sunshine.mp3" as="audio" />
 </head>
 <body>
   <canvas id="fogosCanvas"></canvas>
-  <nav class="menu" aria-label="Navegação principal">
+  <button class="menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="menu">☰</button>
+  <nav class="menu" id="menu" role="navigation" aria-label="Navegação principal">
+    <button class="menu-close" aria-label="Fechar menu">×</button>
     <ul>
-      <li><a href="index.html">Início</a></li>
-      <li><a href="aniversario.html">Aniversário</a></li>
-      <li><a href="history.html">História</a></li>
-      <li><a href="galeria.html">Galeria</a></li>
-      <li><a href="poema.html">Poema</a></li>
-      <li><a href="musicas.html">Músicas</a></li>
-      <li><a href="sonhos.html" aria-current="page">Sonhos</a></li>
-      <li><a href="contador.html">Contador</a></li>
-      <li><a href="motivos.html">Motivos</a></li>
-      <li><a href="recado.html">Recado</a></li>
+      <li><a href="index.html"><span class="menu-icon">🏠</span> Início</a></li>
+      <li><a href="aniversario.html"><span class="menu-icon">🎉</span> Aniversário</a></li>
+      <li><a href="history.html"><span class="menu-icon">📖</span> História</a></li>
+      <li><a href="galeria.html"><span class="menu-icon">📸</span> Galeria</a></li>
+      <li><a href="poema.html"><span class="menu-icon">✍️</span> Poema</a></li>
+      <li><a href="musicas.html"><span class="menu-icon">🎵</span> Músicas</a></li>
+      <li><a href="sonhos.html" aria-current="page"><span class="menu-icon">🌟</span> Sonhos</a></li>
+      <li><a href="contador.html"><span class="menu-icon">⏳</span> Contador</a></li>
+      <li><a href="motivos.html"><span class="menu-icon">💖</span> Motivos</a></li>
+      <li><a href="recado.html"><span class="menu-icon">💌</span> Recado</a></li>
     </ul>
   </nav>
 
   <main>
     <section id="sonhos" class="section sonhos" aria-labelledby="sonhos-title">
-      <h2 id="sonhos-title">Nossos Sonhos</h2>
+      <h2 id="sonhos-title">Nossos Sonhos 🌟</h2>
       <ul>
-        <li>Adotar um gato</li>
-        <li>Viajar sem destino</li>
-        <li>Construir nossa casa</li>
-        <li>Ter filhos</li>
-        <li>Envelhecer ouvindo música juntos</li>
+        <li>Viajar juntos pelo mundo</li>
+        <li>Construir uma casa cheia de amor</li>
+        <li>Adotar um pet para mimar juntos</li>
+        <li>Passar noites olhando as estrelas</li>
+        <li>Realizar seus sonhos mais secretos</li>
       </ul>
     </section>
   </main>
