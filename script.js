@@ -92,6 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }, { threshold: 0.5 });
       observer.observe(aniversarioSection);
+    } else {
+      console.warn('Element #aniversario not found on aniversario.html');
     }
   }
 
@@ -134,6 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         audios[0].play();
       });
+    } else {
+      console.warn('Play all button not found on musicas.html');
     }
   }
 
@@ -164,6 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
           lightbox.classList.remove('active');
         }
       });
+    } else {
+      console.warn('Lightbox element not found on galeria.html');
     }
   }
 
@@ -207,6 +213,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (mensagemElemento) {
         const mensagemAleatoria = mensagens[Math.floor(Math.random() * mensagens.length)];
         mensagemElemento.textContent = `"${mensagemAleatoria}"`;
+      } else {
+        console.warn('Element #mensagemAleatoria not found on recado.html');
       }
     }
 
@@ -222,15 +230,39 @@ document.addEventListener('DOMContentLoaded', () => {
       const agora = new Date();
       const diff = agora - inicio;
 
-      const segundosTotais = Math.floor(diff / 1000);
-      const dias = Math.floor(segundosTotais / (3600 * 24));
-      const horas = Math.floor((segundosTotais % (3600 * 24)) / 3600);
-      const minutos = Math.floor((segundosTotais % 3600) / 60);
-      const segundos = segundosTotais % 60;
+      let anos = agora.getFullYear() - inicio.getFullYear();
+      let meses = agora.getMonth() - inicio.getMonth();
+      let dias = agora.getDate() - inicio.getDate();
+      let horas = agora.getHours() - inicio.getHours();
+      let minutos = agora.getMinutes() - inicio.getMinutes();
+      let segundos = agora.getSeconds() - inicio.getSeconds();
+
+      if (segundos < 0) {
+        segundos += 60;
+        minutos--;
+      }
+      if (minutos < 0) {
+        minutos += 60;
+        horas--;
+      }
+      if (horas < 0) {
+        horas += 24;
+        dias--;
+      }
+      if (dias < 0) {
+        dias += new Date(agora.getFullYear(), agora.getMonth(), 0).getDate();
+        meses--;
+      }
+      if (meses < 0) {
+        meses += 12;
+        anos--;
+      }
 
       const contadorElement = document.getElementById("contador");
       if (contadorElement) {
-        contadorElement.textContent = `${dias}d ${horas}h ${minutos}m ${segundos}s`;
+        contadorElement.textContent = `${anos} anos, ${meses} meses, ${dias} dias, ${horas.toString().padStart(2, '0')} horas, ${minutos.toString().padStart(2, '0')} minutos, ${segundos.toString().padStart(2, '0')} segundos`;
+      } else {
+        console.warn('Element #contador not found on contador.html');
       }
     }
 
@@ -250,3 +282,85 @@ document.addEventListener('DOMContentLoaded', () => {
       "Como você sempre cuida de mim",
       "Como você sempre sabe o que dizer quando eu fico bravo com você",
       "Quando você me dá presentes do nada",
+      "Como você fala as coisas mais fofas várias vezes e nunca fica chato",
+      "As vezes em que você fez de tudo pra eu não ficar bravo com você",
+      "O sorriso que você dá depois que eu te beijo",
+      "O jeito que você não tem vergonha de dizer ou fazer nada na minha frente",
+      "Como você me defende sem medo nenhum",
+      "O jeito que você anda quando fica triste",
+      "Quando eu tô me sentindo um lixo e você me faz sentir a pessoa mais feliz",
+      "O jeito brega que você canta pra mim",
+      "Como você dirige horas só pra me ver por um dia",
+      "Como você sempre termina minhas frases",
+      "Como você é a única pessoa que não acha que eu sou esquisito",
+      "Como só você entende minhas piadas… e ainda ri",
+      "O jeito que a gente joga jogos idiotas, mas mesmo assim você joga comigo",
+      "Como eu nunca consigo te odiar",
+      "Como você me ama como ninguém mais ama",
+      "Como você me conta histórias longas que não têm sentido, mas sabe que eu vou escutar mesmo assim",
+      "Como você me ouve falar por horas",
+      "Como você me perdoa quando eu erro",
+      "O jeito que você me olha depois que eu digo 'eu te amo'",
+      "O jeito que você não tem vergonha de me chamar de coisas fofas na frente dos outros",
+      "O jeito que você me liga a cada maldito minuto",
+      "Como você sempre dá um jeito de me ver ou falar comigo",
+      "Como você me coloca acima dos seus amigos",
+      "O jeito que você chama minha atenção",
+      "O jeito que eu te deixo excitado sem nem fazer nada",
+      "Como você não tem medo de me contar o que sente",
+      "Como você deixa de ir pra festas só pra ficar a noite toda comigo em casa",
+      "Como a gente passa a noite toda no telefone",
+      "Como a gente se dá tão bem",
+      "O jeito que você gasta todo o seu dinheiro comprando créditos pra me ligar",
+      "Como você me faz sentir quando eu acho que não sou nada",
+      "O jeito que você me inspira com seus pensamentos e sentimentos"
+    ];
+
+    let motivoAtual = -1;
+
+    window.mostrarOutroMotivo = function() {
+      let novoMotivo;
+      do {
+        novoMotivo = Math.floor(Math.random() * motivos.length);
+      } while (novoMotivo === motivoAtual);
+      motivoAtual = novoMotivo;
+
+      const div = document.getElementById("motivo");
+      if (div) {
+        div.style.opacity = 0;
+        setTimeout(() => {
+          div.textContent = motivos[motivoAtual];
+          div.style.opacity = 1;
+        }, 200);
+      } else {
+        console.warn('Element #motivo not found on motivos.html');
+      }
+    };
+
+    window.mostrarOutroMotivo();
+  }
+
+  // Back to Top Button
+  const backToTopButton = document.querySelector('.back-to-top');
+  if (backToTopButton) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 200) {
+        backToTopButton.classList.add('visible');
+      } else {
+        backToTopButton.classList.remove('visible');
+      }
+    });
+  }
+
+  // Section Animations
+  const sections = document.querySelectorAll('.section');
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationDelay = '0.2s';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  sections.forEach(section => sectionObserver.observe(section));
+});

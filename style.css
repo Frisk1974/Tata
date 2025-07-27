@@ -21,7 +21,7 @@ body {
   color: var(--texto);
   scroll-behavior: smooth;
   line-height: 1.6;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 
 /* Fireworks Canvas */
@@ -51,7 +51,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.8rem;
   list-style: none;
 }
 
@@ -59,7 +59,12 @@ body {
   color: var(--texto);
   text-decoration: none;
   font-weight: 600;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  padding: 0.5rem;
+  display: inline-block;
+  min-width: 44px;
+  min-height: 44px;
+  text-align: center;
   transition: color 0.3s ease;
 }
 
@@ -77,14 +82,14 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 1.5rem;
+  padding: clamp(1rem, 5vw, 1.5rem);
   border-radius: 0.75rem;
   animation: fadeIn 1s ease-in;
 }
 
 .hero h1 {
   font-family: var(--font-titulo);
-  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  font-size: clamp(1.8rem, 6vw, 2.5rem);
   color: var(--rosa-escuro);
   margin-bottom: 0.5rem;
 }
@@ -107,6 +112,8 @@ body {
   font-size: clamp(0.9rem, 2.5vw, 1rem);
   font-weight: 600;
   box-shadow: 0 0.2rem 0.4rem var(--sombra);
+  min-width: 44px;
+  min-height: 44px;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   touch-action: manipulation;
 }
@@ -121,8 +128,8 @@ body {
 /* Seções Gerais */
 .section {
   max-width: 90%;
-  margin: 3rem auto;
-  padding: 1.5rem;
+  margin: clamp(2rem, 5vw, 3rem) auto;
+  padding: clamp(1rem, 4vw, 1.5rem);
   background: var(--branco);
   border-radius: 0.75rem;
   box-shadow: 0 0.2rem 0.5rem var(--sombra);
@@ -133,18 +140,18 @@ body {
 h2 {
   font-family: var(--font-titulo);
   color: var(--rosa-escuro);
-  font-size: clamp(1.5rem, 4vw, 1.8rem);
+  font-size: clamp(1.5rem, 5vw, 1.8rem);
   text-align: center;
   margin-bottom: 1rem;
 }
 
 /* Aniversário */
 .aniversario p {
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
   text-align: center;
   color: var(--texto);
   margin-bottom: 1rem;
-  animation: heartPulse 2s ease-in-out infinite;
+  animation: fadeIn 1s ease-in;
 }
 
 .confetti-canvas {
@@ -158,7 +165,7 @@ h2 {
 
 /* História */
 .history-content p {
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  font-size: clamp(0.9rem, 3vw, 1rem);
   margin-bottom: 0.8rem;
   line-height: 1.7;
   color: var(--texto);
@@ -217,6 +224,11 @@ h2 {
   font-size: clamp(1.5rem, 4vw, 2rem);
   color: var(--branco);
   cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Poema */
@@ -225,7 +237,7 @@ h2 {
   font-style: italic;
   color: var(--rosa-escuro);
   text-align: center;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  font-size: clamp(0.9rem, 3vw, 1rem);
   margin-bottom: 0.8rem;
 }
 
@@ -241,6 +253,8 @@ h2 {
   cursor: pointer;
   font-size: clamp(0.9rem, 2.5vw, 1rem);
   font-weight: 600;
+  min-width: 44px;
+  min-height: 44px;
   transition: background 0.3s ease, transform 0.2s ease;
   touch-action: manipulation;
 }
@@ -327,18 +341,22 @@ audio {
   position: relative;
   z-index: 2;
   background: rgba(248, 207, 232, 0.2);
-  padding: clamp(0.8rem, 2vw, 1.2rem);
+  padding: clamp(0.8rem, 3vw, 1.2rem);
   border-radius: 0.75rem;
   margin: 2rem auto;
   text-align: center;
-  max-width: clamp(20rem, 80vw, 30rem);
+  max-width: clamp(20rem, 90vw, 30rem);
   color: var(--rosa-escuro);
   font-family: var(--font-corpo);
-  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
   font-weight: bold;
   letter-spacing: 0.1rem;
   backdrop-filter: blur(6px);
   box-shadow: 0 0 0.6rem rgba(204, 51, 102, 0.3);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 /* Motivos */
@@ -348,8 +366,8 @@ audio {
 }
 
 .motivos div#motivo {
-  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
-  max-width: clamp(20rem, 80vw, 30rem);
+  font-size: clamp(0.9rem, 3vw, 1.2rem);
+  max-width: clamp(20rem, 90vw, 30rem);
   color: var(--rosa-escuro);
   font-family: var(--font-corpo);
   margin: 1rem auto;
@@ -368,6 +386,8 @@ audio {
   font-size: clamp(0.9rem, 2.5vw, 1rem);
   font-weight: 600;
   box-shadow: 0 0.2rem 0.4rem var(--sombra);
+  min-width: 44px;
+  min-height: 44px;
   transition: background 0.3s ease, transform 0.2s ease;
   touch-action: manipulation;
 }
@@ -388,11 +408,11 @@ audio {
   position: relative;
   z-index: 2;
   background: rgba(248, 207, 232, 0.2);
-  padding: clamp(0.8rem, 2vw, 1.2rem);
+  padding: clamp(0.8rem, 3vw, 1.2rem);
   border-radius: 0.75rem;
   margin: 2rem auto;
   text-align: center;
-  max-width: clamp(20rem, 80vw, 30rem);
+  max-width: clamp(20rem, 90vw, 30rem);
   color: var(--rosa-escuro);
   font-family: var(--font-corpo);
   backdrop-filter: blur(6px);
@@ -401,17 +421,17 @@ audio {
 
 .recado-container h2 {
   font-family: var(--font-titulo);
-  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  font-size: clamp(1.2rem, 4vw, 1.5rem);
   margin-bottom: 0.5rem;
 }
 
 #mensagem-recado {
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  font-size: clamp(0.9rem, 3vw, 1rem);
   margin-bottom: 0.5rem;
 }
 
 .recado-dinamico {
-  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-size: clamp(1rem, 3vw, 1.2rem);
   font-style: italic;
   animation: fadeIn 1s ease-in-out;
   will-change: opacity, transform;
@@ -443,6 +463,8 @@ footer {
   font-size: clamp(0.9rem, 2.5vw, 1rem);
   cursor: pointer;
   box-shadow: 0 0.2rem 0.4rem var(--sombra);
+  min-width: 44px;
+  min-height: 44px;
   transition: opacity 0.3s ease, transform 0.3s ease;
   opacity: 0;
   pointer-events: none;
@@ -479,19 +501,21 @@ footer {
 
 /* Responsividade */
 @media (max-width: 48rem) {
-  .hero {
-    min-height: 80vh;
-    padding: 1rem;
-  }
-
   .menu ul {
-    gap: 0.8rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
     padding: 0.5rem;
   }
 
+  .hero {
+    min-height: 80vh;
+    padding: clamp(0.8rem, 4vw, 1rem);
+  }
+
   .section {
-    margin: 2rem auto;
-    padding: 1rem;
+    margin: clamp(1.5rem, 4vw, 2rem) auto;
+    padding: clamp(0.8rem, 3vw, 1rem);
   }
 
   .player-container {
@@ -503,27 +527,27 @@ footer {
   }
 
   .recado-container, .contador, .motivos div#motivo {
-    max-width: 90%;
-    padding: 0.8rem;
+    max-width: 95%;
+    padding: clamp(0.6rem, 2.5vw, 0.8rem);
   }
 }
 
 @media (max-width: 30rem) {
   .hero h1 {
-    font-size: clamp(1.5rem, 4vw, 1.8rem);
+    font-size: clamp(1.5rem, 5vw, 1.8rem);
   }
 
   .hero p {
-    font-size: clamp(0.8rem, 2vw, 0.9rem);
+    font-size: clamp(0.8rem, 2.5vw, 0.9rem);
   }
 
   .section {
-    margin: 1.5rem auto;
-    padding: 0.8rem;
+    margin: clamp(1rem, 3vw, 1.5rem) auto;
+    padding: clamp(0.6rem, 2.5vw, 0.8rem);
   }
 
   h2 {
-    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
   }
 
   .back-to-top {
@@ -533,6 +557,6 @@ footer {
   }
 
   .recado-dinamico, .contador, .motivos div#motivo {
-    font-size: clamp(0.9rem, 2vw, 1rem);
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
   }
 }
