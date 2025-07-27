@@ -1,4 +1,48 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Menu Toggle Functionality
+  const menuToggle = document.querySelector('.menu-toggle');
+  const menu = document.querySelector('.menu');
+  const menuClose = document.querySelector('.menu-close');
+
+  if (menuToggle && menu && menuClose) {
+    menuToggle.addEventListener('click', () => {
+      const isOpen = menu.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', isOpen);
+      document.body.classList.toggle('no-scroll', isOpen);
+      if (isOpen) {
+        menu.querySelector('a').focus();
+      }
+    });
+
+    menuClose.addEventListener('click', () => {
+      menu.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('no-scroll');
+      menuToggle.focus();
+    });
+
+    // Close menu on clicking outside
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && !menuToggle.contains(e.target) && menu.classList.contains('open')) {
+        menu.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('no-scroll');
+      }
+    });
+
+    // Keyboard navigation
+    menu.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.classList.contains('open')) {
+        menu.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('no-scroll');
+        menuToggle.focus();
+      }
+    });
+  } else {
+    console.warn('Menu toggle elements not found');
+  }
+
   // Fireworks Animation (runs on all pages)
   const canvas = document.getElementById('fogosCanvas');
   const ctx = canvas ? canvas.getContext('2d') : null;

@@ -22,18 +22,20 @@
 </head>
 <body>
   <canvas id="fogosCanvas"></canvas>
-  <nav class="menu" aria-label="Navegação principal">
+  <button class="menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="menu">☰</button>
+  <nav class="menu" id="menu" role="navigation" aria-label="Navegação principal">
+    <button class="menu-close" aria-label="Fechar menu">×</button>
     <ul>
-      <li><a href="index.html">Início</a></li>
-      <li><a href="aniversario.html">Aniversário</a></li>
-      <li><a href="history.html">História</a></li>
-      <li><a href="galeria.html">Galeria</a></li>
-      <li><a href="poema.html">Poema</a></li>
-      <li><a href="musicas.html">Músicas</li>
-      <li><a href="sonhos.html">Sonhos</a></li>
-      <li><a href="contador.html">Contador</a></li>
-      <li><a href="motivos.html" aria-current="page">Motivos</a></li>
-      <li><a href="recado.html">Recado</a></li>
+      <li><a href="index.html"><span class="menu-icon">🏠</span> Início</a></li>
+      <li><a href="aniversario.html"><span class="menu-icon">🎉</span> Aniversário</a></li>
+      <li><a href="history.html"><span class="menu-icon">📖</span> História</a></li>
+      <li><a href="galeria.html"><span class="menu-icon">📸</span> Galeria</a></li>
+      <li><a href="poema.html"><span class="menu-icon">✍️</span> Poema</a></li>
+      <li><a href="musicas.html"><span class="menu-icon">🎵</span> Músicas</a></li>
+      <li><a href="sonhos.html"><span class="menu-icon">🌟</span> Sonhos</a></li>
+      <li><a href="contador.html"><span class="menu-icon">⏳</span> Contador</a></li>
+      <li><a href="motivos.html" aria-current="page"><span class="menu-icon">💖</span> Motivos</a></li>
+      <li><a href="recado.html"><span class="menu-icon">💌</span> Recado</a></li>
     </ul>
   </nav>
 
