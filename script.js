@@ -1,45 +1,55 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Global error handler for debugging
+  window.addEventListener('error', (e) => {
+    console.error('Global error:', e.message, 'at', e.filename, e.lineno);
+  });
+
   // Menu Toggle Functionality
   const menuToggle = document.querySelector('.menu-toggle');
   const menu = document.querySelector('.menu');
   const menuClose = document.querySelector('.menu-close');
 
   if (menuToggle && menu && menuClose) {
-    // Handle both click and touchstart for better mobile support
     menuToggle.addEventListener('click', toggleMenu);
     menuToggle.addEventListener('touchstart', toggleMenu, { passive: true });
+    menuToggle.addEventListener('touchend', toggleMenu, { passive: true });
 
     menuClose.addEventListener('click', closeMenu);
     menuClose.addEventListener('touchstart', closeMenu, { passive: true });
+    menuClose.addEventListener('touchend', closeMenu, { passive: true });
 
-    // Ensure menu links navigate correctly
     const menuLinks = document.querySelectorAll('.menu a');
     menuLinks.forEach(link => {
       link.addEventListener('click', (e) => {
-        // Close menu on mobile after clicking a link
+        console.log('Menu link clicked:', link.href);
         if (window.innerWidth <= 768) {
           menu.classList.remove('open');
           menuToggle.setAttribute('aria-expanded', 'false');
           document.body.classList.remove('no-scroll');
         }
       });
+      link.addEventListener('touchend', (e) => {
+        console.log('Menu link touched:', link.href);
+        if (window.innerWidth <= 768) {
+          menu.classList.remove('open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          document.body.classList.remove('no-scroll');
+        }
+      }, { passive: true });
     });
 
-    // Close menu on clicking outside
     document.addEventListener('click', (e) => {
       if (!menu.contains(e.target) && !menuToggle.contains(e.target) && menu.classList.contains('open')) {
         closeMenu();
       }
     });
 
-    // Close menu on touch outside (mobile)
-    document.addEventListener('touchstart', (e) => {
+    document.addEventListener('touchend', (e) => {
       if (!menu.contains(e.target) && !menuToggle.contains(e.target) && menu.classList.contains('open')) {
         closeMenu();
       }
     }, { passive: true });
 
-    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && menu.classList.contains('open')) {
         closeMenu();
@@ -48,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleMenu(e) {
       e.preventDefault();
+      console.log('Menu toggle triggered:', e.type);
       const isOpen = menu.classList.toggle('open');
       menuToggle.setAttribute('aria-expanded', isOpen);
       document.body.classList.toggle('no-scroll', isOpen);
@@ -57,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function closeMenu() {
+      console.log('Menu closed');
       menu.classList.remove('open');
       menuToggle.setAttribute('aria-expanded', 'false');
       document.body.classList.remove('no-scroll');
@@ -170,8 +182,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const musicaContainers = document.querySelectorAll('.musica');
     const playAllButton = document.querySelector('.play-all');
 
+    if (playAllButton) {
+      playAllButton.addEventListener('click', () => {
+        console.log('Play all button clicked');
+        audios.forEach(audio => {
+          audio.pause();
+          audio.currentTime = 0;
+          musicaContainers.forEach(container => container.classList.remove('playing'));
+        });
+        audios[0].play();
+      });
+      playAllButton.addEventListener('touchend', () => {
+        console.log('Play all button touched');
+        audios.forEach(audio => {
+          audio.pause();
+          audio.currentTime = 0;
+          musicaContainers.forEach(container => container.classList.remove('playing'));
+        });
+        audios[0].play();
+      }, { passive: true });
+    } else {
+      console.warn('Play all button not found on musicas.html');
+    }
+
     audios.forEach((audio, index) => {
       audio.addEventListener('play', () => {
+        console.log('Audio playing:', audio.src);
         audios.forEach((otherAudio, otherIndex) => {
           if (otherAudio !== audio) {
             otherAudio.pause();
@@ -183,29 +219,18 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       audio.addEventListener('pause', () => {
+        console.log('Audio paused:', audio.src);
         musicaContainers[index].classList.remove('playing');
       });
 
       audio.addEventListener('ended', () => {
+        console.log('Audio ended:', audio.src);
         musicaContainers[index].classList.remove('playing');
         if (index < audios.length - 1) {
           audios[index + 1].play();
         }
       });
     });
-
-    if (playAllButton) {
-      playAllButton.addEventListener('click', () => {
-        audios.forEach(audio => {
-          audio.pause();
-          audio.currentTime = 0;
-          musicaContainers.forEach(container => container.classList.remove('playing'));
-        });
-        audios[0].play();
-      });
-    } else {
-      console.warn('Play all button not found on musicas.html');
-    }
   }
 
   // Lightbox for Gallery (galeria.html)
@@ -217,24 +242,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
     galleryImages.forEach(img => {
       img.addEventListener('click', () => {
+        console.log('Gallery image clicked:', img.src);
         lightboxImg.src = img.src;
         lightboxImg.alt = img.alt;
         lightbox.classList.add('active');
       });
+      img.addEventListener('touchend', () => {
+        console.log('Gallery image touched:', img.src);
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('active');
+      }, { passive: true });
     });
 
     if (lightboxClose) {
       lightboxClose.addEventListener('click', () => {
+        console.log('Lightbox close clicked');
         lightbox.classList.remove('active');
       });
+      lightboxClose.addEventListener('touchend', () => {
+        console.log('Lightbox close touched');
+        lightbox.classList.remove('active');
+      }, { passive: true });
     }
 
     if (lightbox) {
       lightbox.addEventListener('click', (e) => {
         if (e.target === lightbox) {
+          console.log('Lightbox background clicked');
           lightbox.classList.remove('active');
         }
       });
+      lightbox.addEventListener('touchend', (e) => {
+        if (e.target === lightbox) {
+          console.log('Lightbox background touched');
+          lightbox.classList.remove('active');
+        }
+      }, { passive: true });
     } else {
       console.warn('Lightbox element not found on galeria.html');
     }
@@ -278,11 +322,23 @@ document.addEventListener('DOMContentLoaded', () => {
       "Porque te amo mais a cada dia."
     ];
     const motivoElement = document.getElementById('motivo');
-    window.mostrarOutroMotivo = function() {
+    const motivoButton = document.querySelector('.motivos button');
+    function mostrarOutroMotivo() {
       const randomIndex = Math.floor(Math.random() * motivos.length);
       motivoElement.textContent = motivos[randomIndex];
-    };
-    window.mostrarOutroMotivo();
+    }
+    window.mostrarOutroMotivo = mostrarOutroMotivo;
+    if (motivoButton) {
+      motivoButton.addEventListener('click', () => {
+        console.log('Motivo button clicked');
+        mostrarOutroMotivo();
+      });
+      motivoButton.addEventListener('touchend', () => {
+        console.log('Motivo button touched');
+        mostrarOutroMotivo();
+      }, { passive: true });
+    }
+    mostrarOutroMotivo();
   }
 
   // Relationship Counter (contador.html)
@@ -320,19 +376,19 @@ document.addEventListener('DOMContentLoaded', () => {
     dreamItems.forEach(item => {
       item.addEventListener('click', handleDreamClick);
       item.addEventListener('touchstart', handleDreamClick, { passive: true });
+      item.addEventListener('touchend', handleDreamClick, { passive: true });
     });
 
     function handleDreamClick(e) {
       e.preventDefault();
+      console.log('Dream item triggered:', e.type, this.textContent.trim());
       const description = this.querySelector('.dream-description');
       const isActive = description.classList.contains('active');
 
-      // Hide all descriptions
       document.querySelectorAll('.dream-description').forEach(desc => {
         desc.classList.remove('active');
       });
 
-      // Toggle the clicked description
       if (!isActive) {
         description.classList.add('active');
       }
@@ -342,6 +398,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Back to Top Button
   const backToTopButton = document.querySelector('.back-to-top');
   if (backToTopButton) {
+    backToTopButton.addEventListener('click', () => {
+      console.log('Back to top clicked');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    backToTopButton.addEventListener('touchend', () => {
+      console.log('Back to top touched');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, { passive: true });
+
     window.addEventListener('scroll', () => {
       backToTopButton.classList.toggle('visible', window.scrollY > 300);
     });

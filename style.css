@@ -58,8 +58,14 @@ body.no-scroll {
   transition: background 0.3s ease, transform 0.2s ease;
   min-width: 48px;
   min-height: 48px;
-  display: none;
   touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 48rem) {
+  .menu-toggle {
+    display: block;
+  }
 }
 
 .menu-toggle:hover,
@@ -109,6 +115,7 @@ body.no-scroll {
   justify-content: center;
   transition: color 0.3s ease, transform 0.2s ease;
   touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .menu-close:hover,
@@ -144,6 +151,7 @@ body.no-scroll {
   transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
   min-height: 48px;
   touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .menu a:hover,
@@ -200,6 +208,7 @@ body.no-scroll {
   min-height: 48px;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .hero button:hover,
@@ -322,6 +331,8 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Poema */
@@ -350,6 +361,7 @@ h2 {
   min-height: 48px;
   transition: background 0.3s ease, transform 0.2s ease;
   touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .musicas .play-all:hover,
@@ -425,6 +437,10 @@ audio {
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
   position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 #sonhos ul li:hover {
@@ -511,6 +527,7 @@ audio {
   min-height: 48px;
   transition: background 0.3s ease, transform 0.2s ease;
   touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .motivos button:hover,
@@ -595,6 +612,7 @@ footer {
   opacity: 0;
   pointer-events: none;
   touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .back-to-top.visible {
@@ -633,10 +651,6 @@ footer {
 
 /* Responsividade */
 @media (max-width: 48rem) {
-  .menu-toggle {
-    display: block;
-  }
-
   .menu {
     display: block;
   }
@@ -677,10 +691,10 @@ footer {
   }
 
   .dream-description {
-    font-size: clamp(0.7rem, 2vw, 0.8rem); /* Smaller font for mobile */
-    max-width: 100%; /* Ensure it fits within parent */
-    margin: 0.5rem 0; /* Adjust margin for mobile */
-    padding: 0.6rem; /* Slightly less padding */
+    font-size: clamp(0.7rem, 2vw, 0.8rem);
+    max-width: 100%;
+    margin: 0.5rem 0;
+    padding: 0.6rem;
   }
 }
 
@@ -759,7 +773,7 @@ footer {
   }
 
   .dream-description {
-    font-size: clamp(0.6rem, 1.8vw, 0.7rem); /* Even smaller for very small screens */
+    font-size: clamp(0.6rem, 1.8vw, 0.7rem);
     padding: 0.5rem;
   }
 }
