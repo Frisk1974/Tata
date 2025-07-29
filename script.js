@@ -203,36 +203,81 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Music Player (musicas.html)
   if (window.location.pathname.includes('musicas.html')) {
-    const audios = document.querySelectorAll>('audio');
+    const audios = document.querySelectorAll('audio');
     const musicaContainers = document.querySelectorAll('.musica');
     const playAllButton = document.querySelector('.play-all');
+    let currentAudioIndex = -1;
+    let isPlayingAll = false;
+
+    function stopAllAudios(excludeIndex = -1) {
+      audios.forEach((audio, index) => {
+        if (index !== excludeIndex) {
+          audio.pause();
+          audio.currentTime = 0;
+          musicaContainers[index].classList.remove('playing');
+        }
+      });
+    }
+
+    function playNextAudio() {
+      try {
+        stopAllAudios();
+        if (currentAudioIndex < audios.length - 1) {
+          currentAudioIndex++;
+        } else {
+          currentAudioIndex = 0; // Loop back to first song
+        }
+        const audio = audios[currentAudioIndex];
+        console.log('Playing audio:', audio.src);
+        musicaContainers[currentAudioIndex].classList.add('playing');
+        audio.play().catch(err => {
+          console.error('Auto-play error for', audio.src, ':', err);
+          isPlayingAll = false;
+          alert('Por favor, interaja com a página (ex.: clique em um botão) para iniciar a reprodução de áudio.');
+        });
+      } catch (err) {
+        console.error('Play next audio error:', err);
+        isPlayingAll = false;
+      }
+    }
 
     if (playAllButton) {
+      let lastTap = 0;
       playAllButton.addEventListener('click', () => {
         console.log('Play all button clicked');
         try {
-          audios.forEach(audio => {
-            audio.pause();
-            audio.currentTime = 0;
-            musicaContainers.forEach(container => container.classList.remove('playing'));
-          });
-          audios[0].play();
+          if (isPlayingAll) {
+            stopAllAudios();
+            currentAudioIndex = -1;
+            isPlayingAll = false;
+            playAllButton.textContent = 'Tocar Tudo';
+          } else {
+            currentAudioIndex = -1;
+            isPlayingAll = true;
+            playAllButton.textContent = 'Parar';
+            playNextAudio();
+          }
         } catch (err) {
           console.error('Play all error:', err);
         }
       });
-      playAllButton.addEventListener('touchend', () => {
+      playAllButton.addEventListener('touchend', (e) => {
         const now = Date.now();
-        if (now - lastTap < 300) return;
+        if (now - lastTap < 300) return; // Debounce rapid taps
         lastTap = now;
         console.log('Play all button touched');
         try {
-          audios.forEach(audio => {
-            audio.pause();
-            audio.currentTime = 0;
-            musicaContainers.forEach(container => container.classList.remove('playing'));
-          });
-          audios[0].play();
+          if (isPlayingAll) {
+            stopAllAudios();
+            currentAudioIndex = -1;
+            isPlayingAll = false;
+            playAllButton.textContent = 'Tocar Tudo';
+          } else {
+            currentAudioIndex = -1;
+            isPlayingAll = true;
+            playAllButton.textContent = 'Parar';
+            playNextAudio();
+          }
         } catch (err) {
           console.error('Play all error:', err);
         }
@@ -245,13 +290,10 @@ document.addEventListener('DOMContentLoaded', () => {
       audio.addEventListener('play', () => {
         console.log('Audio playing:', audio.src);
         try {
-          audios.forEach((otherAudio, otherIndex) => {
-            if (otherAudio !== audio) {
-              otherAudio.pause();
-              otherAudio.currentTime = 0;
-              musicaContainers[otherIndex].classList.remove('playing');
-            }
-          });
+          stopAllAudios(index);
+          currentAudioIndex = index;
+          isPlayingAll = false;
+          playAllButton.textContent = 'Tocar Tudo';
           musicaContainers[index].classList.add('playing');
         } catch (err) {
           console.error('Audio play error:', err);
@@ -271,8 +313,12 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Audio ended:', audio.src);
         try {
           musicaContainers[index].classList.remove('playing');
-          if (index < audios.length - 1) {
-            audios[index + 1].play();
+          if (isPlayingAll && index < audios.length - 1) {
+            playNextAudio();
+          } else {
+            isPlayingAll = false;
+            playAllButton.textContent = 'Tocar Tudo';
+            currentAudioIndex = -1;
           }
         } catch (err) {
           console.error('Audio ended error:', err);
