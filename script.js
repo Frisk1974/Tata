@@ -230,20 +230,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const audio = audios[currentAudioIndex];
         console.log('Playing audio:', audio.src);
         musicaContainers[currentAudioIndex].classList.add('playing');
-        audio.play().catch(err => {
-          console.error('Auto-play error for', audio.src, ':', err);
-          isPlayingAll = false;
-          alert('Por favor, interaja com a página (ex.: clique em um botão) para iniciar a reprodução de áudio.');
-        });
+        setTimeout(() => {
+          audio.play().catch(err => {
+            console.error('Auto-play error for', audio.src, ':', err);
+            isPlayingAll = false;
+            playAllButton.textContent = 'Tocar Tudo';
+          });
+        }, 100); // Small delay to ensure previous audio stops
       } catch (err) {
         console.error('Play next audio error:', err);
         isPlayingAll = false;
+        playAllButton.textContent = 'Tocar Tudo';
       }
     }
 
     if (playAllButton) {
       let lastTap = 0;
-      playAllButton.addEventListener('click', () => {
+      playAllButton.addEventListener('click', (e) => {
         console.log('Play all button clicked');
         try {
           if (isPlayingAll) {
