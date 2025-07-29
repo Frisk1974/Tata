@@ -49,9 +49,9 @@ body.no-scroll {
   color: var(--branco);
   border: none;
   border-radius: 0.5rem;
-  width: 2.5rem;
-  height: 2.5rem;
-  font-size: 1.2rem;
+  width: 2.8rem;
+  height: 2.8rem;
+  font-size: 1.3rem;
   cursor: pointer;
   z-index: 2000;
   box-shadow: 0 0.2rem 0.4rem var(--sombra);
@@ -60,6 +60,7 @@ body.no-scroll {
   min-height: 48px;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
 }
 
 @media (max-width: 48rem) {
@@ -93,6 +94,7 @@ body.no-scroll {
   padding: 1rem;
   transform: translateX(100%);
   transition: transform 0.3s ease;
+  pointer-events: auto;
 }
 
 .menu.open {
@@ -116,6 +118,7 @@ body.no-scroll {
   transition: color 0.3s ease, transform 0.2s ease;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
 }
 
 .menu-close:hover,
@@ -152,6 +155,7 @@ body.no-scroll {
   min-height: 48px;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
 }
 
 .menu a:hover,
@@ -209,6 +213,7 @@ body.no-scroll {
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
 }
 
 .hero button:hover,
@@ -290,6 +295,7 @@ h2 {
   cursor: pointer;
   box-shadow: 0 0.2rem 0.4rem var(--sombra);
   transition: transform 0.3s ease;
+  pointer-events: auto;
 }
 
 .gallery-img:hover {
@@ -307,6 +313,7 @@ h2 {
   justify-content: center;
   align-items: center;
   z-index: 2000;
+  pointer-events: auto;
 }
 
 .lightbox.active {
@@ -333,6 +340,7 @@ h2 {
   justify-content: center;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
 }
 
 /* Poema */
@@ -362,6 +370,7 @@ h2 {
   transition: background 0.3s ease, transform 0.2s ease;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
 }
 
 .musicas .play-all:hover,
@@ -441,6 +450,7 @@ audio {
   -webkit-user-select: none;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
 }
 
 #sonhos ul li:hover {
@@ -528,6 +538,7 @@ audio {
   transition: background 0.3s ease, transform 0.2s ease;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
 }
 
 .motivos button:hover,
@@ -601,8 +612,8 @@ footer {
   color: var(--branco);
   border: none;
   border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.8rem;
+  height: 2.8rem;
   font-size: clamp(0.9rem, 2.5vw, 1rem);
   cursor: pointer;
   box-shadow: 0 0.2rem 0.4rem var(--sombra);
@@ -613,6 +624,7 @@ footer {
   pointer-events: none;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
 }
 
 .back-to-top.visible {
@@ -751,8 +763,8 @@ footer {
   }
 
   .back-to-top, .menu-toggle {
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
     font-size: clamp(0.8rem, 2vw, 0.9rem);
   }
 

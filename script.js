@@ -10,69 +10,94 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuClose = document.querySelector('.menu-close');
 
   if (menuToggle && menu && menuClose) {
-    menuToggle.addEventListener('click', toggleMenu);
-    menuToggle.addEventListener('touchstart', toggleMenu, { passive: true });
-    menuToggle.addEventListener('touchend', toggleMenu, { passive: true });
+    let lastTap = 0;
+    menuToggle.addEventListener('click', (e) => toggleMenu(e, 'click'));
+    menuToggle.addEventListener('touchstart', (e) => toggleMenu(e, 'touchstart'), { passive: true });
+    menuToggle.addEventListener('touchend', (e) => toggleMenu(e, 'touchend'), { passive: true });
 
-    menuClose.addEventListener('click', closeMenu);
-    menuClose.addEventListener('touchstart', closeMenu, { passive: true });
-    menuClose.addEventListener('touchend', closeMenu, { passive: true });
+    menuClose.addEventListener('click', (e) => closeMenu(e, 'click'));
+    menuClose.addEventListener('touchstart', (e) => closeMenu(e, 'touchstart'), { passive: true });
+    menuClose.addEventListener('touchend', (e) => closeMenu(e, 'touchend'), { passive: true });
 
     const menuLinks = document.querySelectorAll('.menu a');
     menuLinks.forEach(link => {
       link.addEventListener('click', (e) => {
         console.log('Menu link clicked:', link.href);
-        if (window.innerWidth <= 768) {
-          menu.classList.remove('open');
-          menuToggle.setAttribute('aria-expanded', 'false');
-          document.body.classList.remove('no-scroll');
+        try {
+          if (window.innerWidth <= 768) {
+            menu.classList.remove('open');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            document.body.classList.remove('no-scroll');
+          }
+          window.location.href = link.href;
+        } catch (err) {
+          console.error('Navigation error:', err);
         }
       });
       link.addEventListener('touchend', (e) => {
+        const now = Date.now();
+        if (now - lastTap < 300) return; // Debounce rapid taps
+        lastTap = now;
         console.log('Menu link touched:', link.href);
-        if (window.innerWidth <= 768) {
-          menu.classList.remove('open');
-          menuToggle.setAttribute('aria-expanded', 'false');
-          document.body.classList.remove('no-scroll');
+        try {
+          if (window.innerWidth <= 768) {
+            menu.classList.remove('open');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            document.body.classList.remove('no-scroll');
+          }
+          window.location.href = link.href;
+        } catch (err) {
+          console.error('Navigation error:', err);
         }
       }, { passive: true });
     });
 
     document.addEventListener('click', (e) => {
       if (!menu.contains(e.target) && !menuToggle.contains(e.target) && menu.classList.contains('open')) {
-        closeMenu();
+        closeMenu(e, 'click outside');
       }
     });
 
     document.addEventListener('touchend', (e) => {
       if (!menu.contains(e.target) && !menuToggle.contains(e.target) && menu.classList.contains('open')) {
-        closeMenu();
+        closeMenu(e, 'touch outside');
       }
     }, { passive: true });
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && menu.classList.contains('open')) {
-        closeMenu();
+        closeMenu(e, 'escape key');
       }
     });
 
-    function toggleMenu(e) {
+    function toggleMenu(e, type) {
+      const now = Date.now();
+      if (now - lastTap < 300) return; // Debounce rapid taps
+      lastTap = now;
       e.preventDefault();
-      console.log('Menu toggle triggered:', e.type);
-      const isOpen = menu.classList.toggle('open');
-      menuToggle.setAttribute('aria-expanded', isOpen);
-      document.body.classList.toggle('no-scroll', isOpen);
-      if (isOpen) {
-        menu.querySelector('a').focus();
+      console.log('Menu toggle triggered:', type);
+      try {
+        const isOpen = menu.classList.toggle('open');
+        menuToggle.setAttribute('aria-expanded', isOpen);
+        document.body.classList.toggle('no-scroll', isOpen);
+        if (isOpen) {
+          menu.querySelector('a').focus();
+        }
+      } catch (err) {
+        console.error('Toggle menu error:', err);
       }
     }
 
-    function closeMenu() {
-      console.log('Menu closed');
-      menu.classList.remove('open');
-      menuToggle.setAttribute('aria-expanded', 'false');
-      document.body.classList.remove('no-scroll');
-      menuToggle.focus();
+    function closeMenu(e, type) {
+      console.log('Menu closed:', type);
+      try {
+        menu.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('no-scroll');
+        menuToggle.focus();
+      } catch (err) {
+        console.error('Close menu error:', err);
+      }
     }
   } else {
     console.warn('Menu toggle elements not found on this page');
@@ -178,28 +203,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Music Player (musicas.html)
   if (window.location.pathname.includes('musicas.html')) {
-    const audios = document.querySelectorAll('audio');
+    const audios = document.querySelectorAll>('audio');
     const musicaContainers = document.querySelectorAll('.musica');
     const playAllButton = document.querySelector('.play-all');
 
     if (playAllButton) {
       playAllButton.addEventListener('click', () => {
         console.log('Play all button clicked');
-        audios.forEach(audio => {
-          audio.pause();
-          audio.currentTime = 0;
-          musicaContainers.forEach(container => container.classList.remove('playing'));
-        });
-        audios[0].play();
+        try {
+          audios.forEach(audio => {
+            audio.pause();
+            audio.currentTime = 0;
+            musicaContainers.forEach(container => container.classList.remove('playing'));
+          });
+          audios[0].play();
+        } catch (err) {
+          console.error('Play all error:', err);
+        }
       });
       playAllButton.addEventListener('touchend', () => {
+        const now = Date.now();
+        if (now - lastTap < 300) return;
+        lastTap = now;
         console.log('Play all button touched');
-        audios.forEach(audio => {
-          audio.pause();
-          audio.currentTime = 0;
-          musicaContainers.forEach(container => container.classList.remove('playing'));
-        });
-        audios[0].play();
+        try {
+          audios.forEach(audio => {
+            audio.pause();
+            audio.currentTime = 0;
+            musicaContainers.forEach(container => container.classList.remove('playing'));
+          });
+          audios[0].play();
+        } catch (err) {
+          console.error('Play all error:', err);
+        }
       }, { passive: true });
     } else {
       console.warn('Play all button not found on musicas.html');
@@ -208,26 +244,38 @@ document.addEventListener('DOMContentLoaded', () => {
     audios.forEach((audio, index) => {
       audio.addEventListener('play', () => {
         console.log('Audio playing:', audio.src);
-        audios.forEach((otherAudio, otherIndex) => {
-          if (otherAudio !== audio) {
-            otherAudio.pause();
-            otherAudio.currentTime = 0;
-            musicaContainers[otherIndex].classList.remove('playing');
-          }
-        });
-        musicaContainers[index].classList.add('playing');
+        try {
+          audios.forEach((otherAudio, otherIndex) => {
+            if (otherAudio !== audio) {
+              otherAudio.pause();
+              otherAudio.currentTime = 0;
+              musicaContainers[otherIndex].classList.remove('playing');
+            }
+          });
+          musicaContainers[index].classList.add('playing');
+        } catch (err) {
+          console.error('Audio play error:', err);
+        }
       });
 
       audio.addEventListener('pause', () => {
         console.log('Audio paused:', audio.src);
-        musicaContainers[index].classList.remove('playing');
+        try {
+          musicaContainers[index].classList.remove('playing');
+        } catch (err) {
+          console.error('Audio pause error:', err);
+        }
       });
 
       audio.addEventListener('ended', () => {
         console.log('Audio ended:', audio.src);
-        musicaContainers[index].classList.remove('playing');
-        if (index < audios.length - 1) {
-          audios[index + 1].play();
+        try {
+          musicaContainers[index].classList.remove('playing');
+          if (index < audios.length - 1) {
+            audios[index + 1].play();
+          }
+        } catch (err) {
+          console.error('Audio ended error:', err);
         }
       });
     });
@@ -243,26 +291,48 @@ document.addEventListener('DOMContentLoaded', () => {
     galleryImages.forEach(img => {
       img.addEventListener('click', () => {
         console.log('Gallery image clicked:', img.src);
-        lightboxImg.src = img.src;
-        lightboxImg.alt = img.alt;
-        lightbox.classList.add('active');
+        try {
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt;
+          lightbox.classList.add('active');
+        } catch (err) {
+          console.error('Gallery image error:', err);
+        }
       });
       img.addEventListener('touchend', () => {
+        const now = Date.now();
+        if (now - lastTap < 300) return;
+        lastTap = now;
         console.log('Gallery image touched:', img.src);
-        lightboxImg.src = img.src;
-        lightboxImg.alt = img.alt;
-        lightbox.classList.add('active');
+        try {
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt;
+          lightbox.classList.add('active');
+        } catch (err) {
+          console.error('Gallery image error:', err);
+        }
       }, { passive: true });
     });
 
     if (lightboxClose) {
       lightboxClose.addEventListener('click', () => {
         console.log('Lightbox close clicked');
-        lightbox.classList.remove('active');
+        try {
+          lightbox.classList.remove('active');
+        } catch (err) {
+          console.error('Lightbox close error:', err);
+        }
       });
       lightboxClose.addEventListener('touchend', () => {
+        const now = Date.now();
+        if (now - lastTap < 300) return;
+        lastTap = now;
         console.log('Lightbox close touched');
-        lightbox.classList.remove('active');
+        try {
+          lightbox.classList.remove('active');
+        } catch (err) {
+          console.error('Lightbox close error:', err);
+        }
       }, { passive: true });
     }
 
@@ -270,13 +340,24 @@ document.addEventListener('DOMContentLoaded', () => {
       lightbox.addEventListener('click', (e) => {
         if (e.target === lightbox) {
           console.log('Lightbox background clicked');
-          lightbox.classList.remove('active');
+          try {
+            lightbox.classList.remove('active');
+          } catch (err) {
+            console.error('Lightbox background error:', err);
+          }
         }
       });
       lightbox.addEventListener('touchend', (e) => {
         if (e.target === lightbox) {
+          const now = Date.now();
+          if (now - lastTap < 300) return;
+          lastTap = now;
           console.log('Lightbox background touched');
-          lightbox.classList.remove('active');
+          try {
+            lightbox.classList.remove('active');
+          } catch (err) {
+            console.error('Lightbox background error:', err);
+          }
         }
       }, { passive: true });
     } else {
@@ -300,8 +381,12 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     const mensagemElement = document.getElementById('mensagemAleatoria');
     function mostrarMensagemAleatoria() {
-      const randomIndex = Math.floor(Math.random() * mensagens.length);
-      mensagemElement.textContent = mensagens[randomIndex];
+      try {
+        const randomIndex = Math.floor(Math.random() * mensagens.length);
+        mensagemElement.textContent = mensagens[randomIndex];
+      } catch (err) {
+        console.error('Random message error:', err);
+      }
     }
     mostrarMensagemAleatoria();
     setInterval(mostrarMensagemAleatoria, 5000);
@@ -324,16 +409,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const motivoElement = document.getElementById('motivo');
     const motivoButton = document.querySelector('.motivos button');
     function mostrarOutroMotivo() {
-      const randomIndex = Math.floor(Math.random() * motivos.length);
-      motivoElement.textContent = motivos[randomIndex];
+      try {
+        const randomIndex = Math.floor(Math.random() * motivos.length);
+        motivoElement.textContent = motivos[randomIndex];
+      } catch (err) {
+        console.error('Motivo error:', err);
+      }
     }
     window.mostrarOutroMotivo = mostrarOutroMotivo;
     if (motivoButton) {
+      let lastTap = 0;
       motivoButton.addEventListener('click', () => {
         console.log('Motivo button clicked');
         mostrarOutroMotivo();
       });
       motivoButton.addEventListener('touchend', () => {
+        const now = Date.now();
+        if (now - lastTap < 300) return;
+        lastTap = now;
         console.log('Motivo button touched');
         mostrarOutroMotivo();
       }, { passive: true });
@@ -347,24 +440,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const contadorElement = document.getElementById('contador');
 
     function updateCounter() {
-      const now = new Date();
-      const diff = now - startDate;
+      try {
+        const now = new Date();
+        const diff = now - startDate;
 
-      const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
-      const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
-      const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+        const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+        const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-      contadorElement.innerHTML = `
-        ${years > 0 ? `${years} ano${years > 1 ? 's' : ''}` : ''} 
-        ${months > 0 ? `${months} mese${months > 1 ? 's' : ''}` : ''} 
-        ${days} dia${days > 1 ? 's' : ''} 
-        ${hours} hora${hours > 1 ? 's' : ''} 
-        ${minutes} minuto${minutes > 1 ? 's' : ''} 
-        ${seconds} segundo${seconds > 1 ? 's' : ''}
-      `;
+        contadorElement.innerHTML = `
+          ${years > 0 ? `${years} ano${years > 1 ? 's' : ''}` : ''} 
+          ${months > 0 ? `${months} mese${months > 1 ? 's' : ''}` : ''} 
+          ${days} dia${days > 1 ? 's' : ''} 
+          ${hours} hora${hours > 1 ? 's' : ''} 
+          ${minutes} minuto${minutes > 1 ? 's' : ''} 
+          ${seconds} segundo${seconds > 1 ? 's' : ''}
+        `;
+      } catch (err) {
+        console.error('Counter error:', err);
+      }
     }
     updateCounter();
     setInterval(updateCounter, 1000);
@@ -373,6 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Dreams Descriptions (sonhos.html)
   if (window.location.pathname.includes('sonhos.html')) {
     const dreamItems = document.querySelectorAll('#sonhos ul li');
+    let lastTap = 0;
     dreamItems.forEach(item => {
       item.addEventListener('click', handleDreamClick);
       item.addEventListener('touchstart', handleDreamClick, { passive: true });
@@ -380,17 +478,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function handleDreamClick(e) {
+      const now = Date.now();
+      if (now - lastTap < 300) return; // Debounce rapid taps
+      lastTap = now;
       e.preventDefault();
       console.log('Dream item triggered:', e.type, this.textContent.trim());
-      const description = this.querySelector('.dream-description');
-      const isActive = description.classList.contains('active');
+      try {
+        const description = this.querySelector('.dream-description');
+        const isActive = description.classList.contains('active');
 
-      document.querySelectorAll('.dream-description').forEach(desc => {
-        desc.classList.remove('active');
-      });
+        document.querySelectorAll('.dream-description').forEach(desc => {
+          desc.classList.remove('active');
+        });
 
-      if (!isActive) {
-        description.classList.add('active');
+        if (!isActive) {
+          description.classList.add('active');
+        }
+      } catch (err) {
+        console.error('Dream click error:', err);
       }
     }
   }
@@ -398,13 +503,25 @@ document.addEventListener('DOMContentLoaded', () => {
   // Back to Top Button
   const backToTopButton = document.querySelector('.back-to-top');
   if (backToTopButton) {
+    let lastTap = 0;
     backToTopButton.addEventListener('click', () => {
       console.log('Back to top clicked');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      try {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err) {
+        console.error('Back to top error:', err);
+      }
     });
     backToTopButton.addEventListener('touchend', () => {
+      const now = Date.now();
+      if (now - lastTap < 300) return;
+      lastTap = now;
       console.log('Back to top touched');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      try {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err) {
+        console.error('Back to top error:', err);
+      }
     }, { passive: true });
 
     window.addEventListener('scroll', () => {
