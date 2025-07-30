@@ -486,13 +486,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // Relationship Counter (contador.html)
   if (window.location.pathname.includes('contador.html')) {
     const startDate = new Date('2024-11-09T00:00:00');
-    const contadorElement = document.getElementById('contador');
+    const contadorElement = document.getElementById('contador-display');
+    const milestoneElement = document.getElementById('milestone');
+    const progressFill = document.getElementById('progress-fill');
 
     function updateCounter() {
       try {
         const now = new Date();
         const diff = now - startDate;
 
+        // Calculate time components
         const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
         const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
         const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
@@ -500,6 +503,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
+        // Update counter display
         contadorElement.innerHTML = `
           ${years > 0 ? `${years} ano${years > 1 ? 's' : ''}` : ''} 
           ${months > 0 ? `${months} mese${months > 1 ? 's' : ''}` : ''} 
@@ -508,6 +512,31 @@ document.addEventListener('DOMContentLoaded', () => {
           ${minutes} minuto${minutes > 1 ? 's' : ''} 
           ${seconds} segundo${seconds > 1 ? 's' : ''}
         `;
+
+        // Calculate milestones
+        let milestoneText = '';
+        const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+        if (totalDays >= 365) {
+          milestoneText = `Comemoramos ${years} ano${years > 1 ? 's' : ''} juntos!`;
+        } else if (totalDays >= 180) {
+          milestoneText = '6 meses de amor eterno!';
+        } else if (totalDays >= 90) {
+          milestoneText = '3 meses compartilhando felicidade!';
+        } else if (totalDays >= 30) {
+          milestoneText = '1 mês do nosso começo!';
+        } else if (totalDays >= 7) {
+          milestoneText = 'Nossa primeira semana juntos!';
+        }
+        milestoneElement.textContent = milestoneText;
+
+        // Calculate progress to next anniversary
+        const nextAnniversary = new Date(startDate);
+        nextAnniversary.setFullYear(startDate.getFullYear() + years + 1);
+        const yearLength = (nextAnniversary - new Date(startDate.getFullYear() + years)) / (1000 * 60 * 60 * 24);
+        const daysSinceLast = totalDays - (years * 365);
+        const progressPercent = Math.min((daysSinceLast / yearLength) * 100, 100).toFixed(1);
+        progressFill.style.width = `${progressPercent}%`;
+        console.log(`Progress to next anniversary: ${progressPercent}%`);
       } catch (err) {
         console.error('Counter error:', err);
       }
