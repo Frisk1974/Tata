@@ -17,11 +17,63 @@
 
 body {
   font-family: var(--font-corpo);
-  background: var(--fundo);
+  background: linear-gradient(to bottom, var(--rosa-suave), #000000);
   color: var(--texto);
   scroll-behavior: smooth;
   line-height: 1.6;
   font-size: clamp(0.9rem, 2.5vw, 1rem);
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Blinking Neon Stars */
+.stars-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  animation: blink 2s infinite;
+}
+
+.star:nth-child(odd) {
+  background: #00B7EB; /* Neon Blue */
+  box-shadow: 0 0 8px #00B7EB, 0 0 12px #00B7EB;
+}
+
+.star:nth-child(even) {
+  background: #FF69B4; /* Neon Pink */
+  box-shadow: 0 0 8px #FF69B4, 0 0 12px #FF69B4;
+}
+
+.star:nth-child(1) { top: 10%; left: 15%; animation-delay: 0.2s; }
+.star:nth-child(2) { top: 20%; left: 80%; animation-delay: 0.8s; }
+.star:nth-child(3) { top: 30%; left: 25%; animation-delay: 1.5s; }
+.star:nth-child(4) { top: 40%; left: 70%; animation-delay: 0.4s; }
+.star:nth-child(5) { top: 50%; left: 10%; animation-delay: 1.2s; }
+.star:nth-child(6) { top: 60%; left: 90%; animation-delay: 0.6s; }
+.star:nth-child(7) { top: 70%; left: 30%; animation-delay: 1.8s; }
+.star:nth-child(8) { top: 80%; left: 60%; animation-delay: 0.3s; }
+.star:nth-child(9) { top: 15%; left: 50%; animation-delay: 1.0s; }
+.star:nth-child(10) { top: 25%; left: 95%; animation-delay: 0.7s; }
+.star:nth-child(11) { top: 35%; left: 5%; animation-delay: 1.3s; }
+.star:nth-child(12) { top: 45%; left: 85%; animation-delay: 0.5s; }
+.star:nth-child(13) { top: 55%; left: 20%; animation-delay: 1.6s; }
+.star:nth-child(14) { top: 65%; left: 75%; animation-delay: 0.9s; }
+.star:nth-child(15) { top: 75%; left: 40%; animation-delay: 1.1s; }
+
+@keyframes blink {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
 }
 
 body.no-scroll {
@@ -655,7 +707,7 @@ footer {
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  .aniversario p, .musica.playing::after, .recado-dinamico, #fogosCanvas, .motivos div#motivo, .menu, .dream-description {
+  .aniversario p, .musica.playing::after, .recado-dinamico, .motivos div#motivo, .menu, .dream-description {
     animation: none;
     transition: none;
   }
