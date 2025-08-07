@@ -544,29 +544,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Relationship Counter (contador.html)
   if (window.location.pathname.includes('contador.html')) {
-    const startDate = new Date('2024-11-09T00:00:00');
+    const startDate = new Date('2024-11-09T13:00:00-03:00'); // Start date: Nov 9, 2024, 1:00 PM Brazil time
     const contadorElement = document.getElementById('contador');
 
     function updateCounter() {
       try {
-        const now = new Date();
-        const diff = now - startDate;
+        const now = new Date(); // Current date and time
+        const timeDiff = now - startDate; // Difference in milliseconds
 
-        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
-        const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
-        const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        // Calculate days, months, years
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24)); // ~270 days
+        const months = Math.floor(days / 30.42); // Approximate months (~8)
+        const years = Math.floor(months / 12); // ~0 years
+        const remainingMonths = months % 12;
+        const remainingDays = Math.floor(days % 30.42);
 
-        contadorElement.innerHTML = `
-          ${years > 0 ? `${years} ano${years > 1 ? 's' : ''}` : ''} 
-          ${months > 0 ? `${months} mese${months > 1 ? 's' : ''}` : ''} 
-          ${days} dia${days > 1 ? 's' : ''} 
-          ${hours} hora${hours > 1 ? 's' : ''} 
-          ${minutes} minuto${minutes > 1 ? 's' : ''} 
-          ${seconds} segundo${seconds > 1 ? 's' : ''}
-        `;
+        // Update counter display
+        contadorElement.textContent = `Nós estamos juntos há ${years} ano${years !== 1 ? 's' : ''}, ${remainingMonths} mese${remainingMonths !== 1 ? 's' : ''} e ${remainingDays} dia${remainingDays !== 1 ? 's' : ''}!`;
       } catch (err) {
         console.error('Counter error:', err);
       }
