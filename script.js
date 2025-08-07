@@ -552,15 +552,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const now = new Date(); // Current date and time
         const timeDiff = now - startDate; // Difference in milliseconds
 
-        // Calculate days, months, years
+        // Calculate time units
         const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24)); // ~270 days
         const months = Math.floor(days / 30.42); // Approximate months (~8)
         const years = Math.floor(months / 12); // ~0 years
         const remainingMonths = months % 12;
         const remainingDays = Math.floor(days % 30.42);
+        const remainingHours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // ~9 hours
+        const remainingMinutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60)); // ~3 minutes
+        const remainingSeconds = Math.floor((timeDiff % (1000 * 60)) / 1000); // ~0 seconds
 
         // Update counter display
-        contadorElement.textContent = `Nós estamos juntos há ${years} ano${years !== 1 ? 's' : ''}, ${remainingMonths} mese${remainingMonths !== 1 ? 's' : ''} e ${remainingDays} dia${remainingDays !== 1 ? 's' : ''}!`;
+        contadorElement.textContent = `Nós estamos juntos há ${years} ano${years !== 1 ? 's' : ''}, ${remainingMonths} mese${remainingMonths !== 1 ? 's' : ''}, ${remainingDays} dia${remainingDays !== 1 ? 's' : ''}, ${remainingHours} hora${remainingHours !== 1 ? 's' : ''}, ${remainingMinutes} minuto${remainingMinutes !== 1 ? 's' : ''} e ${remainingSeconds} segundo${remainingSeconds !== 1 ? 's' : ''}!`;
       } catch (err) {
         console.error('Counter error:', err);
       }
