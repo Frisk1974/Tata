@@ -551,25 +551,64 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const now = new Date(); // Current date and time
         const timeDiff = now - startDate; // Difference in milliseconds
+        console.log('Counter timeDiff (ms):', timeDiff); // Debug log
 
-        // Calculate time units
-        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24)); // ~270 days
-        const months = Math.floor(days / 30.42); // Approximate months (~8)
-        const years = Math.floor(months / 12); // ~0 years
-        const remainingMonths = months % 12;
-        const remainingDays = Math.floor(days % 30.42);
-        const remainingHours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // ~9 hours
-        const remainingMinutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60)); // ~3 minutes
-        const remainingSeconds = Math.floor((timeDiff % (1000 * 60)) / 1000); // ~0 seconds
+        // Calculate years, months, days, hours, minutes, seconds
+        let years = now.getFullYear() - startDate.getFullYear();
+        let months = now.getMonth() - startDate.getMonth();
+        let days = now.getDate() - startDate.getDate();
+        let hours = now.getHours() - startDate.getHours();
+        let minutes = now.getMinutes() - startDate.getMinutes();
+        let seconds = now.getSeconds() - startDate.getSeconds();
+
+        // Adjust for negative values and month/year boundaries
+        if (seconds < 0) {
+          seconds += 60;
+          minutes--;
+        }
+        if (minutes < 0) {
+          minutes += 60;
+          hours--;
+        }
+        if (hours < 0) {
+          hours += 24;
+          days--;
+        }
+        if (days < 0) {
+          const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+          days += prevMonth.getDate();
+          months--;
+        }
+        if (months < 0) {
+          months += 12;
+          years--;
+        }
+
+        console.log('Counter calc:', { years, months, days, hours, minutes, seconds }); // Debug log
 
         // Update counter display
-        contadorElement.textContent = `Nós estamos juntos há ${years} ano${years !== 1 ? 's' : ''}, ${remainingMonths} mese${remainingMonths !== 1 ? 's' : ''}, ${remainingDays} dia${remainingDays !== 1 ? 's' : ''}, ${remainingHours} hora${remainingHours !== 1 ? 's' : ''}, ${remainingMinutes} minuto${remainingMinutes !== 1 ? 's' : ''} e ${remainingSeconds} segundo${remainingSeconds !== 1 ? 's' : ''}!`;
+        contadorElement.textContent = `Nós estamos juntos há ${years} ano${years !== 1 ? 's' : ''}, ${months} mese${months !== 1 ? 's' : ''}, ${days} dia${days !== 1 ? 's' : ''}, ${hours} hora${hours !== 1 ? 's' : ''}, ${minutes} minuto${minutes !== 1 ? 's' : ''} e ${seconds} segundo${seconds !== 1 ? 's' : ''}!`;
       } catch (err) {
         console.error('Counter error:', err);
       }
     }
     updateCounter();
     setInterval(updateCounter, 1000);
+
+    // Heartbeat animation for counter
+    const counterSection = document.querySelector('.contador');
+    if (counterSection) {
+      const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          contadorElement.classList.add('heartbeat');
+        } else {
+          contadorElement.classList.remove('heartbeat');
+        }
+      }, { threshold: 0.5 });
+      observer.observe(counterSection);
+    } else {
+      console.warn('Counter section not found on contador.html');
+    }
   }
 
   // Dreams Descriptions (sonhos.html)
