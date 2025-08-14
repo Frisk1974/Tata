@@ -766,8 +766,7 @@ h3 {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.5rem;
-  margin-top: 20vh;
-  min-height: 50vh;
+  min-height: calc(100vh - 3.8rem);
 }
 
 @keyframes heartbeat {
@@ -940,6 +939,10 @@ footer {
     display: none;
   }
 
+  .section {
+    padding-top: 3.8rem;
+  }
+
   .music-player {
     padding: clamp(0.8rem, 3vw, 1rem);
   }
@@ -961,6 +964,7 @@ footer {
   .section {
     margin: clamp(1.5rem, 4vw, 2rem) auto;
     padding: clamp(0.8rem, 3vw, 1rem);
+    padding-top: 3.8rem;
   }
 
   .gallery-container {
@@ -973,7 +977,8 @@ footer {
   }
 
   .contador {
-    margin-top: 30vh;
+    padding-top: 3.8rem;
+    min-height: calc(100vh - 3.8rem);
   }
 
   .recado-container h2 {
@@ -1032,6 +1037,7 @@ footer {
   .section {
     margin: clamp(1rem, 3vw, 1.5rem) auto;
     padding: clamp(0.6rem, 2.5vw, 0.8rem);
+    padding-top: 3.8rem;
   }
 
   h2 {
