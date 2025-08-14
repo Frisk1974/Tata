@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       link.addEventListener('touchend', (e) => {
         const now = Date.now();
-        if (now - lastTap < 300) return; // Debounce rapid taps
+        if (now - lastTap < 300) return;
         lastTap = now;
         console.log('Menu link touched:', link.href);
         try {
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleMenu(e, type) {
       const now = Date.now();
-      if (now - lastTap < 300) return; // Debounce rapid taps
+      if (now - lastTap < 300) return;
       lastTap = now;
       e.preventDefault();
       console.log('Menu toggle triggered:', type);
@@ -174,91 +174,165 @@ document.addEventListener('DOMContentLoaded', () => {
     animateParticles();
   }
 
-  // Confetti Animation (aniversario.html)
-  if (window.location.pathname.includes('aniversario.html')) {
-    const confettiCanvas = document.getElementById('confetti-canvas');
-    const confettiInstance = confettiCanvas ? confetti.create(confettiCanvas, { resize: true }) : null;
-    const triggerConfetti = () => {
-      if (confettiInstance) {
-        confettiInstance({
-          particleCount: 80,
-          spread: 60,
-          origin: { y: 0.6 },
-          colors: ['#F8CFE8', '#CC3366', '#FFF'],
-        });
-      }
-    };
-    const aniversarioSection = document.getElementById('aniversario');
-    if (aniversarioSection) {
-      const observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          triggerConfetti();
-        }
-      }, { threshold: 0.5 });
-      observer.observe(aniversarioSection);
-    } else {
-      console.warn('Element #aniversario not found on aniversario.html');
-    }
-  }
-
   // Music Player (musicas.html)
   if (window.location.pathname.includes('musicas.html')) {
-    const audios = document.querySelectorAll('audio');
-    const musicaContainers = document.querySelectorAll('.musica');
+    const audioPlayer = document.getElementById('audio-player');
+    const playPauseBtn = document.querySelector('.play-pause-btn');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    const shuffleBtn = document.querySelector('.shuffle-btn');
+    const loopBtn = document.querySelector('.loop-btn');
+    const volumeBtn = document.querySelector('.volume-btn');
+    const progressBar = document.querySelector('.progress-bar');
+    const volumeBar = document.querySelector('.volume-bar');
+    const currentTime = document.querySelector('.current-time');
+    const duration = document.querySelector('.duration');
+    const trackCover = document.querySelector('.track-cover');
+    const trackTitle = document.querySelector('.current-track .track-title');
+    const trackArtist = document.querySelector('.current-track .track-artist');
+    const playlistItems = document.querySelectorAll('.playlist li');
     const playAllButton = document.querySelector('.play-all');
-    let currentAudioIndex = -1;
+    let currentTrackIndex = -1;
+    let isPlaying = false;
+    let isShuffling = false;
+    let isLooping = false;
     let isPlayingAll = false;
+    let lastTap = 0;
 
-    function stopAllAudios(excludeIndex = -1) {
-      audios.forEach((audio, index) => {
-        if (index !== excludeIndex) {
-          audio.pause();
-          audio.currentTime = 0;
-          musicaContainers[index].classList.remove('playing');
-        }
-      });
-    }
+    // Track list from playlist
+    const tracks = Array.from(playlistItems).map(item => ({
+      src: item.dataset.src,
+      title: item.dataset.title,
+      artist: item.dataset.artist,
+      cover: item.dataset.cover,
+    }));
 
-    function playNextAudio() {
+    function loadTrack(index) {
       try {
-        stopAllAudios();
-        if (currentAudioIndex < audios.length - 1) {
-          currentAudioIndex++;
-        } else {
-          currentAudioIndex = 0; // Loop back to first song
-        }
-        const audio = audios[currentAudioIndex];
-        console.log('Playing audio:', audio.src);
-        musicaContainers[currentAudioIndex].classList.add('playing');
-        setTimeout(() => {
-          audio.play().catch(err => {
-            console.error('Auto-play error for', audio.src, ':', err);
-            isPlayingAll = false;
-            playAllButton.textContent = 'Tocar Tudo';
-          });
-        }, 100); // Small delay to ensure previous audio stops
+        const track = tracks[index];
+        audioPlayer.src = track.src;
+        trackTitle.textContent = track.title;
+        trackArtist.textContent = track.artist;
+        trackCover.src = track.cover || 'images/default-cover.jpg';
+        trackCover.alt = `Capa de ${track.title}`;
+        playlistItems.forEach((item, i) => {
+          item.classList.toggle('playing', i === index);
+        });
+        updateDuration();
+        console.log('Loaded track:', track);
       } catch (err) {
-        console.error('Play next audio error:', err);
-        isPlayingAll = false;
-        playAllButton.textContent = 'Tocar Tudo';
+        console.error('Load track error:', err);
       }
     }
 
+    function playTrack() {
+      try {
+        audioPlayer.play();
+        isPlaying = true;
+        isPlayingAll = false;
+        playPauseBtn.textContent = '⏸';
+        playPauseBtn.setAttribute('aria-label', 'Pausar');
+        playAllButton.textContent = 'Tocar Tudo';
+        playAllButton.classList.remove('playing');
+        document.querySelector('.player-container').classList.add('playing');
+      } catch (err) {
+        console.error('Play error:', err);
+      }
+    }
+
+    function pauseTrack() {
+      try {
+        audioPlayer.pause();
+        isPlaying = false;
+        isPlayingAll = false;
+        playPauseBtn.textContent = '▶️';
+        playPauseBtn.setAttribute('aria-label', 'Tocar');
+        playAllButton.textContent = 'Tocar Tudo';
+        playAllButton.classList.remove('playing');
+        document.querySelector('.player-container').classList.remove('playing');
+      } catch (err) {
+        console.error('Pause error:', err);
+      }
+    }
+
+    function playNextTrack() {
+      try {
+        let nextIndex;
+        if (isShuffling) {
+          nextIndex = Math.floor(Math.random() * tracks.length);
+        } else {
+          nextIndex = (currentTrackIndex + 1) % tracks.length;
+        }
+        currentTrackIndex = nextIndex;
+        loadTrack(currentTrackIndex);
+        if (isPlaying || isPlayingAll) playTrack();
+      } catch (err) {
+        console.error('Next track error:', err);
+      }
+    }
+
+    function playPrevTrack() {
+      try {
+        const prevIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+        currentTrackIndex = prevIndex;
+        loadTrack(currentTrackIndex);
+        if (isPlaying || isPlayingAll) playTrack();
+      } catch (err) {
+        console.error('Prev track error:', err);
+      }
+    }
+
+    function playNextAll() {
+      try {
+        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+        loadTrack(currentTrackIndex);
+        playTrack();
+      } catch (err) {
+        console.error('Play next all error:', err);
+      }
+    }
+
+    function updateProgress() {
+      try {
+        const current = audioPlayer.currentTime;
+        const total = audioPlayer.duration || 0;
+        progressBar.value = total ? (current / total) * 100 : 0;
+        currentTime.textContent = formatTime(current);
+        duration.textContent = formatTime(total);
+      } catch (err) {
+        console.error('Update progress error:', err);
+      }
+    }
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function updateDuration() {
+      audioPlayer.addEventListener('loadedmetadata', () => {
+        duration.textContent = formatTime(audioPlayer.duration);
+      }, { once: true });
+    }
+
+    // Event Listeners
     if (playAllButton) {
-      let lastTap = 0;
-      playAllButton.addEventListener('click', (e) => {
-        console.log('Play all button clicked');
+      playAllButton.addEventListener('click', () => {
+        console.log('Play all clicked');
         try {
           if (isPlayingAll) {
-            stopAllAudios();
-            currentAudioIndex = -1;
+            pauseTrack();
             isPlayingAll = false;
             playAllButton.textContent = 'Tocar Tudo';
+            playAllButton.classList.remove('playing');
           } else {
-            currentAudioIndex = -1;
+            if (currentTrackIndex === -1) currentTrackIndex = 0;
+            loadTrack(currentTrackIndex);
+            playTrack();
             isPlayingAll = true;
             playAllButton.textContent = 'Parar';
-            playNextAudio();
+            playAllButton.classList.add('playing');
           }
         } catch (err) {
           console.error('Play all error:', err);
@@ -266,68 +340,183 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       playAllButton.addEventListener('touchend', (e) => {
         const now = Date.now();
-        if (now - lastTap < 300) return; // Debounce rapid taps
+        if (now - lastTap < 300) return;
         lastTap = now;
-        console.log('Play all button touched');
+        console.log('Play all touched');
         try {
           if (isPlayingAll) {
-            stopAllAudios();
-            currentAudioIndex = -1;
+            pauseTrack();
             isPlayingAll = false;
             playAllButton.textContent = 'Tocar Tudo';
+            playAllButton.classList.remove('playing');
           } else {
-            currentAudioIndex = -1;
+            if (currentTrackIndex === -1) currentTrackIndex = 0;
+            loadTrack(currentTrackIndex);
+            playTrack();
             isPlayingAll = true;
             playAllButton.textContent = 'Parar';
-            playNextAudio();
+            playAllButton.classList.add('playing');
           }
         } catch (err) {
           console.error('Play all error:', err);
         }
       }, { passive: true });
-    } else {
-      console.warn('Play all button not found on musicas.html');
     }
 
-    audios.forEach((audio, index) => {
-      audio.addEventListener('play', () => {
-        console.log('Audio playing:', audio.src);
-        try {
-          stopAllAudios(index);
-          currentAudioIndex = index;
-          isPlayingAll = false;
-          playAllButton.textContent = 'Tocar Tudo';
-          musicaContainers[index].classList.add('playing');
-        } catch (err) {
-          console.error('Audio play error:', err);
-        }
-      });
-
-      audio.addEventListener('pause', () => {
-        console.log('Audio paused:', audio.src);
-        try {
-          musicaContainers[index].classList.remove('playing');
-        } catch (err) {
-          console.error('Audio pause error:', err);
-        }
-      });
-
-      audio.addEventListener('ended', () => {
-        console.log('Audio ended:', audio.src);
-        try {
-          musicaContainers[index].classList.remove('playing');
-          if (isPlayingAll && index < audios.length - 1) {
-            playNextAudio();
-          } else {
-            isPlayingAll = false;
-            playAllButton.textContent = 'Tocar Tudo';
-            currentAudioIndex = -1;
-          }
-        } catch (err) {
-          console.error('Audio ended error:', err);
-        }
-      });
+    playPauseBtn.addEventListener('click', () => {
+      console.log('Play/pause clicked');
+      if (isPlaying) pauseTrack();
+      else playTrack();
     });
+    playPauseBtn.addEventListener('touchend', (e) => {
+      const now = Date.now();
+      if (now - lastTap < 300) return;
+      lastTap = now;
+      console.log('Play/pause touched');
+      if (isPlaying) pauseTrack();
+      else playTrack();
+    }, { passive: true });
+
+    prevBtn.addEventListener('click', () => {
+      console.log('Previous clicked');
+      playPrevTrack();
+    });
+    prevBtn.addEventListener('touchend', (e) => {
+      const now = Date.now();
+      if (now - lastTap < 300) return;
+      lastTap = now;
+      console.log('Previous touched');
+      playPrevTrack();
+    }, { passive: true });
+
+    nextBtn.addEventListener('click', () => {
+      console.log('Next clicked');
+      playNextTrack();
+    });
+    nextBtn.addEventListener('touchend', (e) => {
+      const now = Date.now();
+      if (now - lastTap < 300) return;
+      lastTap = now;
+      console.log('Next touched');
+      playNextTrack();
+    }, { passive: true });
+
+    shuffleBtn.addEventListener('click', () => {
+      console.log('Shuffle toggled');
+      isShuffling = !isShuffling;
+      shuffleBtn.classList.toggle('active', isShuffling);
+      shuffleBtn.setAttribute('aria-pressed', isShuffling);
+    });
+    shuffleBtn.addEventListener('touchend', (e) => {
+      const now = Date.now();
+      if (now - lastTap < 300) return;
+      lastTap = now;
+      console.log('Shuffle touched');
+      isShuffling = !isShuffling;
+      shuffleBtn.classList.toggle('active', isShuffling);
+      shuffleBtn.setAttribute('aria-pressed', isShuffling);
+    }, { passive: true });
+
+    loopBtn.addEventListener('click', () => {
+      console.log('Loop toggled');
+      isLooping = !isLooping;
+      audioPlayer.loop = isLooping;
+      loopBtn.classList.toggle('active', isLooping);
+      loopBtn.setAttribute('aria-pressed', isLooping);
+    });
+    loopBtn.addEventListener('touchend', (e) => {
+      const now = Date.now();
+      if (now - lastTap < 300) return;
+      lastTap = now;
+      console.log('Loop touched');
+      isLooping = !isLooping;
+      audioPlayer.loop = isLooping;
+      loopBtn.classList.toggle('active', isLooping);
+      loopBtn.setAttribute('aria-pressed', isLooping);
+    }, { passive: true });
+
+    volumeBtn.addEventListener('click', () => {
+      console.log('Volume mute/unmute');
+      audioPlayer.muted = !audioPlayer.muted;
+      volumeBtn.textContent = audioPlayer.muted ? '🔇' : '🔊';
+      volumeBtn.setAttribute('aria-label', audioPlayer.muted ? 'Ativar som' : 'Desativar som');
+    });
+    volumeBtn.addEventListener('touchend', (e) => {
+      const now = Date.now();
+      if (now - lastTap < 300) return;
+      lastTap = now;
+      console.log('Volume mute/unmute touched');
+      audioPlayer.muted = !audioPlayer.muted;
+      volumeBtn.textContent = audioPlayer.muted ? '🔇' : '🔊';
+      volumeBtn.setAttribute('aria-label', audioPlayer.muted ? 'Ativar som' : 'Desativar som');
+    }, { passive: true });
+
+    volumeBar.addEventListener('input', () => {
+      audioPlayer.volume = volumeBar.value / 100;
+      volumeBtn.textContent = audioPlayer.volume === 0 ? '🔇' : '🔊';
+    });
+
+    progressBar.addEventListener('input', () => {
+      try {
+        audioPlayer.currentTime = (progressBar.value / 100) * audioPlayer.duration;
+      } catch (err) {
+        console.error('Progress bar error:', err);
+      }
+    });
+
+    audioPlayer.addEventListener('timeupdate', updateProgress);
+    audioPlayer.addEventListener('ended', () => {
+      console.log('Track ended:', tracks[currentTrackIndex]);
+      if (!isLooping && isPlayingAll) {
+        playNextAll();
+      } else if (!isLooping) {
+        playNextTrack();
+      }
+    });
+
+    playlistItems.forEach((item, index) => {
+      item.addEventListener('click', () => {
+        console.log('Playlist item clicked:', tracks[index]);
+        currentTrackIndex = index;
+        loadTrack(currentTrackIndex);
+        playTrack();
+      });
+      item.addEventListener('touchend', (e) => {
+        const now = Date.now();
+        if (now - lastTap < 300) return;
+        lastTap = now;
+        console.log('Playlist item touched:', tracks[index]);
+        currentTrackIndex = index;
+        loadTrack(currentTrackIndex);
+        playTrack();
+      }, { passive: true });
+    });
+
+    // Keyboard accessibility
+    document.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT') return;
+      if (e.key === ' ') {
+        e.preventDefault();
+        if (isPlaying) pauseTrack();
+        else playTrack();
+      } else if (e.key === 'ArrowRight') {
+        playNextTrack();
+      } else if (e.key === 'ArrowLeft') {
+        playPrevTrack();
+      }
+    });
+
+    // Load first track
+    if (tracks.length > 0) {
+      currentTrackIndex = 0;
+      loadTrack(currentTrackIndex);
+    }
+  }
+
+  // Confetti Animation (aniversario.html)
+  if (window.location.pathname.includes('aniversario.html')) {
+    const confettiCanvas = document.getElementById('confetti-canvas');
+    // Add confetti logic if needed
   }
 
   // Lightbox for Gallery (galeria.html)
@@ -544,16 +733,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Relationship Counter (contador.html)
   if (window.location.pathname.includes('contador.html')) {
-    const startDate = new Date('2024-11-09T13:00:00-03:00'); // Start date: Nov 9, 2024, 1:00 PM Brazil time
+    const startDate = new Date('2024-11-09T13:00:00-03:00');
     const contadorElement = document.getElementById('contador');
 
     function updateCounter() {
       try {
-        const now = new Date(); // Current date and time
-        const timeDiff = now - startDate; // Difference in milliseconds
-        console.log('Counter timeDiff (ms):', timeDiff); // Debug log
+        const now = new Date();
+        const timeDiff = now - startDate;
+        console.log('Counter timeDiff (ms):', timeDiff);
 
-        // Calculate years, months, days, hours, minutes, seconds
         let years = now.getFullYear() - startDate.getFullYear();
         let months = now.getMonth() - startDate.getMonth();
         let days = now.getDate() - startDate.getDate();
@@ -561,7 +749,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let minutes = now.getMinutes() - startDate.getMinutes();
         let seconds = now.getSeconds() - startDate.getSeconds();
 
-        // Adjust for negative values and month/year boundaries
         if (seconds < 0) {
           seconds += 60;
           minutes--;
@@ -584,9 +771,7 @@ document.addEventListener('DOMContentLoaded', () => {
           years--;
         }
 
-        console.log('Counter calc:', { years, months, days, hours, minutes, seconds }); // Debug log
-
-        // Update counter display
+        console.log('Counter calc:', { years, months, days, hours, minutes, seconds });
         contadorElement.textContent = `Nós estamos juntos há ${years} ano${years !== 1 ? 's' : ''}, ${months} mese${months !== 1 ? 's' : ''}, ${days} dia${days !== 1 ? 's' : ''}, ${hours} hora${hours !== 1 ? 's' : ''}, ${minutes} minuto${minutes !== 1 ? 's' : ''} e ${seconds} segundo${seconds !== 1 ? 's' : ''}!`;
       } catch (err) {
         console.error('Counter error:', err);
@@ -595,7 +780,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCounter();
     setInterval(updateCounter, 1000);
 
-    // Heartbeat animation for counter
     const counterSection = document.querySelector('.contador');
     if (counterSection) {
       const observer = new IntersectionObserver((entries) => {
@@ -623,7 +807,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleDreamClick(e) {
       const now = Date.now();
-      if (now - lastTap < 300) return; // Debounce rapid taps
+      if (now - lastTap < 300) return;
       lastTap = now;
       e.preventDefault();
       console.log('Dream item triggered:', e.type, this.textContent.trim());

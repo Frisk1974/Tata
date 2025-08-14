@@ -1,123 +1,89 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="description" content="Músicas que lembram Tata e Heron." />
-  <meta name="keywords" content="músicas, amor, Tata, Heron" />
-  <meta name="author" content="Heron" />
-  <meta property="og:title" content="Músicas de Tata & Heron 💖" />
-  <meta property="og:description" content="Músicas que lembram Tata e Heron." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://your-site.com/images/birthday-heart.jpg" />
-  <meta property="og:url" content="https://your-site.com/musicas.html" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Músicas de Tata & Heron 💖" />
-  <meta name="twitter:description" content="Músicas que lembram Tata e Heron." />
-  <meta name="twitter:image" content="https://your-site.com/images/birthday-heart.jpg" />
-  <title>Músicas de Tata & Heron 💖</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/png" href="favicon.png" />
-  <link rel="preload" href="musicas/sunshine.mp3" as="audio" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Músicas do Nosso Amor</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="stars-container">
+    <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+    <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+    <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+  </div>
   <canvas id="fogosCanvas"></canvas>
-  <button class="menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="menu">☰</button>
-  <nav class="menu" id="menu" role="navigation" aria-label="Navegação principal">
-    <button class="menu-close" aria-label="Fechar menu">×</button>
-    <ul>
-      <li><a href="index.html"><span class="menu-icon">🏠</span> Início</a></li>
-      <li><a href="aniversario.html"><span class="menu-icon">🎉</span> Aniversário</a></li>
-      <li><a href="history.html"><span class="menu-icon">📖</span> História</a></li>
-      <li><a href="galeria.html"><span class="menu-icon">📸</span> Galeria</a></li>
-      <li><a href="poema.html"><span class="menu-icon">✍️</span> Poema</a></li>
-      <li><a href="musicas.html" aria-current="page"><span class="menu-icon">🎵</span> Músicas</a></li>
-      <li><a href="sonhos.html"><span class="menu-icon">🌟</span> Sonhos</a></li>
-      <li><a href="contador.html"><span class="menu-icon">⏳</span> Contador</a></li>
-      <li><a href="motivos.html"><span class="menu-icon">💖</span> Motivos</a></li>
-      <li><a href="recado.html"><span class="menu-icon">💌</span> Recado</a></li>
-    </ul>
-  </nav>
-
+  <header>
+    <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+    <nav class="menu">
+      <button class="menu-close" aria-label="Fechar menu">✕</button>
+      <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="contador.html">Contador</a></li>
+        <li><a href="galeria.html">Galeria</a></li>
+        <li><a href="motivos.html">Motivos</a></li>
+        <li><a href="musicas.html" aria-current="page">Músicas</a></li>
+        <li><a href="sonhos.html">Sonhos</a></li>
+        <li><a href="recado.html">Recado</a></li>
+        <li><a href="aniversario.html">Aniversário</a></li>
+      </ul>
+    </nav>
+  </header>
   <main>
-    <section id="musicas" class="section musicas" aria-labelledby="musicas-title" role="region">
-      <h2 id="musicas-title">Nossas Músicas 🎶</h2>
+    <section class="section music-player">
+      <h2>Músicas do Nosso Amor</h2>
       <button class="play-all" aria-label="Tocar todas as músicas">Tocar Tudo</button>
       <div class="player-container">
-        <div class="musica">
-          <h3>Sunshine</h3>
-          <audio controls>
-            <source src="musicas/sunshine.mp3" type="audio/mpeg" />
-            Seu navegador não suporta o elemento de áudio.
-          </audio>
+        <figure class="current-track">
+          <img src="images/default-cover.jpg" alt="Capa do álbum" class="track-cover">
+          <figcaption>
+            <span class="track-title">Título da Música</span>
+            <span class="track-artist">Artista</span>
+          </figcaption>
+        </figure>
+        <div class="player-controls">
+          <button class="control-btn shuffle-btn" aria-label="Ativar/desativar aleatório" title="Aleatório">🔀</button>
+          <button class="control-btn prev-btn" aria-label="Música anterior" title="Anterior">⏮</button>
+          <button class="control-btn play-pause-btn" aria-label="Tocar" title="Tocar/Pausar">▶️</button>
+          <button class="control-btn next-btn" aria-label="Próxima música" title="Próxima">⏭</button>
+          <button class="control-btn loop-btn" aria-label="Ativar/desativar repetição" title="Repetir">🔁</button>
         </div>
-        <div class="musica">
-          <h3>A Meta é Ficar Bem</h3>
-          <audio controls>
-            <source src="musicas/a_meta_e_ficar_bem.mp3" type="audio/mpeg" />
-            Seu navegador não suporta o elemento de áudio.
-          </audio>
+        <div class="progress-container">
+          <span class="current-time">0:00</span>
+          <input type="range" class="progress-bar" min="0" max="100" value="0" aria-label="Progresso da música">
+          <span class="duration">0:00</span>
         </div>
-        <div class="musica">
-          <h3>Afrodite</h3>
-          <audio controls>
-            <source src="musicas/afrodite.mp3" type="audio/mpeg" />
-            Seu navegador não suporta o elemento de áudio.
-          </audio>
+        <div class="volume-container">
+          <button class="control-btn volume-btn" aria-label="Desativar som" title="Volume">🔊</button>
+          <input type="range" class="volume-bar" min="0" max="100" value="50" aria-label="Controle de volume">
         </div>
-        <div class="musica">
-          <h3>Aliança</h3>
-          <audio controls>
-            <source src="musicas/alianca.mp3" type="audio/mpeg" />
-            Seu navegador não suporta o elemento de áudio.
-          </audio>
-        </div>
-        <div class="musica">
-          <h3>Congratulations</h3>
-          <audio controls>
-            <source src="musicas/congratulations.mp3" type="audio/mpeg" />
-            Seu navegador não suporta o elemento de áudio.
-          </audio>
-        </div>
-        <div class="musica">
-          <h3>Die With a Smile</h3>
-          <audio controls>
-            <source src="musicas/die_with_a_smile.mp3" type="audio/mpeg" />
-            Seu navegador não suporta o elemento de áudio.
-          </audio>
-        </div>
-        <div class="musica">
-          <h3>Just the Way You Are</h3>
-          <audio controls>
-            <source src="musicas/just_the_way_you_are.mp3" type="audio/mpeg" />
-            Seu navegador não suporta o elemento de áudio.
-          </audio>
-        </div>
-        <div class="musica">
-          <h3>Portugal</h3>
-          <audio controls>
-            <source src="musicas/portugal.mp3" type="audio/mpeg" />
-            Seu navegador não suporta o elemento de áudio.
-          </audio>
-        </div>
-        <div class="musica">
-          <h3>Can't Help Falling in Love</h3>
-          <audio controls>
-            <source src="musicas/cant_help_falling_in_love.mp3" type="audio/mpeg" />
-            Seu navegador não suporta o elemento de áudio.
-          </audio>
-        </div>
+        <audio id="audio-player" src=""></audio>
+      </div>
+      <div class="playlist">
+        <h3>Lista de Reprodução</h3>
+        <ul>
+          <li data-src="musicas/sunshine.mp3" data-title="Sunshine" data-artist="Artista 1" data-cover="images/sunshine.jpg">
+            <img src="images/sunshine.jpg" alt="Capa de Sunshine" class="playlist-cover">
+            <div class="track-info">
+              <span class="track-title">Sunshine</span>
+              <span class="track-artist">Artista 1</span>
+            </div>
+          </li>
+          <li data-src="musicas/heartbeat.mp3" data-title="Heartbeat" data-artist="Artista 2" data-cover="images/heartbeat.jpg">
+            <img src="images/heartbeat.jpg" alt="Capa de Heartbeat" class="playlist-cover">
+            <div class="track-info">
+              <span class="track-title">Heartbeat</span>
+              <span class="track-artist">Artista 2</span>
+            </div>
+          </li>
+        </ul>
       </div>
     </section>
   </main>
-
-  <footer id="footer" aria-label="Rodapé">
-    <p>Feito por Heron com todo o amor do mundo 💌</p>
+  <footer>
+    <p>Feito com 💖 para Tata</p>
   </footer>
-
-  <button class="back-to-top" aria-label="Voltar ao topo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
-
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <button class="back-to-top" aria-label="Voltar ao topo">↑</button>
   <script src="script.js"></script>
 </body>
 </html>
