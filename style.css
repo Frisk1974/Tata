@@ -308,13 +308,13 @@ h3 {
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  font-family: var(--font-corpo);
+  font-family: var(--font-titulo);
   font-size: clamp(0.9rem, 2.5vw, 1rem);
   font-weight: 600;
   box-shadow: 0 0.2rem 0.4rem var(--sombra);
   min-width: 48px;
   min-height: 48px;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   pointer-events: auto;
@@ -324,10 +324,13 @@ h3 {
 .play-all:focus {
   background: #b02a58;
   transform: translateY(-0.2rem);
+  box-shadow: 0 0.3rem 0.6rem var(--sombra);
 }
 
 .play-all.playing {
   background: #ff6699;
+  box-shadow: 0 0 10px #ff6699;
+  animation: heartPulse 1s infinite;
 }
 
 .player-container {
@@ -390,27 +393,33 @@ h3 {
 }
 
 .control-btn {
-  background: var(--rosa-escuro);
+  background: linear-gradient(to right, var(--rosa-suave), var(--rosa-escuro));
   color: var(--branco);
   border: none;
   padding: 0.6rem;
   border-radius: 50%;
+  font-family: var(--font-titulo);
   font-size: 1.2rem;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
   min-width: 48px;
   min-height: 48px;
+  box-shadow: 0 0 8px var(--rosa-escuro);
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
 }
 
-.control-btn:hover {
-  background: #b02a58;
+.control-btn:hover,
+.control-btn:focus {
   transform: scale(1.1);
+  box-shadow: 0 0 12px var(--rosa-escuro);
+  animation: heartPulse 1s infinite;
 }
 
 .control-btn.active {
-  background: #ff6699;
+  background: linear-gradient(to right, #ff6699, var(--rosa-escuro));
+  box-shadow: 0 0 12px #ff6699;
 }
 
 .progress-container {
@@ -423,18 +432,42 @@ h3 {
 .progress-bar {
   flex-grow: 1;
   -webkit-appearance: none;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.3);
+  appearance: none;
+  height: 6px;
+  background: linear-gradient(to right, var(--rosa-suave), var(--rosa-escuro));
   border-radius: 5px;
   cursor: pointer;
 }
 
+.progress-bar::-webkit-slider-runnable-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+}
+
 .progress-bar::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   background: var(--rosa-escuro);
   border-radius: 50%;
+  margin-top: -4px;
+  box-shadow: 0 0 6px var(--rosa-escuro);
+}
+
+.progress-bar::-moz-range-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+}
+
+.progress-bar::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--rosa-escuro);
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0 0 6px var(--rosa-escuro);
 }
 
 .current-time, .duration {
@@ -452,17 +485,42 @@ h3 {
 .volume-bar {
   width: 100px;
   -webkit-appearance: none;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.3);
+  appearance: none;
+  height: 6px;
+  background: linear-gradient(to right, var(--rosa-suave), var(--rosa-escuro));
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.volume-bar::-webkit-slider-runnable-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 5px;
 }
 
 .volume-bar::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   background: var(--rosa-escuro);
   border-radius: 50%;
+  margin-top: -4px;
+  box-shadow: 0 0 6px var(--rosa-escuro);
+}
+
+.volume-bar::-moz-range-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+}
+
+.volume-bar::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--rosa-escuro);
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0 0 6px var(--rosa-escuro);
 }
 
 .playlist {
@@ -496,6 +554,7 @@ h3 {
 
 .playlist li.playing {
   background: var(--rosa-suave);
+  box-shadow: 0 0 10px var(--rosa-escuro);
 }
 
 .playlist-cover {
@@ -865,7 +924,7 @@ footer {
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  .aniversario p, .player-container.playing::after, .recado-dinamico, .motivos div#motivo, .menu, .dream-description {
+  .aniversario p, .player-container.playing::after, .recado-dinamico, .motivos div#motivo, .menu, .dream-description, .play-all.playing, .control-btn:hover, .control-btn:focus {
     animation: none;
     transition: none;
   }

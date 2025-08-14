@@ -516,7 +516,56 @@ document.addEventListener('DOMContentLoaded', () => {
   // Confetti Animation (aniversario.html)
   if (window.location.pathname.includes('aniversario.html')) {
     const confettiCanvas = document.getElementById('confetti-canvas');
-    // Add confetti logic if needed
+    if (confettiCanvas) {
+      const ctx = confettiCanvas.getContext('2d');
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+
+      let confettiParticles = [];
+
+      function createConfetti() {
+        const colors = ['#ff4d4d', '#ffcc00', '#66ff66', '#66ccff', '#ff99cc'];
+        confettiParticles.push({
+          x: Math.random() * confettiCanvas.width,
+          y: -10,
+          speedY: Math.random() * 3 + 2,
+          speedX: (Math.random() - 0.5) * 2,
+          size: Math.random() * 5 + 5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          angle: Math.random() * 360,
+          rotationSpeed: (Math.random() - 0.5) * 5
+        });
+      }
+
+      function animateConfetti() {
+        ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+        confettiParticles.forEach((p, index) => {
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.angle += p.rotationSpeed;
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.angle * Math.PI) / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+          ctx.restore();
+
+          if (p.y > confettiCanvas.height) {
+            confettiParticles.splice(index, 1);
+          }
+        });
+        requestAnimationFrame(animateConfetti);
+      }
+
+      window.addEventListener('resize', () => {
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+      });
+
+      setInterval(createConfetti, 100);
+      animateConfetti();
+    }
   }
 
   // Lightbox for Gallery (galeria.html)
@@ -687,151 +736,192 @@ document.addEventListener('DOMContentLoaded', () => {
       "Porque sua presença faz tudo valer a pena.",
       "Porque você é a minha inspiração diária.",
       "Porque seu toque me faz esquecer do resto do mundo.",
-      "Porque você é o motivo de eu acreditar em destinos.",
-      "Porque seu amor é a minha maior conquista.",
-      "Porque você é a luz que nunca se apaga em mim.",
-      "Porque com você, cada dia é uma nova aventura.",
-      "Porque você é o motivo de eu querer ser eterno.",
-      "Porque seu sorriso é o remédio pra qualquer dor.",
-      "Porque você é a minha razão de existir.",
-      "Porque seu amor é o que dá cor à minha vida.",
-      "Porque você é o meu começo, meio e fim.",
-      "Porque com você, sinto o infinito em cada segundo.",
-      "Porque você é a minha paz em um mundo caótico.",
-      "Porque seu olhar é o espelho da minha alma.",
-      "Porque você é o motivo de eu nunca desistir.",
-      "Porque seu amor é o que me faz sonhar acordado.",
-      "Porque você é simplesmente tudo para mim."
+      "Porque você é o motivo de eu acreditar em finais felizes."
     ];
     const motivoElement = document.getElementById('motivo');
     const motivoButton = document.querySelector('.motivos button');
-    function mostrarOutroMotivo() {
+
+    function mostrarMotivoAleatorio() {
       try {
         const randomIndex = Math.floor(Math.random() * motivos.length);
         motivoElement.textContent = motivos[randomIndex];
       } catch (err) {
-        console.error('Motivo error:', err);
+        console.error('Random motivo error:', err);
       }
     }
-    window.mostrarOutroMotivo = mostrarOutroMotivo;
-    if (motivoButton) {
-      let lastTap = 0;
+
+    if (motivoButton && motivoElement) {
       motivoButton.addEventListener('click', () => {
         console.log('Motivo button clicked');
-        mostrarOutroMotivo();
+        mostrarMotivoAleatorio();
       });
-      motivoButton.addEventListener('touchend', () => {
+      motivoButton.addEventListener('touchend', (e) => {
         const now = Date.now();
         if (now - lastTap < 300) return;
         lastTap = now;
         console.log('Motivo button touched');
-        mostrarOutroMotivo();
+        mostrarMotivoAleatorio();
       }, { passive: true });
+      mostrarMotivoAleatorio();
     }
-    mostrarOutroMotivo();
   }
 
-  // Relationship Counter (contador.html)
-  if (window.location.pathname.includes('contador.html')) {
-    const startDate = new Date('2024-11-09T13:00:00-03:00');
-    const contadorElement = document.getElementById('contador');
+  // Dreams (sonhos.html)
+  if (window.location.pathname.includes('sonhos.html')) {
+    const sonhos = [
+      {
+        title: "Viajar juntos",
+        description: "Explorar o mundo de mãos dadas, descobrindo novos lugares e criando memórias inesquecíveis."
+      },
+      {
+        title: "Construir uma família",
+        description: "Formar nosso lar, cheio de amor, risadas e momentos que aquecem o coração."
+      },
+      {
+        title: "Noites de filme",
+        description: "Passar noites abraçados, assistindo nossos filmes favoritos com pipoca e carinho."
+      },
+      {
+        title: "Aventura na natureza",
+        description: "Caminhar por florestas, acampar sob as estrelas e sentir a liberdade juntos."
+      },
+      {
+        title: "Cozinhar juntos",
+        description: "Fazer receitas novas, rir dos erros e criar pratos cheios de amor."
+      },
+      {
+        title: "Dançar sem motivo",
+        description: "Girar pela sala ao som de uma música qualquer, só porque estamos juntos."
+      },
+      {
+        title: "Ver o pôr do sol",
+        description: "Sentar lado a lado, vendo o céu mudar de cor e sentindo a paz de estar com você."
+      },
+      {
+        title: "Escrever nossa história",
+        description: "Registrar cada momento especial, para um dia contar aos nossos filhos e netos."
+      },
+      {
+        title: "Adotar um pet",
+        description: "Ter um companheiro peludo para alegrar ainda mais nossos dias."
+      },
+      {
+        title: "Crescer juntos",
+        description: "Aprender, evoluir e enfrentar a vida como uma equipe, sempre juntos."
+      }
+    ];
 
-    function updateCounter() {
+    const sonhosList = document.querySelector('#sonhos ul');
+    let lastTap = 0;
+
+    sonhos.forEach((sonho, index) => {
+      const li = document.createElement('li');
+      li.textContent = sonho.title;
+      li.setAttribute('aria-expanded', 'false');
+      li.setAttribute('role', 'button');
+      li.setAttribute('tabindex', '0');
+
+      const description = document.createElement('div');
+      description.classList.add('dream-description');
+      description.textContent = sonho.description;
+
+      li.appendChild(description);
+
+      li.addEventListener('click', () => {
+        console.log('Sonho clicked:', sonho.title);
+        toggleDreamDescription(li, description);
+      });
+
+      li.addEventListener('touchend', (e) => {
+        const now = Date.now();
+        if (now - lastTap < 300) return;
+        lastTap = now;
+        console.log('Sonho touched:', sonho.title);
+        toggleDreamDescription(li, description);
+      }, { passive: true });
+
+      li.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          console.log('Sonho keydown:', sonho.title);
+          toggleDreamDescription(li, description);
+        }
+      });
+
+      sonhosList.appendChild(li);
+    });
+
+    function toggleDreamDescription(li, description) {
+      try {
+        const isExpanded = description.classList.contains('active');
+        document.querySelectorAll('.dream-description').forEach(desc => {
+          desc.classList.remove('active');
+          desc.parentElement.setAttribute('aria-expanded', 'false');
+        });
+        if (!isExpanded) {
+          description.classList.add('active');
+          li.setAttribute('aria-expanded', 'true');
+        }
+      } catch (err) {
+        console.error('Toggle dream description error:', err);
+      }
+    }
+  }
+
+  // Contador (contador.html)
+  if (window.location.pathname.includes('contador.html')) {
+    const contadorElement = document.getElementById('contador');
+    const startDate = new Date('2024-11-09T13:00:00-03:00');
+
+    function updateContador() {
       try {
         const now = new Date();
         const timeDiff = now - startDate;
-        console.log('Counter timeDiff (ms):', timeDiff);
+        console.log('Counter timeDiff:', timeDiff);
 
-        let years = now.getFullYear() - startDate.getFullYear();
-        let months = now.getMonth() - startDate.getMonth();
-        let days = now.getDate() - startDate.getDate();
-        let hours = now.getHours() - startDate.getHours();
-        let minutes = now.getMinutes() - startDate.getMinutes();
-        let seconds = now.getSeconds() - startDate.getSeconds();
+        const seconds = Math.floor(timeDiff / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+        const months = Math.floor(days / 30);
+        const years = Math.floor(months / 12);
 
-        if (seconds < 0) {
-          seconds += 60;
-          minutes--;
-        }
-        if (minutes < 0) {
-          minutes += 60;
-          hours--;
-        }
-        if (hours < 0) {
-          hours += 24;
-          days--;
-        }
-        if (days < 0) {
-          const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-          days += prevMonth.getDate();
-          months--;
-        }
-        if (months < 0) {
-          months += 12;
-          years--;
-        }
+        const remainingMonths = months % 12;
+        const remainingDays = days % 30;
+        const remainingHours = hours % 24;
+        const remainingMinutes = minutes % 60;
+        const remainingSeconds = seconds % 60;
 
-        console.log('Counter calc:', { years, months, days, hours, minutes, seconds });
-        contadorElement.textContent = `Nós estamos juntos há ${years} ano${years !== 1 ? 's' : ''}, ${months} mese${months !== 1 ? 's' : ''}, ${days} dia${days !== 1 ? 's' : ''}, ${hours} hora${hours !== 1 ? 's' : ''}, ${minutes} minuto${minutes !== 1 ? 's' : ''} e ${seconds} segundo${seconds !== 1 ? 's' : ''}!`;
+        console.log('Counter calc:', { years, remainingMonths, remainingDays, remainingHours, remainingMinutes, remainingSeconds });
+
+        contadorElement.innerHTML = `
+          ${years > 0 ? `<span>${years} ano${years > 1 ? 's' : ''}</span>` : ''}
+          ${remainingMonths > 0 ? `<span>${remainingMonths} mese${remainingMonths > 1 ? 's' : ''}</span>` : ''}
+          ${remainingDays > 0 ? `<span>${remainingDays} dia${remainingDays > 1 ? 's' : ''}</span>` : ''}
+          ${remainingHours > 0 ? `<span>${remainingHours} hora${remainingHours > 1 ? 's' : ''}</span>` : ''}
+          ${remainingMinutes > 0 ? `<span>${remainingMinutes} minuto${remainingMinutes > 1 ? 's' : ''}</span>` : ''}
+          ${remainingSeconds > 0 ? `<span>${remainingSeconds} segundo${remainingSeconds > 1 ? 's' : ''}</span>` : ''}
+        `;
       } catch (err) {
-        console.error('Counter error:', err);
+        console.error('Contador error:', err);
       }
     }
-    updateCounter();
-    setInterval(updateCounter, 1000);
 
-    const counterSection = document.querySelector('.contador');
-    if (counterSection) {
-      const observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          contadorElement.classList.add('heartbeat');
-        } else {
-          contadorElement.classList.remove('heartbeat');
-        }
-      }, { threshold: 0.5 });
-      observer.observe(counterSection);
-    } else {
-      console.warn('Counter section not found on contador.html');
-    }
-  }
-
-  // Dreams Descriptions (sonhos.html)
-  if (window.location.pathname.includes('sonhos.html')) {
-    const dreamItems = document.querySelectorAll('#sonhos ul li');
-    let lastTap = 0;
-    dreamItems.forEach(item => {
-      item.addEventListener('click', handleDreamClick);
-      item.addEventListener('touchstart', handleDreamClick, { passive: true });
-      item.addEventListener('touchend', handleDreamClick, { passive: true });
-    });
-
-    function handleDreamClick(e) {
-      const now = Date.now();
-      if (now - lastTap < 300) return;
-      lastTap = now;
-      e.preventDefault();
-      console.log('Dream item triggered:', e.type, this.textContent.trim());
-      try {
-        const description = this.querySelector('.dream-description');
-        const isActive = description.classList.contains('active');
-
-        document.querySelectorAll('.dream-description').forEach(desc => {
-          desc.classList.remove('active');
-        });
-
-        if (!isActive) {
-          description.classList.add('active');
-        }
-      } catch (err) {
-        console.error('Dream click error:', err);
-      }
-    }
+    updateContador();
+    setInterval(updateContador, 1000);
   }
 
   // Back to Top Button
   const backToTopButton = document.querySelector('.back-to-top');
   if (backToTopButton) {
-    let lastTap = 0;
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTopButton.classList.add('visible');
+      } else {
+        backToTopButton.classList.remove('visible');
+      }
+    });
+
     backToTopButton.addEventListener('click', () => {
       console.log('Back to top clicked');
       try {
@@ -840,7 +930,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Back to top error:', err);
       }
     });
-    backToTopButton.addEventListener('touchend', () => {
+
+    backToTopButton.addEventListener('touchend', (e) => {
       const now = Date.now();
       if (now - lastTap < 300) return;
       lastTap = now;
@@ -851,9 +942,5 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Back to top error:', err);
       }
     }, { passive: true });
-
-    window.addEventListener('scroll', () => {
-      backToTopButton.classList.toggle('visible', window.scrollY > 300);
-    });
   }
 });
