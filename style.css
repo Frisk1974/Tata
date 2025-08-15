@@ -165,6 +165,7 @@ body.no-scroll {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   pointer-events: auto;
+  z-index: 2000;
 }
 
 .menu-close:hover,
@@ -179,11 +180,6 @@ body.no-scroll {
   gap: 0.8rem;
   list-style: none;
   margin-top: 2.5rem;
-}
-
-.menu li {
-  display: flex;
-  align-items: center;
 }
 
 .menu a {
@@ -256,6 +252,7 @@ body.no-scroll {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   pointer-events: auto;
+  z-index: 20;
 }
 
 .hero button:hover,
@@ -400,10 +397,10 @@ h3 {
   background: linear-gradient(to right, var(--rosa-suave), var(--rosa-escuro));
   color: var(--branco);
   border: none;
-  padding: 0.6rem;
+  padding: 0.8rem;
   border-radius: 50%;
   font-family: var(--font-titulo);
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.3s ease;
   min-width: 48px;
@@ -439,7 +436,7 @@ h3 {
   flex-grow: 1;
   -webkit-appearance: none;
   appearance: none;
-  height: 6px;
+  height: 8px;
   background: linear-gradient(to right, var(--rosa-suave), var(--rosa-escuro));
   border-radius: 5px;
   cursor: pointer;
@@ -447,15 +444,15 @@ h3 {
 }
 
 .progress-bar::-webkit-slider-runnable-track {
-  height: 6px;
+  height: 8px;
   background: rgba(255, 255, 255, 0.5);
   border-radius: 5px;
 }
 
 .progress-bar::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   background: var(--rosa-escuro);
   border-radius: 50%;
   margin-top: -4px;
@@ -464,14 +461,14 @@ h3 {
 }
 
 .progress-bar::-moz-range-track {
-  height: 6px;
+  height: 8px;
   background: rgba(255, 255, 255, 0.5);
   border-radius: 5px;
 }
 
 .progress-bar::-moz-range-thumb {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   background: var(--rosa-escuro);
   border-radius: 50%;
   border: none;
@@ -481,7 +478,7 @@ h3 {
 
 .current-time, .duration {
   font-family: var(--font-corpo);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: var(--texto);
 }
 
@@ -496,7 +493,7 @@ h3 {
   width: 100px;
   -webkit-appearance: none;
   appearance: none;
-  height: 6px;
+  height: 8px;
   background: linear-gradient(to right, var(--rosa-suave), var(--rosa-escuro));
   border-radius: 5px;
   cursor: pointer;
@@ -504,15 +501,15 @@ h3 {
 }
 
 .volume-bar::-webkit-slider-runnable-track {
-  height: 6px;
+  height: 8px;
   background: rgba(255, 255, 255, 0.5);
   border-radius: 5px;
 }
 
 .volume-bar::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   background: var(--rosa-escuro);
   border-radius: 50%;
   margin-top: -4px;
@@ -521,14 +518,14 @@ h3 {
 }
 
 .volume-bar::-moz-range-track {
-  height: 6px;
+  height: 8px;
   background: rgba(255, 255, 255, 0.5);
   border-radius: 5px;
 }
 
 .volume-bar::-moz-range-thumb {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   background: var(--rosa-escuro);
   border-radius: 50%;
   border: none;
@@ -644,7 +641,10 @@ h3 {
   cursor: pointer;
   box-shadow: 0 0.3rem 0.6rem var(--sombra);
   transition: transform 0.3s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   pointer-events: auto;
+  z-index: 20;
 }
 
 .gallery-img:hover {
@@ -691,6 +691,7 @@ h3 {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   pointer-events: auto;
+  z-index: 2000;
 }
 
 /* Poema */
@@ -731,6 +732,7 @@ h3 {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   pointer-events: auto;
+  z-index: 20;
 }
 
 #sonhos ul li:hover {
@@ -827,6 +829,7 @@ h3 {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   pointer-events: auto;
+  z-index: 20;
 }
 
 .motivos button:hover,
@@ -956,5 +959,61 @@ footer {
     display: none;
   }
 
-  .section {
+  .section, .contador {
     padding-top: 3.8rem;
+  }
+
+  .music-player {
+    padding: clamp(0.8rem, 3vw, 1rem);
+  }
+
+  .player-container {
+    padding: 1rem;
+  }
+
+  .track-cover {
+    width: 60px;
+    height: 60px;
+  }
+
+  .playlist-cover {
+    width: 40px;
+    height: 40px;
+  }
+
+  .player-controls {
+    gap: 0.8rem;
+  }
+
+  .control-btn {
+    padding: 0.6rem;
+    font-size: 1.1rem;
+  }
+
+  .progress-bar, .volume-bar {
+    height: 6px;
+  }
+
+  .progress-bar::-webkit-slider-thumb,
+  .volume-bar::-webkit-slider-thumb {
+    width: 14px;
+    height: 14px;
+    margin-top: -4px;
+  }
+
+  .progress-bar::-moz-range-thumb,
+  .volume-bar::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+  }
+
+  .section {
+    margin: clamp(1.5rem, 4vw, 2rem) auto;
+    padding: clamp(0.8rem, 3vw, 1rem);
+    padding-top: 3.8rem;
+  }
+
+  .gallery-container {
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  }
+}
