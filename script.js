@@ -12,12 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (menuToggle && menu && menuClose) {
     let lastTap = 0;
     menuToggle.addEventListener('click', (e) => toggleMenu(e, 'click'));
-    menuToggle.addEventListener('touchstart', (e) => toggleMenu(e, 'touchstart'), { passive: true });
-    menuToggle.addEventListener('touchend', (e) => toggleMenu(e, 'touchend'), { passive: true });
+    menuToggle.addEventListener('touchend', (e) => toggleMenu(e, 'touchend'), { passive: false });
 
     menuClose.addEventListener('click', (e) => closeMenu(e, 'click'));
-    menuClose.addEventListener('touchstart', (e) => closeMenu(e, 'touchstart'), { passive: true });
-    menuClose.addEventListener('touchend', (e) => closeMenu(e, 'touchend'), { passive: true });
+    menuClose.addEventListener('touchend', (e) => closeMenu(e, 'touchend'), { passive: false });
 
     const menuLinks = document.querySelectorAll('.menu a');
     menuLinks.forEach(link => {
@@ -36,8 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       link.addEventListener('touchend', (e) => {
         const now = Date.now();
-        if (now - lastTap < 300) return;
+        if (now - lastTap < 500) return;
         lastTap = now;
+        e.preventDefault();
         console.log('Menu link touched:', link.href);
         try {
           if (window.innerWidth <= 768) {
@@ -49,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Navigation error:', err);
         }
-      }, { passive: true });
+      }, { passive: false });
     });
 
     document.addEventListener('click', (e) => {
@@ -62,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!menu.contains(e.target) && !menuToggle.contains(e.target) && menu.classList.contains('open')) {
         closeMenu(e, 'touch outside');
       }
-    }, { passive: true });
+    }, { passive: false });
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && menu.classList.contains('open')) {
@@ -72,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleMenu(e, type) {
       const now = Date.now();
-      if (now - lastTap < 300) return;
+      if (now - lastTap < 500) return;
       lastTap = now;
       e.preventDefault();
       console.log('Menu toggle triggered:', type);
@@ -316,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }, { once: true });
     }
 
-    // Event Listeners
+    // Event Listeners for Music Player
     if (playAllButton) {
       playAllButton.addEventListener('click', () => {
         console.log('Play all clicked');
@@ -340,8 +339,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       playAllButton.addEventListener('touchend', (e) => {
         const now = Date.now();
-        if (now - lastTap < 300) return;
+        if (now - lastTap < 500) return;
         lastTap = now;
+        e.preventDefault();
         console.log('Play all touched');
         try {
           if (isPlayingAll) {
@@ -358,24 +358,33 @@ document.addEventListener('DOMContentLoaded', () => {
             playAllButton.classList.add('playing');
           }
         } catch (err) {
-          console.error('Play all error:', err);
+          console.error('Play all touch error:', err);
         }
-      }, { passive: true });
+      }, { passive: false });
     }
 
     playPauseBtn.addEventListener('click', () => {
       console.log('Play/pause clicked');
-      if (isPlaying) pauseTrack();
-      else playTrack();
+      try {
+        if (isPlaying) pauseTrack();
+        else playTrack();
+      } catch (err) {
+        console.error('Play/pause error:', err);
+      }
     });
     playPauseBtn.addEventListener('touchend', (e) => {
       const now = Date.now();
-      if (now - lastTap < 300) return;
+      if (now - lastTap < 500) return;
       lastTap = now;
+      e.preventDefault();
       console.log('Play/pause touched');
-      if (isPlaying) pauseTrack();
-      else playTrack();
-    }, { passive: true });
+      try {
+        if (isPlaying) pauseTrack();
+        else playTrack();
+      } catch (err) {
+        console.error('Play/pause touch error:', err);
+      }
+    }, { passive: false });
 
     prevBtn.addEventListener('click', () => {
       console.log('Previous clicked');
@@ -383,11 +392,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     prevBtn.addEventListener('touchend', (e) => {
       const now = Date.now();
-      if (now - lastTap < 300) return;
+      if (now - lastTap < 500) return;
       lastTap = now;
+      e.preventDefault();
       console.log('Previous touched');
       playPrevTrack();
-    }, { passive: true });
+    }, { passive: false });
 
     nextBtn.addEventListener('click', () => {
       console.log('Next clicked');
@@ -395,65 +405,97 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     nextBtn.addEventListener('touchend', (e) => {
       const now = Date.now();
-      if (now - lastTap < 300) return;
+      if (now - lastTap < 500) return;
       lastTap = now;
+      e.preventDefault();
       console.log('Next touched');
       playNextTrack();
-    }, { passive: true });
+    }, { passive: false });
 
     shuffleBtn.addEventListener('click', () => {
-      console.log('Shuffle toggled');
-      isShuffling = !isShuffling;
-      shuffleBtn.classList.toggle('active', isShuffling);
-      shuffleBtn.setAttribute('aria-pressed', isShuffling);
+      console.log('Shuffle clicked');
+      try {
+        isShuffling = !isShuffling;
+        shuffleBtn.classList.toggle('active', isShuffling);
+        shuffleBtn.setAttribute('aria-pressed', isShuffling);
+      } catch (err) {
+        console.error('Shuffle error:', err);
+      }
     });
     shuffleBtn.addEventListener('touchend', (e) => {
       const now = Date.now();
-      if (now - lastTap < 300) return;
+      if (now - lastTap < 500) return;
       lastTap = now;
+      e.preventDefault();
       console.log('Shuffle touched');
-      isShuffling = !isShuffling;
-      shuffleBtn.classList.toggle('active', isShuffling);
-      shuffleBtn.setAttribute('aria-pressed', isShuffling);
-    }, { passive: true });
+      try {
+        isShuffling = !isShuffling;
+        shuffleBtn.classList.toggle('active', isShuffling);
+        shuffleBtn.setAttribute('aria-pressed', isShuffling);
+      } catch (err) {
+        console.error('Shuffle touch error:', err);
+      }
+    }, { passive: false });
 
     loopBtn.addEventListener('click', () => {
-      console.log('Loop toggled');
-      isLooping = !isLooping;
-      audioPlayer.loop = isLooping;
-      loopBtn.classList.toggle('active', isLooping);
-      loopBtn.setAttribute('aria-pressed', isLooping);
+      console.log('Loop clicked');
+      try {
+        isLooping = !isLooping;
+        audioPlayer.loop = isLooping;
+        loopBtn.classList.toggle('active', isLooping);
+        loopBtn.setAttribute('aria-pressed', isLooping);
+      } catch (err) {
+        console.error('Loop error:', err);
+      }
     });
     loopBtn.addEventListener('touchend', (e) => {
       const now = Date.now();
-      if (now - lastTap < 300) return;
+      if (now - lastTap < 500) return;
       lastTap = now;
+      e.preventDefault();
       console.log('Loop touched');
-      isLooping = !isLooping;
-      audioPlayer.loop = isLooping;
-      loopBtn.classList.toggle('active', isLooping);
-      loopBtn.setAttribute('aria-pressed', isLooping);
-    }, { passive: true });
+      try {
+        isLooping = !isLooping;
+        audioPlayer.loop = isLooping;
+        loopBtn.classList.toggle('active', isLooping);
+        loopBtn.setAttribute('aria-pressed', isLooping);
+      } catch (err) {
+        console.error('Loop touch error:', err);
+      }
+    }, { passive: false });
 
     volumeBtn.addEventListener('click', () => {
-      console.log('Volume mute/unmute');
-      audioPlayer.muted = !audioPlayer.muted;
-      volumeBtn.textContent = audioPlayer.muted ? '🔇' : '🔊';
-      volumeBtn.setAttribute('aria-label', audioPlayer.muted ? 'Ativar som' : 'Desativar som');
+      console.log('Volume mute/unmute clicked');
+      try {
+        audioPlayer.muted = !audioPlayer.muted;
+        volumeBtn.textContent = audioPlayer.muted ? '🔇' : '🔊';
+        volumeBtn.setAttribute('aria-label', audioPlayer.muted ? 'Ativar som' : 'Desativar som');
+      } catch (err) {
+        console.error('Volume error:', err);
+      }
     });
     volumeBtn.addEventListener('touchend', (e) => {
       const now = Date.now();
-      if (now - lastTap < 300) return;
+      if (now - lastTap < 500) return;
       lastTap = now;
+      e.preventDefault();
       console.log('Volume mute/unmute touched');
-      audioPlayer.muted = !audioPlayer.muted;
-      volumeBtn.textContent = audioPlayer.muted ? '🔇' : '🔊';
-      volumeBtn.setAttribute('aria-label', audioPlayer.muted ? 'Ativar som' : 'Desativar som');
-    }, { passive: true });
+      try {
+        audioPlayer.muted = !audioPlayer.muted;
+        volumeBtn.textContent = audioPlayer.muted ? '🔇' : '🔊';
+        volumeBtn.setAttribute('aria-label', audioPlayer.muted ? 'Ativar som' : 'Desativar som');
+      } catch (err) {
+        console.error('Volume touch error:', err);
+      }
+    }, { passive: false });
 
     volumeBar.addEventListener('input', () => {
-      audioPlayer.volume = volumeBar.value / 100;
-      volumeBtn.textContent = audioPlayer.volume === 0 ? '🔇' : '🔊';
+      try {
+        audioPlayer.volume = volumeBar.value / 100;
+        volumeBtn.textContent = audioPlayer.volume === 0 ? '🔇' : '🔊';
+      } catch (err) {
+        console.error('Volume bar error:', err);
+      }
     });
 
     progressBar.addEventListener('input', () => {
@@ -467,29 +509,42 @@ document.addEventListener('DOMContentLoaded', () => {
     audioPlayer.addEventListener('timeupdate', updateProgress);
     audioPlayer.addEventListener('ended', () => {
       console.log('Track ended:', tracks[currentTrackIndex]);
-      if (!isLooping && isPlayingAll) {
-        playNextAll();
-      } else if (!isLooping) {
-        playNextTrack();
+      try {
+        if (!isLooping && isPlayingAll) {
+          playNextAll();
+        } else if (!isLooping) {
+          playNextTrack();
+        }
+      } catch (err) {
+        console.error('Track ended error:', err);
       }
     });
 
     playlistItems.forEach((item, index) => {
       item.addEventListener('click', () => {
         console.log('Playlist item clicked:', tracks[index]);
-        currentTrackIndex = index;
-        loadTrack(currentTrackIndex);
-        playTrack();
+        try {
+          currentTrackIndex = index;
+          loadTrack(currentTrackIndex);
+          playTrack();
+        } catch (err) {
+          console.error('Playlist item error:', err);
+        }
       });
       item.addEventListener('touchend', (e) => {
         const now = Date.now();
-        if (now - lastTap < 300) return;
+        if (now - lastTap < 500) return;
         lastTap = now;
+        e.preventDefault();
         console.log('Playlist item touched:', tracks[index]);
-        currentTrackIndex = index;
-        loadTrack(currentTrackIndex);
-        playTrack();
-      }, { passive: true });
+        try {
+          currentTrackIndex = index;
+          loadTrack(currentTrackIndex);
+          playTrack();
+        } catch (err) {
+          console.error('Playlist item touch error:', err);
+        }
+      }, { passive: false });
     });
 
     // Keyboard accessibility
@@ -497,8 +552,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.target.tagName === 'INPUT') return;
       if (e.key === ' ') {
         e.preventDefault();
-        if (isPlaying) pauseTrack();
-        else playTrack();
+        try {
+          if (isPlaying) pauseTrack();
+          else playTrack();
+        } catch (err) {
+          console.error('Spacebar error:', err);
+        }
       } else if (e.key === 'ArrowRight') {
         playNextTrack();
       } else if (e.key === 'ArrowLeft') {
@@ -555,392 +614,4 @@ document.addEventListener('DOMContentLoaded', () => {
             confettiParticles.splice(index, 1);
           }
         });
-        requestAnimationFrame(animateConfetti);
-      }
-
-      window.addEventListener('resize', () => {
-        confettiCanvas.width = window.innerWidth;
-        confettiCanvas.height = window.innerHeight;
-      });
-
-      setInterval(createConfetti, 100);
-      animateConfetti();
-    }
-  }
-
-  // Lightbox for Gallery (galeria.html)
-  if (window.location.pathname.includes('galeria.html')) {
-    const galleryImages = document.querySelectorAll('.gallery-img');
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.querySelector('.lightbox-img');
-    const lightboxClose = document.querySelector('.lightbox-close');
-
-    galleryImages.forEach(img => {
-      img.addEventListener('click', () => {
-        console.log('Gallery image clicked:', img.src);
-        try {
-          lightboxImg.src = img.src;
-          lightboxImg.alt = img.alt;
-          lightbox.classList.add('active');
-        } catch (err) {
-          console.error('Gallery image error:', err);
-        }
-      });
-      img.addEventListener('touchend', () => {
-        const now = Date.now();
-        if (now - lastTap < 300) return;
-        lastTap = now;
-        console.log('Gallery image touched:', img.src);
-        try {
-          lightboxImg.src = img.src;
-          lightboxImg.alt = img.alt;
-          lightbox.classList.add('active');
-        } catch (err) {
-          console.error('Gallery image error:', err);
-        }
-      }, { passive: true });
-    });
-
-    if (lightboxClose) {
-      lightboxClose.addEventListener('click', () => {
-        console.log('Lightbox close clicked');
-        try {
-          lightbox.classList.remove('active');
-        } catch (err) {
-          console.error('Lightbox close error:', err);
-        }
-      });
-      lightboxClose.addEventListener('touchend', () => {
-        const now = Date.now();
-        if (now - lastTap < 300) return;
-        lastTap = now;
-        console.log('Lightbox close touched');
-        try {
-          lightbox.classList.remove('active');
-        } catch (err) {
-          console.error('Lightbox close error:', err);
-        }
-      }, { passive: true });
-    }
-
-    if (lightbox) {
-      lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) {
-          console.log('Lightbox background clicked');
-          try {
-            lightbox.classList.remove('active');
-          } catch (err) {
-            console.error('Lightbox background error:', err);
-          }
-        }
-      });
-      lightbox.addEventListener('touchend', (e) => {
-        if (e.target === lightbox) {
-          const now = Date.now();
-          if (now - lastTap < 300) return;
-          lastTap = now;
-          console.log('Lightbox background touched');
-          try {
-            lightbox.classList.remove('active');
-          } catch (err) {
-            console.error('Lightbox background error:', err);
-          }
-        }
-      }, { passive: true });
-    } else {
-      console.warn('Lightbox element not found on galeria.html');
-    }
-  }
-
-  // Random Messages (recado.html)
-  if (window.location.pathname.includes('recado.html')) {
-    const mensagens = [
-      "Sinto sua falta o tempo todo.",
-      "Te amo mais do que consigo explicar.",
-      "Você é meu lugar seguro.",
-      "Queria te abraçar agora.",
-      "Mesmo longe, você tá em mim.",
-      "Tudo lembra você.",
-      "Você me acalma só de existir.",
-      "Hoje eu pensei em você de novo (como sempre).",
-      "Queria poder te olhar agora.",
-      "Meu peito aperta de saudade."
-    ];
-    const mensagemElement = document.getElementById('mensagemAleatoria');
-    function mostrarMensagemAleatoria() {
-      try {
-        const randomIndex = Math.floor(Math.random() * mensagens.length);
-        mensagemElement.textContent = mensagens[randomIndex];
-      } catch (err) {
-        console.error('Random message error:', err);
-      }
-    }
-    mostrarMensagemAleatoria();
-    setInterval(mostrarMensagemAleatoria, 5000);
-  }
-
-  // Reasons (motivos.html)
-  if (window.location.pathname.includes('motivos.html')) {
-    const motivos = [
-      "Porque seu sorriso ilumina meu mundo.",
-      "Porque você me faz querer ser uma pessoa melhor.",
-      "Porque cada momento com você é inesquecível.",
-      "Porque sua risada é minha música favorita.",
-      "Porque você é meu porto seguro.",
-      "Porque sonhar com você é melhor que qualquer realidade.",
-      "Porque seu carinho me faz sentir completo.",
-      "Porque você é a razão do meu coração bater mais forte.",
-      "Porque cada detalhe seu é perfeito pra mim.",
-      "Porque te amo mais a cada dia.",
-      "Porque seu olhar me faz perder o fôlego.",
-      "Porque você transforma meus dias em poesia.",
-      "Porque seu toque é meu lugar favorito.",
-      "Porque com você, o tempo para de existir.",
-      "Porque você é a calma no meio da minha tempestade.",
-      "Porque seu jeito me faz sorrir sem motivo.",
-      "Porque você é o sonho que eu nunca quero acordar.",
-      "Porque cada abraço seu é um lar.",
-      "Porque você me ensina o que é amor todos os dias.",
-      "Porque seu perfume é minha memória mais doce.",
-      "Porque você é a estrela que guia minha noite.",
-      "Porque com você, tudo faz sentido.",
-      "Porque sua voz é a melodia que acalma meu coração.",
-      "Porque você é o motivo de eu acreditar no amor.",
-      "Porque cada palavra sua é um presente.",
-      "Porque você me faz sentir vivo como nunca antes.",
-      "Porque seu amor é minha maior aventura.",
-      "Porque você é a peça que faltava em mim.",
-      "Porque te vejo em cada pôr do sol.",
-      "Porque seu carinho é meu refúgio.",
-      "Porque você é a razão dos meus melhores dias.",
-      "Porque com você, o futuro parece perfeito.",
-      "Porque seu sorriso é minha luz no escuro.",
-      "Porque você é a história que quero contar sempre.",
-      "Porque seu amor me faz voar sem asas.",
-      "Porque você é o calor nos meus dias frios.",
-      "Porque cada momento contigo é um tesouro.",
-      "Porque você é a minha certeza em meio às dúvidas.",
-      "Porque seu olhar guarda todos os meus segredos.",
-      "Porque você é a música que não sai da minha cabeça.",
-      "Porque com você, até o silêncio é lindo.",
-      "Porque você me faz querer viver mil vidas ao seu lado.",
-      "Porque seu amor é o que me mantém inteiro.",
-      "Porque você é a poesia que eu nunca soube escrever.",
-      "Porque cada beijo seu é uma promessa eterna.",
-      "Porque você é o motivo de eu acordar sorrindo.",
-      "Porque seu coração é onde quero morar para sempre.",
-      "Porque você é a minha definição de felicidade.",
-      "Porque com você, o mundo é mais bonito.",
-      "Porque seu amor é a força que me faz seguir.",
-      "Porque você é o sonho que se tornou realidade.",
-      "Porque sua presença faz tudo valer a pena.",
-      "Porque você é a minha inspiração diária.",
-      "Porque seu toque me faz esquecer do resto do mundo.",
-      "Porque você é o motivo de eu acreditar em finais felizes."
-    ];
-    const motivoElement = document.getElementById('motivo');
-    const motivoButton = document.querySelector('.motivos button');
-
-    function mostrarMotivoAleatorio() {
-      try {
-        const randomIndex = Math.floor(Math.random() * motivos.length);
-        motivoElement.textContent = motivos[randomIndex];
-      } catch (err) {
-        console.error('Random motivo error:', err);
-      }
-    }
-
-    if (motivoButton && motivoElement) {
-      motivoButton.addEventListener('click', () => {
-        console.log('Motivo button clicked');
-        mostrarMotivoAleatorio();
-      });
-      motivoButton.addEventListener('touchend', (e) => {
-        const now = Date.now();
-        if (now - lastTap < 300) return;
-        lastTap = now;
-        console.log('Motivo button touched');
-        mostrarMotivoAleatorio();
-      }, { passive: true });
-      mostrarMotivoAleatorio();
-    }
-  }
-
-  // Dreams (sonhos.html)
-  if (window.location.pathname.includes('sonhos.html')) {
-    const sonhos = [
-      {
-        title: "Viajar juntos",
-        description: "Explorar o mundo de mãos dadas, descobrindo novos lugares e criando memórias inesquecíveis."
-      },
-      {
-        title: "Construir uma família",
-        description: "Formar nosso lar, cheio de amor, risadas e momentos que aquecem o coração."
-      },
-      {
-        title: "Noites de filme",
-        description: "Passar noites abraçados, assistindo nossos filmes favoritos com pipoca e carinho."
-      },
-      {
-        title: "Aventura na natureza",
-        description: "Caminhar por florestas, acampar sob as estrelas e sentir a liberdade juntos."
-      },
-      {
-        title: "Cozinhar juntos",
-        description: "Fazer receitas novas, rir dos erros e criar pratos cheios de amor."
-      },
-      {
-        title: "Dançar sem motivo",
-        description: "Girar pela sala ao som de uma música qualquer, só porque estamos juntos."
-      },
-      {
-        title: "Ver o pôr do sol",
-        description: "Sentar lado a lado, vendo o céu mudar de cor e sentindo a paz de estar com você."
-      },
-      {
-        title: "Escrever nossa história",
-        description: "Registrar cada momento especial, para um dia contar aos nossos filhos e netos."
-      },
-      {
-        title: "Adotar um pet",
-        description: "Ter um companheiro peludo para alegrar ainda mais nossos dias."
-      },
-      {
-        title: "Crescer juntos",
-        description: "Aprender, evoluir e enfrentar a vida como uma equipe, sempre juntos."
-      }
-    ];
-
-    const sonhosList = document.querySelector('#sonhos ul');
-    let lastTap = 0;
-
-    sonhos.forEach((sonho, index) => {
-      const li = document.createElement('li');
-      li.textContent = sonho.title;
-      li.setAttribute('aria-expanded', 'false');
-      li.setAttribute('role', 'button');
-      li.setAttribute('tabindex', '0');
-
-      const description = document.createElement('div');
-      description.classList.add('dream-description');
-      description.textContent = sonho.description;
-
-      li.appendChild(description);
-
-      li.addEventListener('click', () => {
-        console.log('Sonho clicked:', sonho.title);
-        toggleDreamDescription(li, description);
-      });
-
-      li.addEventListener('touchend', (e) => {
-        const now = Date.now();
-        if (now - lastTap < 300) return;
-        lastTap = now;
-        console.log('Sonho touched:', sonho.title);
-        toggleDreamDescription(li, description);
-      }, { passive: true });
-
-      li.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          console.log('Sonho keydown:', sonho.title);
-          toggleDreamDescription(li, description);
-        }
-      });
-
-      sonhosList.appendChild(li);
-    });
-
-    function toggleDreamDescription(li, description) {
-      try {
-        const isExpanded = description.classList.contains('active');
-        document.querySelectorAll('.dream-description').forEach(desc => {
-          desc.classList.remove('active');
-          desc.parentElement.setAttribute('aria-expanded', 'false');
-        });
-        if (!isExpanded) {
-          description.classList.add('active');
-          li.setAttribute('aria-expanded', 'true');
-        }
-      } catch (err) {
-        console.error('Toggle dream description error:', err);
-      }
-    }
-  }
-
-  // Contador (contador.html)
-  if (window.location.pathname.includes('contador.html')) {
-    const contadorElement = document.getElementById('contador');
-    const startDate = new Date('2024-11-09T13:00:00-03:00');
-
-    function updateContador() {
-      try {
-        const now = new Date();
-        const timeDiff = now - startDate;
-        console.log('Counter timeDiff:', timeDiff);
-
-        const seconds = Math.floor(timeDiff / 1000);
-        const minutes = Math.floor(seconds / 60);
-        const hours = Math.floor(minutes / 60);
-        const days = Math.floor(hours / 24);
-        const months = Math.floor(days / 30);
-        const years = Math.floor(months / 12);
-
-        const remainingMonths = months % 12;
-        const remainingDays = days % 30;
-        const remainingHours = hours % 24;
-        const remainingMinutes = minutes % 60;
-        const remainingSeconds = seconds % 60;
-
-        console.log('Counter calc:', { years, remainingMonths, remainingDays, remainingHours, remainingMinutes, remainingSeconds });
-
-        contadorElement.innerHTML = `
-          ${years > 0 ? `<span>${years} ano${years > 1 ? 's' : ''}</span>` : ''}
-          ${remainingMonths > 0 ? `<span>${remainingMonths} mese${remainingMonths > 1 ? 's' : ''}</span>` : ''}
-          ${remainingDays > 0 ? `<span>${remainingDays} dia${remainingDays > 1 ? 's' : ''}</span>` : ''}
-          ${remainingHours > 0 ? `<span>${remainingHours} hora${remainingHours > 1 ? 's' : ''}</span>` : ''}
-          ${remainingMinutes > 0 ? `<span>${remainingMinutes} minuto${remainingMinutes > 1 ? 's' : ''}</span>` : ''}
-          ${remainingSeconds > 0 ? `<span>${remainingSeconds} segundo${remainingSeconds > 1 ? 's' : ''}</span>` : ''}
-        `;
-      } catch (err) {
-        console.error('Contador error:', err);
-      }
-    }
-
-    updateContador();
-    setInterval(updateContador, 1000);
-  }
-
-  // Back to Top Button
-  const backToTopButton = document.querySelector('.back-to-top');
-  if (backToTopButton) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) {
-        backToTopButton.classList.add('visible');
-      } else {
-        backToTopButton.classList.remove('visible');
-      }
-    });
-
-    backToTopButton.addEventListener('click', () => {
-      console.log('Back to top clicked');
-      try {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } catch (err) {
-        console.error('Back to top error:', err);
-      }
-    });
-
-    backToTopButton.addEventListener('touchend', (e) => {
-      const now = Date.now();
-      if (now - lastTap < 300) return;
-      lastTap = now;
-      console.log('Back to top touched');
-      try {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } catch (err) {
-        console.error('Back to top error:', err);
-      }
-    }, { passive: true });
-  }
-});
+        requestAnimationFrame(animateConfetti)
