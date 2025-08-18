@@ -16,12 +16,32 @@
   <meta name="twitter:description" content="Nossos sonhos juntos, Tata e Heron." />
   <meta name="twitter:image" content="https://your-site.com/images/birthday-heart.jpg" />
   <title>Sonhos de Tata & Heron 💖</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="preload" href="musicas/sunshine.mp3" as="audio" />
 </head>
 <body>
   <canvas id="fogosCanvas"></canvas>
+  <div class="stars-container">
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+  </div>
   <button class="menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="menu">☰</button>
   <nav class="menu" id="menu" role="navigation" aria-label="Navegação principal">
     <button class="menu-close" aria-label="Fechar menu">×</button>
@@ -44,50 +64,50 @@
       <h2 id="sonhos-title">Nossos Sonhos 🌟</h2>
       <ul>
         <li>
-          Conhecer o Rio de Janeiro
-          <div class="dream-description">
+          <button class="dream-toggle" aria-expanded="false" aria-controls="dream-1">Conhecer o Rio de Janeiro</button>
+          <div class="dream-description" id="dream-1">
             Explorar juntos as praias de Copacabana e Ipanema, subir o Pão de Açúcar e sentir a energia vibrante da cidade.
           </div>
         </li>
         <li>
-          Conhecer a neve
-          <div class="dream-description">
+          <button class="dream-toggle" aria-expanded="false" aria-controls="dream-2">Conhecer a neve</button>
+          <div class="dream-description" id="dream-2">
             Ver a neve cair pela primeira vez, fazer um boneco de neve e nos aquecer com chocolate quente abraçados.
           </div>
         </li>
         <li>
-          Nos casar
-          <div class="dream-description">
+          <button class="dream-toggle" aria-expanded="false" aria-controls="dream-3">Nos casar</button>
+          <div class="dream-description" id="dream-3">
             Celebrar nosso amor com uma cerimônia cheia de emoção, cercados de quem amamos, prometendo um futuro juntos.
           </div>
         </li>
         <li>
-          Ir à praia juntos
-          <div class="dream-description">
+          <button class="dream-toggle" aria-expanded="false" aria-controls="dream-4">Ir à praia juntos</button>
+          <div class="dream-description" id="dream-4">
             Caminhar de mãos dadas na areia, ouvir as ondas e criar memórias sob o sol ou o pôr do sol.
           </div>
         </li>
         <li>
-          Sair para comer algo
-          <div class="dream-description">
+          <button class="dream-toggle" aria-expanded="false" aria-controls="dream-5">Sair para comer algo</button>
+          <div class="dream-description" id="dream-5">
             Descobrir novos restaurantes, compartilhar pratos e rir juntos em momentos simples e especiais.
           </div>
         </li>
         <li>
-          Cozinhar juntos
-          <div class="dream-description">
+          <button class="dream-toggle" aria-expanded="false" aria-controls="dream-6">Cozinhar juntos</button>
+          <div class="dream-description" id="dream-6">
             Preparar uma receita especial na cozinha, rindo dos erros e celebrando o sabor do que criarmos juntos.
           </div>
         </li>
         <li>
-          Ter uma família feliz e amorosa
-          <div class="dream-description">
+          <button class="dream-toggle" aria-expanded="false" aria-controls="dream-7">Ter uma família feliz e amorosa</button>
+          <div class="dream-description" id="dream-7">
             Construir um lar cheio de amor, com risadas, carinho e apoio mútuo para todos que fazem parte dele.
           </div>
         </li>
         <li>
-          Ter uma vida tranquila
-          <div class="dream-description">
+          <button class="dream-toggle" aria-expanded="false" aria-controls="dream-8">Ter uma vida tranquila</button>
+          <div class="dream-description" id="dream-8">
             Viver com paz, aproveitando os pequenos momentos e construindo uma rotina cheia de amor e harmonia.
           </div>
         </li>
@@ -99,7 +119,7 @@
     <p>Feito por Heron com todo o amor do mundo 💌</p>
   </footer>
 
-  <button class="back-to-top" aria-label="Voltar ao topo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+  <button class="back-to-top" aria-label="Voltar ao topo">↑</button>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="script.js"></script>
