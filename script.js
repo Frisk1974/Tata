@@ -5,16 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Debounce utility for touch events
-  function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
+  let lastTap = 0;
+  function debounceTouch(func) {
+    return function (e) {
       const now = Date.now();
-      if (!timeout) {
-        timeout = setTimeout(() => {
-          timeout = null;
-        }, wait);
-        func.apply(this, args);
-      }
+      if (now - lastTap < 200) return;
+      lastTap = now;
+      func(e);
     };
   }
 
@@ -51,10 +48,16 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     menuToggle.addEventListener('click', (e) => toggleMenu(e, 'click'));
-    menuToggle.addEventListener('pointerdown', (e) => debounce(toggleMenu, 300)(e, 'pointerdown'), { passive: false });
+    menuToggle.addEventListener('touchstart', debounceTouch((e) => {
+      e.preventDefault();
+      toggleMenu(e, 'touchstart');
+    }), { passive: false });
 
     menuClose.addEventListener('click', (e) => closeMenu(e, 'click'));
-    menuClose.addEventListener('pointerdown', (e) => debounce(closeMenu, 300)(e, 'pointerdown'), { passive: false });
+    menuClose.addEventListener('touchstart', debounceTouch((e) => {
+      e.preventDefault();
+      closeMenu(e, 'touchstart');
+    }), { passive: false });
 
     const menuLinks = document.querySelectorAll('.menu a');
     menuLinks.forEach(link => {
@@ -71,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error('Navigation error:', err);
         }
       });
-      link.addEventListener('pointerdown', (e) => {
+      link.addEventListener('touchstart', debounceTouch((e) => {
         e.preventDefault();
         console.log('Menu link touched:', link.href);
         try {
@@ -84,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Navigation touch error:', err);
         }
-      }, { passive: false });
+      }), { passive: false });
     });
 
     document.addEventListener('click', (e) => {
@@ -93,9 +96,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    document.addEventListener('pointerdown', (e) => {
+    document.addEventListener('touchstart', (e) => {
       if (!menu.contains(e.target) && !menuToggle.contains(e.target) && menu.classList.contains('open')) {
-        debounce(closeMenu, 300)(e, 'pointerdown outside');
+        debounceTouch((ev) => closeMenu(ev, 'touch outside'))(e);
       }
     }, { passive: false });
 
@@ -202,6 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isShuffling = false;
     let isLooping = false;
     let isPlayingAll = false;
+    let shuffleIndices = [];
 
     const tracks = Array.from(playlistItems).map(item => ({
       src: item.dataset.src,
@@ -213,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadTrack(index) {
       try {
         const track = tracks[index];
-        audioPlayer.src = track.src;
+        audioPlayer.src = track.src || 'musicas/default.mp3'; // Fallback if src is invalid
         trackTitle.textContent = track.title;
         trackArtist.textContent = track.artist;
         trackCover.src = track.cover || 'images/default-cover.jpg';
@@ -223,6 +227,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         updateDuration();
         console.log('Loaded track:', track);
+        audioPlayer.addEventListener('error', () => {
+          console.error('Audio load error for:', track.src);
+        }, { once: true });
       } catch (err) {
         console.error('Load track error:', err);
       }
@@ -230,7 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function playTrack() {
       try {
-        audioPlayer.play();
+        audioPlayer.play().catch(err => {
+          console.error('Play error:', err);
+        });
         isPlaying = true;
         isPlayingAll = false;
         playPauseBtn.textContent = '⏸';
@@ -239,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playAllButton.classList.remove('playing');
         document.querySelector('.player-container').classList.add('playing');
       } catch (err) {
-        console.error('Play error:', err);
+        console.error('Play track error:', err);
       }
     }
 
@@ -254,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playAllButton.classList.remove('playing');
         document.querySelector('.player-container').classList.remove('playing');
       } catch (err) {
-        console.error('Pause error:', err);
+        console.error('Pause track error:', err);
       }
     }
 
@@ -262,7 +271,11 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         let nextIndex;
         if (isShuffling) {
-          nextIndex = Math.floor(Math.random() * tracks.length);
+          if (!shuffleIndices.length) {
+            shuffleIndices = [...Array(tracks.length).keys()].filter(i => i !== currentTrackIndex);
+            shuffleIndices.sort(() => Math.random() - 0.5);
+          }
+          nextIndex = shuffleIndices.shift();
         } else {
           nextIndex = (currentTrackIndex + 1) % tracks.length;
         }
@@ -341,8 +354,9 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error('Play all error:', err);
         }
       });
-      playAllButton.addEventListener('pointerdown', (e) => debounce((ev) => {
-        console.log('Play all pointerdown');
+      playAllButton.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Play all touched');
         try {
           if (isPlayingAll) {
             pauseTrack();
@@ -358,143 +372,170 @@ document.addEventListener('DOMContentLoaded', () => {
             playAllButton.classList.add('playing');
           }
         } catch (err) {
-          console.error('Play all pointerdown error:', err);
+          console.error('Play all touch error:', err);
         }
-      }, 300)(e), { passive: false });
+      }), { passive: false });
     }
 
-    playPauseBtn.addEventListener('click', () => {
-      console.log('Play/pause clicked');
-      try {
-        if (isPlaying) pauseTrack();
-        else playTrack();
-      } catch (err) {
-        console.error('Play/pause error:', err);
-      }
-    });
-    playPauseBtn.addEventListener('pointerdown', (e) => debounce((ev) => {
-      console.log('Play/pause pointerdown');
-      try {
-        if (isPlaying) pauseTrack();
-        else playTrack();
-      } catch (err) {
-        console.error('Play/pause pointerdown error:', err);
-      }
-    }, 300)(e), { passive: false });
-
-    prevBtn.addEventListener('click', () => {
-      console.log('Previous clicked');
-      playPrevTrack();
-    });
-    prevBtn.addEventListener('pointerdown', (e) => debounce((ev) => {
-      console.log('Previous pointerdown');
-      playPrevTrack();
-    }, 300)(e), { passive: false });
-
-    nextBtn.addEventListener('click', () => {
-      console.log('Next clicked');
-      playNextTrack();
-    });
-    nextBtn.addEventListener('pointerdown', (e) => debounce((ev) => {
-      console.log('Next pointerdown');
-      playNextTrack();
-    }, 300)(e), { passive: false });
-
-    shuffleBtn.addEventListener('click', () => {
-      console.log('Shuffle clicked');
-      try {
-        isShuffling = !isShuffling;
-        shuffleBtn.classList.toggle('active', isShuffling);
-        shuffleBtn.setAttribute('aria-pressed', isShuffling);
-      } catch (err) {
-        console.error('Shuffle error:', err);
-      }
-    });
-    shuffleBtn.addEventListener('pointerdown', (e) => debounce((ev) => {
-      console.log('Shuffle pointerdown');
-      try {
-        isShuffling = !isShuffling;
-        shuffleBtn.classList.toggle('active', isShuffling);
-        shuffleBtn.setAttribute('aria-pressed', isShuffling);
-      } catch (err) {
-        console.error('Shuffle pointerdown error:', err);
-      }
-    }, 300)(e), { passive: false });
-
-    loopBtn.addEventListener('click', () => {
-      console.log('Loop clicked');
-      try {
-        isLooping = !isLooping;
-        audioPlayer.loop = isLooping;
-        loopBtn.classList.toggle('active', isLooping);
-        loopBtn.setAttribute('aria-pressed', isLooping);
-      } catch (err) {
-        console.error('Loop error:', err);
-      }
-    });
-    loopBtn.addEventListener('pointerdown', (e) => debounce((ev) => {
-      console.log('Loop pointerdown');
-      try {
-        isLooping = !isLooping;
-        audioPlayer.loop = isLooping;
-        loopBtn.classList.toggle('active', isLooping);
-        loopBtn.setAttribute('aria-pressed', isLooping);
-      } catch (err) {
-        console.error('Loop pointerdown error:', err);
-      }
-    }, 300)(e), { passive: false });
-
-    volumeBtn.addEventListener('click', () => {
-      console.log('Volume mute/unmute clicked');
-      try {
-        audioPlayer.muted = !audioPlayer.muted;
-        volumeBtn.textContent = audioPlayer.muted ? '🔇' : '🔊';
-        volumeBtn.setAttribute('aria-label', audioPlayer.muted ? 'Ativar som' : 'Desativar som');
-      } catch (err) {
-        console.error('Volume error:', err);
-      }
-    });
-    volumeBtn.addEventListener('pointerdown', (e) => debounce((ev) => {
-      console.log('Volume mute/unmute pointerdown');
-      try {
-        audioPlayer.muted = !audioPlayer.muted;
-        volumeBtn.textContent = audioPlayer.muted ? '🔇' : '🔊';
-        volumeBtn.setAttribute('aria-label', audioPlayer.muted ? 'Ativar som' : 'Desativar som');
-      } catch (err) {
-        console.error('Volume pointerdown error:', err);
-      }
-    }, 300)(e), { passive: false });
-
-    volumeBar.addEventListener('input', () => {
-      try {
-        audioPlayer.volume = volumeBar.value / 100;
-        volumeBtn.textContent = audioPlayer.volume === 0 ? '🔇' : '🔊';
-      } catch (err) {
-        console.error('Volume bar error:', err);
-      }
-    });
-
-    progressBar.addEventListener('input', () => {
-      try {
-        audioPlayer.currentTime = (progressBar.value / 100) * audioPlayer.duration;
-      } catch (err) {
-        console.error('Progress bar error:', err);
-      }
-    });
-
-    audioPlayer.addEventListener('timeupdate', updateProgress);
-    audioPlayer.addEventListener('ended', () => {
-      console.log('Track ended:', tracks[currentTrackIndex]);
-      try {
-        if (!isLooping && isPlayingAll) {
-          playNextAll();
-        } else if (!isLooping) {
-          playNextTrack();
+    if (playPauseBtn) {
+      playPauseBtn.addEventListener('click', () => {
+        console.log('Play/pause clicked');
+        try {
+          if (isPlaying) pauseTrack();
+          else playTrack();
+        } catch (err) {
+          console.error('Play/pause error:', err);
         }
-      } catch (err) {
-        console.error('Track ended error:', err);
-      }
-    });
+      });
+      playPauseBtn.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Play/pause touched');
+        try {
+          if (isPlaying) pauseTrack();
+          else playTrack();
+        } catch (err) {
+          console.error('Play/pause touch error:', err);
+        }
+      }), { passive: false });
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        console.log('Previous clicked');
+        playPrevTrack();
+      });
+      prevBtn.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Previous touched');
+        playPrevTrack();
+      }), { passive: false });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        console.log('Next clicked');
+        playNextTrack();
+      });
+      nextBtn.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Next touched');
+        playNextTrack();
+      }), { passive: false });
+    }
+
+    if (shuffleBtn) {
+      shuffleBtn.addEventListener('click', () => {
+        console.log('Shuffle clicked');
+        try {
+          isShuffling = !isShuffling;
+          shuffleBtn.classList.toggle('active', isShuffling);
+          shuffleBtn.setAttribute('aria-pressed', isShuffling);
+          shuffleIndices = []; // Reset shuffle indices
+        } catch (err) {
+          console.error('Shuffle error:', err);
+        }
+      });
+      shuffleBtn.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Shuffle touched');
+        try {
+          isShuffling = !isShuffling;
+          shuffleBtn.classList.toggle('active', isShuffling);
+          shuffleBtn.setAttribute('aria-pressed', isShuffling);
+          shuffleIndices = []; // Reset shuffle indices
+        } catch (err) {
+          console.error('Shuffle touch error:', err);
+        }
+      }), { passive: false });
+    }
+
+    if (loopBtn) {
+      loopBtn.addEventListener('click', () => {
+        console.log('Loop clicked');
+        try {
+          isLooping = !isLooping;
+          audioPlayer.loop = isLooping;
+          loopBtn.classList.toggle('active', isLooping);
+          loopBtn.setAttribute('aria-pressed', isLooping);
+        } catch (err) {
+          console.error('Loop error:', err);
+        }
+      });
+      loopBtn.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Loop touched');
+        try {
+          isLooping = !isLooping;
+          audioPlayer.loop = isLooping;
+          loopBtn.classList.toggle('active', isLooping);
+          loopBtn.setAttribute('aria-pressed', isLooping);
+        } catch (err) {
+          console.error('Loop touch error:', err);
+        }
+      }), { passive: false });
+    }
+
+    if (volumeBtn) {
+      volumeBtn.addEventListener('click', () => {
+        console.log('Volume mute/unmute clicked');
+        try {
+          audioPlayer.muted = !audioPlayer.muted;
+          volumeBtn.textContent = audioPlayer.muted ? '🔇' : '🔊';
+          volumeBtn.setAttribute('aria-label', audioPlayer.muted ? 'Ativar som' : 'Desativar som');
+        } catch (err) {
+          console.error('Volume error:', err);
+        }
+      });
+      volumeBtn.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Volume mute/unmute touched');
+        try {
+          audioPlayer.muted = !audioPlayer.muted;
+          volumeBtn.textContent = audioPlayer.muted ? '🔇' : '🔊';
+          volumeBtn.setAttribute('aria-label', audioPlayer.muted ? 'Ativar som' : 'Desativar som');
+        } catch (err) {
+          console.error('Volume touch error:', err);
+        }
+      }), { passive: false });
+    }
+
+    if (volumeBar) {
+      volumeBar.addEventListener('input', () => {
+        try {
+          audioPlayer.volume = volumeBar.value / 100;
+          audioPlayer.muted = audioPlayer.volume === 0;
+          volumeBtn.textContent = audioPlayer.muted ? '🔇' : '🔊';
+        } catch (err) {
+          console.error('Volume bar error:', err);
+        }
+      });
+    }
+
+    if (progressBar) {
+      progressBar.addEventListener('input', () => {
+        try {
+          audioPlayer.currentTime = (progressBar.value / 100) * audioPlayer.duration;
+        } catch (err) {
+          console.error('Progress bar error:', err);
+        }
+      });
+    }
+
+    if (audioPlayer) {
+      audioPlayer.addEventListener('timeupdate', updateProgress);
+      audioPlayer.addEventListener('ended', () => {
+        console.log('Track ended:', tracks[currentTrackIndex]);
+        try {
+          if (!isLooping && isPlayingAll) {
+            playNextAll();
+          } else if (!isLooping) {
+            playNextTrack();
+          }
+        } catch (err) {
+          console.error('Track ended error:', err);
+        }
+      });
+    }
 
     playlistItems.forEach((item, index) => {
       item.addEventListener('click', () => {
@@ -507,16 +548,17 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error('Playlist item error:', err);
         }
       });
-      item.addEventListener('pointerdown', (e) => debounce((ev) => {
-        console.log('Playlist item pointerdown:', tracks[index]);
+      item.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Playlist item touched:', tracks[index]);
         try {
           currentTrackIndex = index;
           loadTrack(currentTrackIndex);
           playTrack();
         } catch (err) {
-          console.error('Playlist item pointerdown error:', err);
+          console.error('Playlist item touch error:', err);
         }
-      }, 300)(e), { passive: false });
+      }), { passive: false });
     });
 
     // Keyboard accessibility
@@ -617,16 +659,17 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error('Gallery image error:', err);
         }
       });
-      img.addEventListener('pointerdown', (e) => debounce((ev) => {
-        console.log('Gallery image pointerdown:', img.src);
+      img.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Gallery image touched:', img.src);
         try {
           lightboxImg.src = img.src;
           lightboxImg.alt = img.alt;
           lightbox.classList.add('active');
         } catch (err) {
-          console.error('Gallery image pointerdown error:', err);
+          console.error('Gallery image touch error:', err);
         }
-      }, 300)(e), { passive: false });
+      }), { passive: false });
     });
 
     if (lightboxClose) {
@@ -638,14 +681,15 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error('Lightbox close error:', err);
         }
       });
-      lightboxClose.addEventListener('pointerdown', (e) => debounce((ev) => {
-        console.log('Lightbox close pointerdown');
+      lightboxClose.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Lightbox close touched');
         try {
           lightbox.classList.remove('active');
         } catch (err) {
-          console.error('Lightbox close pointerdown error:', err);
+          console.error('Lightbox close touch error:', err);
         }
-      }, 300)(e), { passive: false });
+      }), { passive: false });
     }
 
     if (lightbox) {
@@ -659,16 +703,16 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
       });
-      lightbox.addEventListener('pointerdown', (e) => {
+      lightbox.addEventListener('touchstart', (e) => {
         if (e.target === lightbox) {
-          debounce((ev) => {
-            console.log('Lightbox background pointerdown');
+          debounceTouch((ev) => {
+            console.log('Lightbox background touched');
             try {
               lightbox.classList.remove('active');
             } catch (err) {
-              console.error('Lightbox background pointerdown error:', err);
+              console.error('Lightbox background touch error:', err);
             }
-          }, 300)(e);
+          })(e);
         }
       }, { passive: false });
     } else {
@@ -718,7 +762,6 @@ document.addEventListener('DOMContentLoaded', () => {
       "Porque você é a razão do meu coração bater mais forte.",
       "Porque cada detalhe seu é perfeito pra mim.",
       "Porque te amo mais a cada dia."
-      // ... (other motivos omitted for brevity)
     ];
     const motivoElement = document.getElementById('motivo');
     const motivoButton = document.querySelector('.motivos button');
@@ -737,10 +780,11 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Motivo button clicked');
         mostrarMotivoAleatorio();
       });
-      motivoButton.addEventListener('pointerdown', (e) => debounce((ev) => {
-        console.log('Motivo button pointerdown');
+      motivoButton.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Motivo button touched');
         mostrarMotivoAleatorio();
-      }, 300)(e), { passive: false });
+      }), { passive: false });
       mostrarMotivoAleatorio();
     }
   }
@@ -756,7 +800,6 @@ document.addEventListener('DOMContentLoaded', () => {
         title: "Construir uma família",
         description: "Formar nosso lar, cheio de amor, risadas e momentos que aquecem o coração."
       }
-      // ... (other sonhos omitted for brevity)
     ];
 
     const sonhosList = document.querySelector('#sonhos ul');
@@ -779,10 +822,11 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleDreamDescription(li, description);
       });
 
-      li.addEventListener('pointerdown', (e) => debounce((ev) => {
-        console.log('Sonho pointerdown:', sonho.title);
+      li.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Sonho touched:', sonho.title);
         toggleDreamDescription(li, description);
-      }, 300)(e), { passive: false });
+      }), { passive: false });
 
       li.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -872,13 +916,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    backToTopButton.addEventListener('pointerdown', (e) => debounce((ev) => {
-      console.log('Back to top pointerdown');
+    backToTopButton.addEventListener('touchstart', debounceTouch((e) => {
+      e.preventDefault();
+      console.log('Back to top touched');
       try {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (err) {
-        console.error('Back to top pointerdown error:', err);
+        console.error('Back to top touch error:', err);
       }
-    }, 300)(e), { passive: false });
+    }), { passive: false });
   }
 });
