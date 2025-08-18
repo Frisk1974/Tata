@@ -1,20 +1,27 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Poemas românticos para celebrar o amor.">
-  <meta name="keywords" content="amor, poemas, romântico">
-  <meta name="author" content="Seu Nome">
-  <meta property="og:title" content="Poemas de Amor">
-  <meta property="og:description" content="Uma coleção de poemas dedicados ao amor.">
-  <meta property="og:image" content="/images/birthday-heart.jpg">
-  <meta property="og:url" content="https://seusite.com/poema.html">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="/images/birthday-heart.jpg">
-  <title>Poemas de Amor</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="favicon.png" type="image/png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Poemas românticos para Tata, feitos com amor por Heron." />
+  <meta name="keywords" content="poema, amor, Tata, Heron, romântico" />
+  <meta name="author" content="Heron" />
+  <meta property="og:title" content="Poema para Tata 💖" />
+  <meta property="og:description" content="Poemas românticos dedicados ao amor de Tata e Heron." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://your-site.com/images/birthday-heart.jpg" />
+  <meta property="og:url" content="https://your-site.com/poema.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Poema para Tata 💖" />
+  <meta name="twitter:description" content="Poemas românticos dedicados ao amor de Tata e Heron." />
+  <meta name="twitter:image" content="https://your-site.com/images/birthday-heart.jpg" />
+  <title>Poema para Tata 💖</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="preload" href="musicas/sunshine.mp3" as="audio" />
 </head>
 <body>
   <canvas id="fogosCanvas"></canvas>
@@ -35,30 +42,26 @@
     <div class="star"></div>
     <div class="star"></div>
   </div>
-
-  <header>
-    <button class="menu-toggle" aria-label="Abrir menu de navegação">☰</button>
-    <nav class="menu" aria-label="Menu de navegação">
-      <button class="menu-close" aria-label="Fechar menu">✖</button>
-      <ul>
-        <li><a href="index.html">Início</a></li>
-        <li><a href="aniversario.html">Aniversário</a></li>
-        <li><a href="history.html">Nossa História</a></li>
-        <li><a href="galeria.html">Galeria</a></li>
-        <li><a href="poema.html" aria-current="page">Poemas</a></li>
-        <li><a href="musicas.html">Músicas</a></li>
-        <li><a href="sonhos.html">Sonhos</a></li>
-        <li><a href="contador.html">Contador</a></li>
-        <li><a href="motivos.html">Motivos</a></li>
-        <li><a href="recado.html">Recado</a></li>
-      </ul>
-    </nav>
-  </header>
+  <button class="menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="menu">☰</button>
+  <nav class="menu" id="menu" role="navigation" aria-label="Navegação principal">
+    <button class="menu-close" aria-label="Fechar menu">×</button>
+    <ul>
+      <li><a href="index.html"><span class="menu-icon">🏠</span> Início</a></li>
+      <li><a href="aniversario.html"><span class="menu-icon">🎉</span> Aniversário</a></li>
+      <li><a href="history.html"><span class="menu-icon">📖</span> História</a></li>
+      <li><a href="galeria.html"><span class="menu-icon">📸</span> Galeria</a></li>
+      <li><a href="poema.html" aria-current="page"><span class="menu-icon">✍️</span> Poema</a></li>
+      <li><a href="musicas.html"><span class="menu-icon">🎵</span> Músicas</a></li>
+      <li><a href="sonhos.html"><span class="menu-icon">🌟</span> Sonhos</a></li>
+      <li><a href="contador.html"><span class="menu-icon">⏳</span> Contador</a></li>
+      <li><a href="motivos.html"><span class="menu-icon">💖</span> Motivos</a></li>
+      <li><a href="recado.html"><span class="menu-icon">💌</span> Recado</a></li>
+    </ul>
+  </nav>
 
   <main>
-    <section id="poema">
-      <h1>Poemas de Amor</h1>
-      
+    <section id="poema" class="section poema" aria-labelledby="poema-title">
+      <h1 id="poema-title">Poema para Tata 💖</h1>
       <div class="poema">
         <h2>Nosso Eterno</h2>
         <p>
@@ -101,23 +104,25 @@
           Eu vivo só pra te amar e viver.
         </p>
       </div>
-
-      <div class="poema section">
-        <h2>Poemas de amor</h2>
-        <p>Teus olhos são estrelas que guiam meu coração na escuridão.</p>
-        <p>Cada batida do meu peito sussurra teu nome, como uma canção.</p>
-        <p>No teu sorriso, encontro o lar que sempre sonhei em habitar.</p>
-        <p>Te amo não por um motivo, mas por todos os instantes que contigo quero compartilhar.</p>
+      <div class="poema">
+        <h2>Poemas de Amor</h2>
+        <p>
+          Teus olhos são estrelas que guiam meu coração na escuridão.<br>
+          Cada batida do meu peito sussurra teu nome, como uma canção.<br>
+          No teu sorriso, encontro o lar que sempre sonhei em habitar.<br>
+          Te amo não por um motivo, mas por todos os instantes que contigo quero compartilhar.
+        </p>
       </div>
     </section>
   </main>
 
-  <button class="back-to-top" aria-label="Voltar ao topo">↑</button>
-  
-  <footer>
-    <p>Feito com 💖 para você</p>
+  <footer id="footer" aria-label="Rodapé">
+    <p>Feito por Heron com todo o amor do mundo 💌</p>
   </footer>
 
+  <button class="back-to-top" aria-label="Voltar ao topo">↑</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
