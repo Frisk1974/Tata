@@ -15,6 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
+  // Stars Animation (all pages except index.html)
+  const starsContainer = document.querySelector('.stars-container');
+  if (starsContainer && !window.location.pathname.includes('index.html')) {
+    starsContainer.style.display = 'block';
+  } else if (starsContainer) {
+    starsContainer.style.display = 'none';
+  }
+
   // Menu Toggle Functionality
   const menuToggle = document.querySelector('.menu-toggle');
   const menu = document.querySelector('.menu');
@@ -217,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadTrack(index) {
       try {
         const track = tracks[index];
-        audioPlayer.src = track.src || 'musicas/default.mp3'; // Fallback if src is invalid
+        audioPlayer.src = track.src || 'musicas/default.mp3';
         trackTitle.textContent = track.title;
         trackArtist.textContent = track.artist;
         trackCover.src = track.cover || 'images/default-cover.jpg';
@@ -332,7 +340,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }, { once: true });
     }
 
-    // Event Listeners for Music Player
     if (playAllButton) {
       playAllButton.addEventListener('click', () => {
         console.log('Play all clicked');
@@ -430,7 +437,7 @@ document.addEventListener('DOMContentLoaded', () => {
           isShuffling = !isShuffling;
           shuffleBtn.classList.toggle('active', isShuffling);
           shuffleBtn.setAttribute('aria-pressed', isShuffling);
-          shuffleIndices = []; // Reset shuffle indices
+          shuffleIndices = [];
         } catch (err) {
           console.error('Shuffle error:', err);
         }
@@ -442,7 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
           isShuffling = !isShuffling;
           shuffleBtn.classList.toggle('active', isShuffling);
           shuffleBtn.setAttribute('aria-pressed', isShuffling);
-          shuffleIndices = []; // Reset shuffle indices
+          shuffleIndices = [];
         } catch (err) {
           console.error('Shuffle touch error:', err);
         }
@@ -561,7 +568,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }), { passive: false });
     });
 
-    // Keyboard accessibility
     document.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'INPUT') return;
       if (e.key === ' ') {
@@ -579,7 +585,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Load first track
     if (tracks.length > 0) {
       currentTrackIndex = 0;
       loadTrack(currentTrackIndex);
