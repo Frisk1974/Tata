@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuClose = document.querySelector('.menu-close');
 
   if (menuToggle && menu && menuClose) {
-    const toggleMenu = (e, type) => {
-      console.log('Menu toggle triggered:', type);
+    const toggleMenu = (e) => {
+      console.log('Menu toggle triggered');
       try {
         const isOpen = menu.classList.toggle('open');
         menuToggle.setAttribute('aria-expanded', isOpen);
@@ -43,8 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    const closeMenu = (e, type) => {
-      console.log('Menu closed:', type);
+    const closeMenu = (e) => {
+      console.log('Menu closed');
       try {
         menu.classList.remove('open');
         menuToggle.setAttribute('aria-expanded', 'false');
@@ -55,21 +55,21 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    menuToggle.addEventListener('click', (e) => toggleMenu(e, 'click'));
+    menuToggle.addEventListener('click', toggleMenu);
     menuToggle.addEventListener('touchstart', debounceTouch((e) => {
       e.preventDefault();
-      toggleMenu(e, 'touchstart');
+      toggleMenu(e);
     }), { passive: false });
 
-    menuClose.addEventListener('click', (e) => closeMenu(e, 'click'));
+    menuClose.addEventListener('click', closeMenu);
     menuClose.addEventListener('touchstart', debounceTouch((e) => {
       e.preventDefault();
-      closeMenu(e, 'touchstart');
+      closeMenu(e);
     }), { passive: false });
 
     const menuLinks = document.querySelectorAll('.menu a');
     menuLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
+      const navigate = (e) => {
         console.log('Menu link clicked:', link.href);
         try {
           if (window.innerWidth <= 768) {
@@ -81,48 +81,33 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Navigation error:', err);
         }
-      });
+      };
+      link.addEventListener('click', navigate);
       link.addEventListener('touchstart', debounceTouch((e) => {
         e.preventDefault();
-        console.log('Menu link touched:', link.href);
-        try {
-          if (window.innerWidth <= 768) {
-            menu.classList.remove('open');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            document.body.classList.remove('no-scroll');
-          }
-          window.location.href = link.href;
-        } catch (err) {
-          console.error('Navigation touch error:', err);
-        }
+        navigate(e);
       }), { passive: false });
     });
 
     document.addEventListener('click', (e) => {
       if (!menu.contains(e.target) && !menuToggle.contains(e.target) && menu.classList.contains('open')) {
-        closeMenu(e, 'click outside');
+        closeMenu(e);
       }
     });
-
-    document.addEventListener('touchstart', (e) => {
-      if (!menu.contains(e.target) && !menuToggle.contains(e.target) && menu.classList.contains('open')) {
-        debounceTouch((ev) => closeMenu(ev, 'touch outside'))(e);
-      }
-    }, { passive: false });
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && menu.classList.contains('open')) {
-        closeMenu(e, 'escape key');
+        closeMenu(e);
       }
     });
   } else {
-    console.warn('Menu toggle elements not found on this page');
+    console.warn('Menu toggle elements not found');
   }
 
   // Hero Button (index.html)
   const heroButton = document.querySelector('.hero button');
   if (heroButton) {
-    heroButton.addEventListener('click', (e) => {
+    const navigateHero = (e) => {
       console.log('Hero button clicked, redirecting to aniversario.html');
       try {
         window.location.href = 'aniversario.html';
@@ -134,20 +119,11 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (err) {
         console.error('Hero button error:', err);
       }
-    });
+    };
+    heroButton.addEventListener('click', navigateHero);
     heroButton.addEventListener('touchstart', debounceTouch((e) => {
       e.preventDefault();
-      console.log('Hero button touched, redirecting to aniversario.html');
-      try {
-        window.location.href = 'aniversario.html';
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          colors: ['#F472B6', '#C4B5FD', '#FBBF24'],
-        });
-      } catch (err) {
-        console.error('Hero button touch error:', err);
-      }
+      navigateHero(e);
     }), { passive: false });
   }
 
@@ -373,7 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (playAllButton) {
-      playAllButton.addEventListener('click', () => {
+      const togglePlayAll = () => {
         console.log('Play all clicked');
         try {
           if (isPlayingAll) {
@@ -392,32 +368,16 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Play all error:', err);
         }
-      });
+      };
+      playAllButton.addEventListener('click', togglePlayAll);
       playAllButton.addEventListener('touchstart', debounceTouch((e) => {
         e.preventDefault();
-        console.log('Play all touched');
-        try {
-          if (isPlayingAll) {
-            pauseTrack();
-            isPlayingAll = false;
-            playAllButton.textContent = 'Tocar Tudo';
-            playAllButton.classList.remove('playing');
-          } else {
-            if (currentTrackIndex === -1) currentTrackIndex = 0;
-            loadTrack(currentTrackIndex);
-            playTrack();
-            isPlayingAll = true;
-            playAllButton.textContent = 'Parar';
-            playAllButton.classList.add('playing');
-          }
-        } catch (err) {
-          console.error('Play all touch error:', err);
-        }
+        togglePlayAll();
       }), { passive: false });
     }
 
     if (playPauseBtn) {
-      playPauseBtn.addEventListener('click', () => {
+      const togglePlayPause = () => {
         console.log('Play/pause clicked');
         try {
           if (isPlaying) pauseTrack();
@@ -425,45 +385,40 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Play/pause error:', err);
         }
-      });
+      };
+      playPauseBtn.addEventListener('click', togglePlayPause);
       playPauseBtn.addEventListener('touchstart', debounceTouch((e) => {
         e.preventDefault();
-        console.log('Play/pause touched');
-        try {
-          if (isPlaying) pauseTrack();
-          else playTrack();
-        } catch (err) {
-          console.error('Play/pause touch error:', err);
-        }
+        togglePlayPause();
       }), { passive: false });
     }
 
     if (prevBtn) {
-      prevBtn.addEventListener('click', () => {
+      const prevTrack = () => {
         console.log('Previous clicked');
         playPrevTrack();
-      });
+      };
+      prevBtn.addEventListener('click', prevTrack);
       prevBtn.addEventListener('touchstart', debounceTouch((e) => {
         e.preventDefault();
-        console.log('Previous touched');
-        playPrevTrack();
+        prevTrack();
       }), { passive: false });
     }
 
     if (nextBtn) {
-      nextBtn.addEventListener('click', () => {
+      const nextTrack = () => {
         console.log('Next clicked');
         playNextTrack();
-      });
+      };
+      nextBtn.addEventListener('click', nextTrack);
       nextBtn.addEventListener('touchstart', debounceTouch((e) => {
         e.preventDefault();
-        console.log('Next touched');
-        playNextTrack();
+        nextTrack();
       }), { passive: false });
     }
 
     if (shuffleBtn) {
-      shuffleBtn.addEventListener('click', () => {
+      const toggleShuffle = () => {
         console.log('Shuffle clicked');
         try {
           isShuffling = !isShuffling;
@@ -473,23 +428,16 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Shuffle error:', err);
         }
-      });
+      };
+      shuffleBtn.addEventListener('click', toggleShuffle);
       shuffleBtn.addEventListener('touchstart', debounceTouch((e) => {
         e.preventDefault();
-        console.log('Shuffle touched');
-        try {
-          isShuffling = !isShuffling;
-          shuffleBtn.classList.toggle('active', isShuffling);
-          shuffleBtn.setAttribute('aria-pressed', isShuffling);
-          shuffleIndices = [];
-        } catch (err) {
-          console.error('Shuffle touch error:', err);
-        }
+        toggleShuffle();
       }), { passive: false });
     }
 
     if (loopBtn) {
-      loopBtn.addEventListener('click', () => {
+      const toggleLoop = () => {
         console.log('Loop clicked');
         try {
           isLooping = !isLooping;
@@ -499,23 +447,16 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Loop error:', err);
         }
-      });
+      };
+      loopBtn.addEventListener('click', toggleLoop);
       loopBtn.addEventListener('touchstart', debounceTouch((e) => {
         e.preventDefault();
-        console.log('Loop touched');
-        try {
-          isLooping = !isLooping;
-          audioPlayer.loop = isLooping;
-          loopBtn.classList.toggle('active', isLooping);
-          loopBtn.setAttribute('aria-pressed', isLooping);
-        } catch (err) {
-          console.error('Loop touch error:', err);
-        }
+        toggleLoop();
       }), { passive: false });
     }
 
     if (volumeBtn) {
-      volumeBtn.addEventListener('click', () => {
+      const toggleVolume = () => {
         console.log('Volume mute/unmute clicked');
         try {
           audioPlayer.muted = !audioPlayer.muted;
@@ -524,17 +465,11 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Volume error:', err);
         }
-      });
+      };
+      volumeBtn.addEventListener('click', toggleVolume);
       volumeBtn.addEventListener('touchstart', debounceTouch((e) => {
         e.preventDefault();
-        console.log('Volume mute/unmute touched');
-        try {
-          audioPlayer.muted = !audioPlayer.muted;
-          volumeBtn.textContent = audioPlayer.muted ? '🔇' : '🔊';
-          volumeBtn.setAttribute('aria-label', audioPlayer.muted ? 'Ativar som' : 'Desativar som');
-        } catch (err) {
-          console.error('Volume touch error:', err);
-        }
+        toggleVolume();
       }), { passive: false });
     }
 
@@ -577,7 +512,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     playlistItems.forEach((item, index) => {
-      item.addEventListener('click', () => {
+      const selectTrack = () => {
         console.log('Playlist item clicked:', tracks[index]);
         try {
           currentTrackIndex = index;
@@ -586,17 +521,11 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Playlist item error:', err);
         }
-      });
+      };
+      item.addEventListener('click', selectTrack);
       item.addEventListener('touchstart', debounceTouch((e) => {
         e.preventDefault();
-        console.log('Playlist item touched:', tracks[index]);
-        try {
-          currentTrackIndex = index;
-          loadTrack(currentTrackIndex);
-          playTrack();
-        } catch (err) {
-          console.error('Playlist item touch error:', err);
-        }
+        selectTrack();
       }), { passive: false });
     });
 
@@ -690,7 +619,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     galleryImages.forEach(img => {
-      img.addEventListener('click', () => {
+      const openLightbox = () => {
         console.log('Gallery image clicked:', img.src);
         try {
           if (lightbox && lightboxImg) {
@@ -703,46 +632,32 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Gallery image error:', err);
         }
-      });
+      };
+      img.addEventListener('click', openLightbox);
       img.addEventListener('touchstart', debounceTouch((e) => {
         e.preventDefault();
-        console.log('Gallery image touched:', img.src);
-        try {
-          if (lightbox && lightboxImg) {
-            lightboxImg.src = img.src;
-            lightboxImg.alt = img.alt;
-            lightbox.classList.add('active');
-          } else {
-            console.error('Lightbox or lightbox-img not found');
-          }
-        } catch (err) {
-          console.error('Gallery image touch error:', err);
-        }
+        openLightbox();
       }), { passive: false });
     });
 
     if (lightboxClose) {
-      lightboxClose.addEventListener('click', () => {
+      const closeLightbox = () => {
         console.log('Lightbox close clicked');
         try {
           lightbox.classList.remove('active');
         } catch (err) {
           console.error('Lightbox close error:', err);
         }
-      });
+      };
+      lightboxClose.addEventListener('click', closeLightbox);
       lightboxClose.addEventListener('touchstart', debounceTouch((e) => {
         e.preventDefault();
-        console.log('Lightbox close touched');
-        try {
-          lightbox.classList.remove('active');
-        } catch (err) {
-          console.error('Lightbox close touch error:', err);
-        }
+        closeLightbox();
       }), { passive: false });
     }
 
     if (lightbox) {
-      lightbox.addEventListener('click', (e) => {
+      const closeLightboxBackground = (e) => {
         if (e.target === lightbox) {
           console.log('Lightbox background clicked');
           try {
@@ -751,19 +666,14 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Lightbox background error:', err);
           }
         }
-      });
-      lightbox.addEventListener('touchstart', (e) => {
+      };
+      lightbox.addEventListener('click', closeLightboxBackground);
+      lightbox.addEventListener('touchstart', debounceTouch((e) => {
         if (e.target === lightbox) {
-          debounceTouch((ev) => {
-            console.log('Lightbox background touched');
-            try {
-              lightbox.classList.remove('active');
-            } catch (err) {
-              console.error('Lightbox background touch error:', err);
-            }
-          })(e);
+          e.preventDefault();
+          closeLightboxBackground(e);
         }
-      }, { passive: false });
+      }), { passive: false });
     } else {
       console.warn('Lightbox element not found on galeria.html');
     }
@@ -801,14 +711,14 @@ document.addEventListener('DOMContentLoaded', () => {
       mostrarMensagemAleatoria();
       const recadoButton = document.querySelector('.recado-container button');
       if (recadoButton) {
-        recadoButton.addEventListener('click', () => {
+        const showMessage = () => {
           console.log('Recado button clicked');
           mostrarMensagemAleatoria();
-        });
+        };
+        recadoButton.addEventListener('click', showMessage);
         recadoButton.addEventListener('touchstart', debounceTouch((e) => {
           e.preventDefault();
-          console.log('Recado button touched');
-          mostrarMensagemAleatoria();
+          showMessage();
         }), { passive: false });
       }
     }
@@ -846,14 +756,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (motivoButton && motivoElement) {
-      motivoButton.addEventListener('click', () => {
+      const showMotivo = () => {
         console.log('Motivo button clicked');
         mostrarMotivoAleatorio();
-      });
+      };
+      motivoButton.addEventListener('click', showMotivo);
       motivoButton.addEventListener('touchstart', debounceTouch((e) => {
         e.preventDefault();
-        console.log('Motivo button touched');
-        mostrarMotivoAleatorio();
+        showMotivo();
       }), { passive: false });
       mostrarMotivoAleatorio();
     }
@@ -863,7 +773,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.location.pathname.includes('sonhos.html')) {
     const dreamToggles = document.querySelectorAll('.dream-toggle');
     dreamToggles.forEach((toggle) => {
-      toggle.addEventListener('click', () => {
+      const toggleDream = () => {
         console.log('Dream toggle clicked:', toggle.textContent);
         try {
           const descriptionId = toggle.getAttribute('aria-controls');
@@ -886,31 +796,11 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Dream toggle click error:', err);
         }
-      });
+      };
+      toggle.addEventListener('click', toggleDream);
       toggle.addEventListener('touchstart', debounceTouch((e) => {
         e.preventDefault();
-        console.log('Dream toggle touched:', toggle.textContent);
-        try {
-          const descriptionId = toggle.getAttribute('aria-controls');
-          const description = document.getElementById(descriptionId);
-          if (description) {
-            // Close all other descriptions
-            document.querySelectorAll('.dream-description.active').forEach((desc) => {
-              if (desc !== description) {
-                desc.classList.remove('active');
-                const relatedToggle = document.querySelector(`.dream-toggle[aria-controls="${desc.id}"]`);
-                if (relatedToggle) relatedToggle.setAttribute('aria-expanded', 'false');
-              }
-            });
-            // Toggle current description
-            const isActive = description.classList.toggle('active');
-            toggle.setAttribute('aria-expanded', isActive);
-          } else {
-            console.error(`Description not found for ID: ${descriptionId}`);
-          }
-        } catch (err) {
-          console.error('Dream toggle touch error:', err);
-        }
+        toggleDream();
       }), { passive: false });
     });
   }
