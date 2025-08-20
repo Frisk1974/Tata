@@ -119,6 +119,38 @@ document.addEventListener('DOMContentLoaded', () => {
     console.warn('Menu toggle elements not found on this page');
   }
 
+  // Hero Button (index.html)
+  const heroButton = document.querySelector('.hero button');
+  if (heroButton) {
+    heroButton.addEventListener('click', (e) => {
+      console.log('Hero button clicked, redirecting to aniversario.html');
+      try {
+        window.location.href = 'aniversario.html';
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          colors: ['#F472B6', '#C4B5FD', '#FBBF24'],
+        });
+      } catch (err) {
+        console.error('Hero button error:', err);
+      }
+    });
+    heroButton.addEventListener('touchstart', debounceTouch((e) => {
+      e.preventDefault();
+      console.log('Hero button touched, redirecting to aniversario.html');
+      try {
+        window.location.href = 'aniversario.html';
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          colors: ['#F472B6', '#C4B5FD', '#FBBF24'],
+        });
+      } catch (err) {
+        console.error('Hero button touch error:', err);
+      }
+    }), { passive: false });
+  }
+
   // Fireworks Animation (runs on all pages)
   const canvas = document.getElementById('fogosCanvas');
   const ctx = canvas ? canvas.getContext('2d') : null;
@@ -139,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createFirework() {
       const x = Math.random() * canvas.width;
       const y = Math.random() * canvas.height / 2;
-      const colors = ['#ff4d4d', '#ffcc00', '#66ff66', '#66ccff', '#ff99cc'];
+      const colors = ['#F472B6', '#C4B5FD', '#FBBF24'];
 
       for (let i = 0; i < 25; i++) {
         particles.push({
@@ -602,7 +634,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let confettiParticles = [];
 
       function createConfetti() {
-        const colors = ['#ff4d4d', '#ffcc00', '#66ff66', '#66ccff', '#ff99cc'];
+        const colors = ['#F472B6', '#C4B5FD', '#FBBF24'];
         confettiParticles.push({
           x: Math.random() * confettiCanvas.width,
           y: -10,
@@ -744,13 +776,29 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const randomIndex = Math.floor(Math.random() * mensagens.length);
         mensagemElement.textContent = mensagens[randomIndex];
+        confetti({
+          particleCount: 50,
+          spread: 60,
+          colors: ['#F472B6', '#C4B5FD', '#FBBF24'],
+        });
       } catch (err) {
         console.error('Random message error:', err);
       }
     }
     if (mensagemElement) {
       mostrarMensagemAleatoria();
-      setInterval(mostrarMensagemAleatoria, 5000);
+      const recadoButton = document.querySelector('.recado-container button');
+      if (recadoButton) {
+        recadoButton.addEventListener('click', () => {
+          console.log('Recado button clicked');
+          mostrarMensagemAleatoria();
+        });
+        recadoButton.addEventListener('touchstart', debounceTouch((e) => {
+          e.preventDefault();
+          console.log('Recado button touched');
+          mostrarMensagemAleatoria();
+        }), { passive: false });
+      }
     }
   }
 
@@ -775,6 +823,11 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const randomIndex = Math.floor(Math.random() * motivos.length);
         motivoElement.textContent = motivos[randomIndex];
+        confetti({
+          particleCount: 50,
+          spread: 60,
+          colors: ['#F472B6', '#C4B5FD', '#FBBF24'],
+        });
       } catch (err) {
         console.error('Random motivo error:', err);
       }
@@ -796,69 +849,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Dreams (sonhos.html)
   if (window.location.pathname.includes('sonhos.html')) {
-    const sonhos = [
-      {
-        title: "Viajar juntos",
-        description: "Explorar o mundo de mãos dadas, descobrindo novos lugares e criando memórias inesquecíveis."
-      },
-      {
-        title: "Construir uma família",
-        description: "Formar nosso lar, cheio de amor, risadas e momentos que aquecem o coração."
+    const dreamItems = document.querySelectorAll('#sonhos ul li');
+    dreamItems.forEach((li, index) => {
+      const description = li.querySelector('.dream-description');
+      if (description) {
+        description.classList.add('active');
+        li.setAttribute('aria-expanded', 'true');
       }
-    ];
-
-    const sonhosList = document.querySelector('#sonhos ul');
-
-    sonhos.forEach((sonho, index) => {
-      const li = document.createElement('li');
-      li.textContent = sonho.title;
-      li.setAttribute('aria-expanded', 'false');
-      li.setAttribute('role', 'button');
-      li.setAttribute('tabindex', '0');
-
-      const description = document.createElement('div');
-      description.classList.add('dream-description');
-      description.textContent = sonho.description;
-
-      li.appendChild(description);
-
-      li.addEventListener('click', () => {
-        console.log('Sonho clicked:', sonho.title);
-        toggleDreamDescription(li, description);
-      });
-
-      li.addEventListener('touchstart', debounceTouch((e) => {
-        e.preventDefault();
-        console.log('Sonho touched:', sonho.title);
-        toggleDreamDescription(li, description);
-      }), { passive: false });
-
-      li.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          console.log('Sonho keydown:', sonho.title);
-          toggleDreamDescription(li, description);
-        }
-      });
-
-      sonhosList.appendChild(li);
     });
-
-    function toggleDreamDescription(li, description) {
-      try {
-        const isExpanded = description.classList.contains('active');
-        document.querySelectorAll('.dream-description').forEach(desc => {
-          desc.classList.remove('active');
-          desc.parentElement.setAttribute('aria-expanded', 'false');
-        });
-        if (!isExpanded) {
-          description.classList.add('active');
-          li.setAttribute('aria-expanded', 'true');
-        }
-      } catch (err) {
-        console.error('Toggle dream description error:', err);
-      }
-    }
   }
 
   // Contador (contador.html)
