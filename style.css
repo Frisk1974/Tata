@@ -701,15 +701,18 @@ h3 {
   position: absolute;
   top: 1.2rem;
   right: 1.2rem;
+  background: var(--rosa-vibrante);
+  border: 2px solid var(--dourado-suave);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
   font-size: clamp(1.8rem, 4vw, 2.2rem);
   color: var(--branco-perola);
   cursor: pointer;
-  min-width: 48px;
-  min-height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.3s ease, transform 0.2s ease;
+  transition: color 0.3s ease, transform 0.2s ease, background 0.3s ease;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   pointer-events: auto;
@@ -718,6 +721,7 @@ h3 {
 
 .lightbox-close:hover,
 .lightbox-close:focus {
+  background: var(--roxo-suave);
   color: var(--dourado-suave);
   transform: scale(1.1);
 }
@@ -860,4 +864,50 @@ h3 {
   box-shadow: 0 0.3rem 0.6rem var(--sombra-romantica);
   min-width: 48px;
   min-height: 48px;
-  transitio
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
+  z-index: 20;
+}
+
+.motivos button:hover,
+.motivos button:focus {
+  background: linear-gradient(to right, var(--roxo-suave), var(--rosa-vibrante));
+  transform: translateY(-0.3rem);
+  box-shadow: 0 0.4rem 0.8rem var(--sombra-romantica);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1rem;
+  color: var(--rosa-vibrante);
+  font-family: var(--font-corpo);
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  background: linear-gradient(to right, var(--rosa-claro), var(--cinza-suave));
+  backdrop-filter: blur(8px);
+  border-top: 2px solid var(--dourado-suave);
+  box-shadow: 0 -0.3rem 0.6rem var(--sombra-romantica);
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heartPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}

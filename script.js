@@ -463,6 +463,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (shuffleBtn) {
+      playNextTrack();
       shuffleBtn.addEventListener('click', () => {
         console.log('Shuffle clicked');
         try {
@@ -685,13 +686,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const lightboxImg = document.querySelector('.lightbox-img');
     const lightboxClose = document.querySelector('.lightbox-close');
 
+    if (galleryImages.length === 0) {
+      console.warn('No gallery images found on galeria.html');
+    }
+
     galleryImages.forEach(img => {
       img.addEventListener('click', () => {
         console.log('Gallery image clicked:', img.src);
         try {
-          lightboxImg.src = img.src;
-          lightboxImg.alt = img.alt;
-          lightbox.classList.add('active');
+          if (lightbox && lightboxImg) {
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt;
+            lightbox.classList.add('active');
+          } else {
+            console.error('Lightbox or lightbox-img not found');
+          }
         } catch (err) {
           console.error('Gallery image error:', err);
         }
@@ -700,9 +709,13 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         console.log('Gallery image touched:', img.src);
         try {
-          lightboxImg.src = img.src;
-          lightboxImg.alt = img.alt;
-          lightbox.classList.add('active');
+          if (lightbox && lightboxImg) {
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt;
+            lightbox.classList.add('active');
+          } else {
+            console.error('Lightbox or lightbox-img not found');
+          }
         } catch (err) {
           console.error('Gallery image touch error:', err);
         }
@@ -873,11 +886,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const minutes = Math.floor(seconds / 60);
         const hours = Math.floor(minutes / 60);
         const days = Math.floor(hours / 24);
-        const months = Math.floor(days / 30);
+        const months = Math.floor(days / 30.42); // Média de dias por mês
         const years = Math.floor(months / 12);
 
         const remainingMonths = months % 12;
-        const remainingDays = days % 30;
+        const remainingDays = Math.floor(days % 30.42);
         const remainingHours = hours % 24;
         const remainingMinutes = minutes % 60;
         const remainingSeconds = seconds % 60;
@@ -897,36 +910,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateContador();
     setInterval(updateContador, 1000);
-  }
-
-  // Back to Top Button
-  const backToTopButton = document.querySelector('.back-to-top');
-  if (backToTopButton) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) {
-        backToTopButton.classList.add('visible');
-      } else {
-        backToTopButton.classList.remove('visible');
-      }
-    });
-
-    backToTopButton.addEventListener('click', () => {
-      console.log('Back to top clicked');
-      try {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } catch (err) {
-        console.error('Back to top error:', err);
-      }
-    });
-
-    backToTopButton.addEventListener('touchstart', debounceTouch((e) => {
-      e.preventDefault();
-      console.log('Back to top touched');
-      try {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } catch (err) {
-        console.error('Back to top touch error:', err);
-      }
-    }), { passive: false });
   }
 });
