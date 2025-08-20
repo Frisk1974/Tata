@@ -11,16 +11,25 @@ document.addEventListener('DOMContentLoaded', () => {
       const now = Date.now();
       if (now - lastTap < 200) return;
       lastTap = now;
+      if (e.type === 'touchstart') e.preventDefault();
       func(e);
     };
   }
 
+  // Combine click and touchstart events
+  function addButtonEvents(element, handler, label) {
+    if (!element) {
+      console.warn(`${label} element not found`);
+      return;
+    }
+    element.addEventListener('click', handler);
+    element.addEventListener('touchstart', debounceTouch(handler));
+  }
+
   // Stars Animation (all pages except index.html)
   const starsContainer = document.querySelector('.stars-container');
-  if (starsContainer && !window.location.pathname.includes('index.html')) {
-    starsContainer.style.display = 'block';
-  } else if (starsContainer) {
-    starsContainer.style.display = 'none';
+  if (starsContainer) {
+    starsContainer.style.display = window.location.pathname.includes('index.html') ? 'none' : 'block';
   }
 
   // Menu Toggle Functionality
@@ -30,13 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (menuToggle && menu && menuClose) {
     const toggleMenu = (e) => {
-      console.log('Menu toggle triggered');
+      console.log('Menu toggle triggered:', e.type);
       try {
         const isOpen = menu.classList.toggle('open');
         menuToggle.setAttribute('aria-expanded', isOpen);
         document.body.classList.toggle('no-scroll', isOpen);
         if (isOpen) {
-          menu.querySelector('a').focus();
+          const firstLink = menu.querySelector('a');
+          if (firstLink) firstLink.focus();
         }
       } catch (err) {
         console.error('Toggle menu error:', err);
@@ -44,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const closeMenu = (e) => {
-      console.log('Menu closed');
+      console.log('Menu closed:', e.type);
       try {
         menu.classList.remove('open');
         menuToggle.setAttribute('aria-expanded', 'false');
@@ -55,22 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    menuToggle.addEventListener('click', toggleMenu);
-    menuToggle.addEventListener('touchstart', debounceTouch((e) => {
-      e.preventDefault();
-      toggleMenu(e);
-    }), { passive: false });
-
-    menuClose.addEventListener('click', closeMenu);
-    menuClose.addEventListener('touchstart', debounceTouch((e) => {
-      e.preventDefault();
-      closeMenu(e);
-    }), { passive: false });
+    addButtonEvents(menuToggle, toggleMenu, 'Menu toggle');
+    addButtonEvents(menuClose, closeMenu, 'Menu close');
 
     const menuLinks = document.querySelectorAll('.menu a');
     menuLinks.forEach(link => {
       const navigate = (e) => {
-        console.log('Menu link clicked:', link.href);
+        console.log('Menu link clicked:', link.href, e.type);
         try {
           if (window.innerWidth <= 768) {
             menu.classList.remove('open');
@@ -82,11 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error('Navigation error:', err);
         }
       };
-      link.addEventListener('click', navigate);
-      link.addEventListener('touchstart', debounceTouch((e) => {
-        e.preventDefault();
-        navigate(e);
-      }), { passive: false });
+      addButtonEvents(link, navigate, `Menu link: ${link.href}`);
     });
 
     document.addEventListener('click', (e) => {
@@ -108,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroButton = document.querySelector('.hero button');
   if (heroButton) {
     const navigateHero = (e) => {
-      console.log('Hero button clicked, redirecting to aniversario.html');
+      console.log('Hero button triggered:', e.type);
       try {
         window.location.href = 'aniversario.html';
         confetti({
@@ -120,11 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Hero button error:', err);
       }
     };
-    heroButton.addEventListener('click', navigateHero);
-    heroButton.addEventListener('touchstart', debounceTouch((e) => {
-      e.preventDefault();
-      navigateHero(e);
-    }), { passive: false });
+    addButtonEvents(heroButton, navigateHero, 'Hero button');
   }
 
   // Fireworks Animation (runs on all pages)
@@ -138,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  if (canvas) {
+  if (canvas && ctx) {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
@@ -164,25 +157,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function animateParticles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       particles.forEach((p, index) => {
         const vx = Math.cos(p.angle) * p.speed;
         const vy = Math.sin(p.angle) * p.speed;
-
         p.x += vx;
         p.y += vy;
         p.alpha -= 0.02;
-
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
         ctx.fillStyle = `rgba(${hexToRgb(p.color)}, ${p.alpha})`;
         ctx.fill();
-
-        if (p.alpha <= 0) {
-          particles.splice(index, 1);
-        }
+        if (p.alpha <= 0) particles.splice(index, 1);
       });
-
       requestAnimationFrame(animateParticles);
     }
 
@@ -224,28 +210,24 @@ document.addEventListener('DOMContentLoaded', () => {
     let shuffleIndices = [];
 
     const tracks = Array.from(playlistItems).map(item => ({
-      src: item.dataset.src,
-      title: item.dataset.title,
-      artist: item.dataset.artist,
-      cover: item.dataset.cover,
+      src: item.dataset.src || 'musicas/default.mp3',
+      title: item.dataset.title || 'Unknown Title',
+      artist: item.dataset.artist || 'Unknown Artist',
+      cover: item.dataset.cover || 'images/default-cover.jpg',
     }));
 
     function loadTrack(index) {
       try {
         const track = tracks[index];
-        audioPlayer.src = track.src || 'musicas/default.mp3';
+        audioPlayer.src = track.src;
         trackTitle.textContent = track.title;
         trackArtist.textContent = track.artist;
-        trackCover.src = track.cover || 'images/default-cover.jpg';
+        trackCover.src = track.cover;
         trackCover.alt = `Capa de ${track.title}`;
-        playlistItems.forEach((item, i) => {
-          item.classList.toggle('playing', i === index);
-        });
+        playlistItems.forEach((item, i) => item.classList.toggle('playing', i === index));
         updateDuration();
         console.log('Loaded track:', track);
-        audioPlayer.addEventListener('error', () => {
-          console.error('Audio load error for:', track.src);
-        }, { once: true });
+        audioPlayer.addEventListener('error', () => console.error('Audio load error for:', track.src), { once: true });
       } catch (err) {
         console.error('Load track error:', err);
       }
@@ -253,9 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function playTrack() {
       try {
-        audioPlayer.play().catch(err => {
-          console.error('Play error:', err);
-        });
+        audioPlayer.play().catch(err => console.error('Play error:', err));
         isPlaying = true;
         isPlayingAll = false;
         playPauseBtn.textContent = '⏸';
@@ -349,8 +329,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (playAllButton) {
-      const togglePlayAll = () => {
-        console.log('Play all clicked');
+      const togglePlayAll = (e) => {
+        console.log('Play all triggered:', e.type);
         try {
           if (isPlayingAll) {
             pauseTrack();
@@ -369,16 +349,12 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error('Play all error:', err);
         }
       };
-      playAllButton.addEventListener('click', togglePlayAll);
-      playAllButton.addEventListener('touchstart', debounceTouch((e) => {
-        e.preventDefault();
-        togglePlayAll();
-      }), { passive: false });
+      addButtonEvents(playAllButton, togglePlayAll, 'Play all button');
     }
 
     if (playPauseBtn) {
-      const togglePlayPause = () => {
-        console.log('Play/pause clicked');
+      const togglePlayPause = (e) => {
+        console.log('Play/pause triggered:', e.type);
         try {
           if (isPlaying) pauseTrack();
           else playTrack();
@@ -386,40 +362,26 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error('Play/pause error:', err);
         }
       };
-      playPauseBtn.addEventListener('click', togglePlayPause);
-      playPauseBtn.addEventListener('touchstart', debounceTouch((e) => {
-        e.preventDefault();
-        togglePlayPause();
-      }), { passive: false });
+      addButtonEvents(playPauseBtn, togglePlayPause, 'Play/pause button');
     }
 
     if (prevBtn) {
-      const prevTrack = () => {
-        console.log('Previous clicked');
+      addButtonEvents(prevBtn, (e) => {
+        console.log('Previous triggered:', e.type);
         playPrevTrack();
-      };
-      prevBtn.addEventListener('click', prevTrack);
-      prevBtn.addEventListener('touchstart', debounceTouch((e) => {
-        e.preventDefault();
-        prevTrack();
-      }), { passive: false });
+      }, 'Previous button');
     }
 
     if (nextBtn) {
-      const nextTrack = () => {
-        console.log('Next clicked');
+      addButtonEvents(nextBtn, (e) => {
+        console.log('Next triggered:', e.type);
         playNextTrack();
-      };
-      nextBtn.addEventListener('click', nextTrack);
-      nextBtn.addEventListener('touchstart', debounceTouch((e) => {
-        e.preventDefault();
-        nextTrack();
-      }), { passive: false });
+      }, 'Next button');
     }
 
     if (shuffleBtn) {
-      const toggleShuffle = () => {
-        console.log('Shuffle clicked');
+      addButtonEvents(shuffleBtn, (e) => {
+        console.log('Shuffle triggered:', e.type);
         try {
           isShuffling = !isShuffling;
           shuffleBtn.classList.toggle('active', isShuffling);
@@ -428,17 +390,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Shuffle error:', err);
         }
-      };
-      shuffleBtn.addEventListener('click', toggleShuffle);
-      shuffleBtn.addEventListener('touchstart', debounceTouch((e) => {
-        e.preventDefault();
-        toggleShuffle();
-      }), { passive: false });
+      }, 'Shuffle button');
     }
 
     if (loopBtn) {
-      const toggleLoop = () => {
-        console.log('Loop clicked');
+      addButtonEvents(loopBtn, (e) => {
+        console.log('Loop triggered:', e.type);
         try {
           isLooping = !isLooping;
           audioPlayer.loop = isLooping;
@@ -447,17 +404,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Loop error:', err);
         }
-      };
-      loopBtn.addEventListener('click', toggleLoop);
-      loopBtn.addEventListener('touchstart', debounceTouch((e) => {
-        e.preventDefault();
-        toggleLoop();
-      }), { passive: false });
+      }, 'Loop button');
     }
 
     if (volumeBtn) {
-      const toggleVolume = () => {
-        console.log('Volume mute/unmute clicked');
+      addButtonEvents(volumeBtn, (e) => {
+        console.log('Volume mute/unmute triggered:', e.type);
         try {
           audioPlayer.muted = !audioPlayer.muted;
           volumeBtn.textContent = audioPlayer.muted ? '🔇' : '🔊';
@@ -465,12 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Volume error:', err);
         }
-      };
-      volumeBtn.addEventListener('click', toggleVolume);
-      volumeBtn.addEventListener('touchstart', debounceTouch((e) => {
-        e.preventDefault();
-        toggleVolume();
-      }), { passive: false });
+      }, 'Volume button');
     }
 
     if (volumeBar) {
@@ -500,11 +447,8 @@ document.addEventListener('DOMContentLoaded', () => {
       audioPlayer.addEventListener('ended', () => {
         console.log('Track ended:', tracks[currentTrackIndex]);
         try {
-          if (!isLooping && isPlayingAll) {
-            playNextAll();
-          } else if (!isLooping) {
-            playNextTrack();
-          }
+          if (!isLooping && isPlayingAll) playNextAll();
+          else if (!isLooping) playNextTrack();
         } catch (err) {
           console.error('Track ended error:', err);
         }
@@ -512,8 +456,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     playlistItems.forEach((item, index) => {
-      const selectTrack = () => {
-        console.log('Playlist item clicked:', tracks[index]);
+      addButtonEvents(item, (e) => {
+        console.log('Playlist item triggered:', tracks[index], e.type);
         try {
           currentTrackIndex = index;
           loadTrack(currentTrackIndex);
@@ -521,12 +465,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Playlist item error:', err);
         }
-      };
-      item.addEventListener('click', selectTrack);
-      item.addEventListener('touchstart', debounceTouch((e) => {
-        e.preventDefault();
-        selectTrack();
-      }), { passive: false });
+      }, `Playlist item: ${index}`);
     });
 
     document.addEventListener('keydown', (e) => {
@@ -565,13 +504,13 @@ document.addEventListener('DOMContentLoaded', () => {
       function createConfetti() {
         const colors = ['#F472B6', '#C4B5FD', '#FBBF24'];
         confettiParticles.push({
-          x: Math.random() * confettiCanvas.width;
-          y: -10;
-          speedY: Math.random() * 3 + 2;
-          speedX: (Math.random() - 0.5) * 2;
-          size: Math.random() * 5 + 5;
-          color: colors[Math.floor(Math.random() * colors.length)];
-          angle: Math.random() * 360;
+          x: Math.random() * confettiCanvas.width,
+          y: -10,
+          speedY: Math.random() * 3 + 2,
+          speedX: (Math.random() - 0.5) * 2,
+          size: Math.random() * 5 + 5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          angle: Math.random() * 360,
           rotationSpeed: (Math.random() - 0.5) * 5
         });
       }
@@ -582,17 +521,13 @@ document.addEventListener('DOMContentLoaded', () => {
           p.y += p.speedY;
           p.x += p.speedX;
           p.angle += p.rotationSpeed;
-
           ctx.save();
           ctx.translate(p.x, p.y);
           ctx.rotate((p.angle * Math.PI) / 180);
           ctx.fillStyle = p.color;
           ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
           ctx.restore();
-
-          if (p.y > confettiCanvas.height) {
-            confettiParticles.splice(index, 1);
-          }
+          if (p.y > confettiCanvas.height) confettiParticles.splice(index, 1);
         });
         requestAnimationFrame(animateConfetti);
       }
@@ -619,8 +554,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     galleryImages.forEach(img => {
-      const openLightbox = () => {
-        console.log('Gallery image clicked:', img.src);
+      addButtonEvents(img, (e) => {
+        console.log('Gallery image triggered:', img.src, e.type);
         try {
           if (lightbox && lightboxImg) {
             lightboxImg.src = img.src;
@@ -632,32 +567,22 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Gallery image error:', err);
         }
-      };
-      img.addEventListener('click', openLightbox);
-      img.addEventListener('touchstart', debounceTouch((e) => {
-        e.preventDefault();
-        openLightbox();
-      }), { passive: false });
+      }, `Gallery image: ${img.src}`);
     });
 
     if (lightboxClose) {
-      const closeLightbox = () => {
-        console.log('Lightbox close clicked');
+      addButtonEvents(lightboxClose, (e) => {
+        console.log('Lightbox close triggered:', e.type);
         try {
           lightbox.classList.remove('active');
         } catch (err) {
           console.error('Lightbox close error:', err);
         }
-      };
-      lightboxClose.addEventListener('click', closeLightbox);
-      lightboxClose.addEventListener('touchstart', debounceTouch((e) => {
-        e.preventDefault();
-        closeLightbox();
-      }), { passive: false });
+      }, 'Lightbox close');
     }
 
     if (lightbox) {
-      const closeLightboxBackground = (e) => {
+      lightbox.addEventListener('click', (e) => {
         if (e.target === lightbox) {
           console.log('Lightbox background clicked');
           try {
@@ -666,14 +591,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Lightbox background error:', err);
           }
         }
-      };
-      lightbox.addEventListener('click', closeLightboxBackground);
-      lightbox.addEventListener('touchstart', debounceTouch((e) => {
-        if (e.target === lightbox) {
-          e.preventDefault();
-          closeLightboxBackground(e);
-        }
-      }), { passive: false });
+      });
     } else {
       console.warn('Lightbox element not found on galeria.html');
     }
@@ -711,15 +629,10 @@ document.addEventListener('DOMContentLoaded', () => {
       mostrarMensagemAleatoria();
       const recadoButton = document.querySelector('.recado-container button');
       if (recadoButton) {
-        const showMessage = () => {
-          console.log('Recado button clicked');
+        addButtonEvents(recadoButton, (e) => {
+          console.log('Recado button triggered:', e.type);
           mostrarMensagemAleatoria();
-        };
-        recadoButton.addEventListener('click', showMessage);
-        recadoButton.addEventListener('touchstart', debounceTouch((e) => {
-          e.preventDefault();
-          showMessage();
-        }), { passive: false });
+        }, 'Recado button');
       }
     }
   }
@@ -756,15 +669,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (motivoButton && motivoElement) {
-      const showMotivo = () => {
-        console.log('Motivo button clicked');
+      addButtonEvents(motivoButton, (e) => {
+        console.log('Motivo button triggered:', e.type);
         mostrarMotivoAleatorio();
-      };
-      motivoButton.addEventListener('click', showMotivo);
-      motivoButton.addEventListener('touchstart', debounceTouch((e) => {
-        e.preventDefault();
-        showMotivo();
-      }), { passive: false });
+      }, 'Motivo button');
       mostrarMotivoAleatorio();
     }
   }
@@ -772,36 +680,29 @@ document.addEventListener('DOMContentLoaded', () => {
   // Dreams (sonhos.html)
   if (window.location.pathname.includes('sonhos.html')) {
     const dreamToggles = document.querySelectorAll('.dream-toggle');
-    dreamToggles.forEach((toggle) => {
-      const toggleDream = () => {
-        console.log('Dream toggle clicked:', toggle.textContent);
+    dreamToggles.forEach(toggle => {
+      addButtonEvents(toggle, (e) => {
+        console.log('Dream toggle triggered:', toggle.textContent, e.type);
         try {
           const descriptionId = toggle.getAttribute('aria-controls');
           const description = document.getElementById(descriptionId);
           if (description) {
-            // Close all other descriptions
-            document.querySelectorAll('.dream-description.active').forEach((desc) => {
+            document.querySelectorAll('.dream-description.active').forEach(desc => {
               if (desc !== description) {
                 desc.classList.remove('active');
                 const relatedToggle = document.querySelector(`.dream-toggle[aria-controls="${desc.id}"]`);
                 if (relatedToggle) relatedToggle.setAttribute('aria-expanded', 'false');
               }
             });
-            // Toggle current description
             const isActive = description.classList.toggle('active');
             toggle.setAttribute('aria-expanded', isActive);
           } else {
             console.error(`Description not found for ID: ${descriptionId}`);
           }
         } catch (err) {
-          console.error('Dream toggle click error:', err);
+          console.error('Dream toggle error:', err);
         }
-      };
-      toggle.addEventListener('click', toggleDream);
-      toggle.addEventListener('touchstart', debounceTouch((e) => {
-        e.preventDefault();
-        toggleDream();
-      }), { passive: false });
+      }, `Dream toggle: ${toggle.textContent}`);
     });
   }
 
@@ -814,14 +715,12 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const now = new Date();
         const timeDiff = now - startDate;
-
         const seconds = Math.floor(timeDiff / 1000);
         const minutes = Math.floor(seconds / 60);
         const hours = Math.floor(minutes / 60);
         const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
         const months = Math.floor(days / 30.42);
         const years = Math.floor(months / 12);
-
         const remainingMonths = months % 12;
         const remainingDays = days % 30;
         const remainingHours = hours % 24;
@@ -841,7 +740,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    updateContador();
-    setInterval(updateContador, 1000);
+    if (contadorElement) {
+      updateContador();
+      setInterval(updateContador, 1000);
+    }
   }
 });
