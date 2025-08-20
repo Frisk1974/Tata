@@ -744,114 +744,157 @@ h3 {
 /* Sonhos */
 #sonhos ul {
   list-style: none;
-  max-width: 36rem;
-  margin: auto;
   padding: 0;
+  max-width: 36rem;
+  margin: 0 auto;
 }
 
-#sonhos ul li {
-  background: linear-gradient(to right, var(--rosa-claro), var(--cinza-suave));
+#sonhos li {
+  margin-bottom: 1rem;
+}
+
+.dream-toggle {
+  width: 100%;
   padding: 0.8rem 1.2rem;
-  margin-bottom: 0.8rem;
+  background: linear-gradient(to right, var(--rosa-claro), var(--rosa-vibrante));
+  color: var(--azul-noite);
+  border: 2px solid var(--dourado-suave);
   border-radius: 0.6rem;
-  box-shadow: 0 0.3rem 0.6rem var(--sombra-romantica);
-  font-size: clamp(1rem, 2.5vw, 1.1rem);
+  font-family: var(--font-titulo);
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
   font-weight: 700;
-  color: var(--rosa-vibrante);
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
+  text-align: left;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  position: relative;
-  user-select: none;
-  -webkit-user-select: none;
+  box-shadow: 0 0.3rem 0.6rem var(--sombra-romantica);
+  min-height: 48px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
+}
+
+.dream-toggle:hover,
+.dream-toggle:focus,
+.dream-toggle[aria-expanded="true"] {
+  background: linear-gradient(to right, var(--roxo-suave), var(--rosa-vibrante));
+  transform: translateY(-0.2rem);
+  box-shadow: 0 0.4rem 0.8rem var(--sombra-romantica);
+}
+
+.dream-description {
+  display: none;
+  margin-top: 0.5rem;
+  padding: 1rem;
+  background: var(--cinza-suave);
+  border-radius: 0.6rem;
+  font-family: var(--font-corpo);
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  color: var(--azul-noite);
+  line-height: 1.6;
+  box-shadow: inset 0 0 0.3rem var(--sombra-romantica);
+}
+
+.dream-description.active {
+  display: block;
+  animation: fadeIn 0.5s ease-in;
+}
+
+/* Contador */
+.contador {
+  text-align: center;
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+.contador p {
+  font-family: var(--font-corpo);
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  color: var(--azul-noite);
+  margin-bottom: 1rem;
+}
+
+#contador {
+  font-family: var(--font-titulo);
+  font-size: clamp(1.2rem, 3.5vw, 1.4rem);
+  color: var(--rosa-vibrante);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+#contador span {
+  background: var(--cinza-suave);
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.2rem 0.4rem var(--sombra-romantica);
+}
+
+/* Recado */
+.recado-container {
+  text-align: center;
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+.recado-container p {
+  font-family: var(--font-corpo);
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  color: var(--azul-noite);
+  margin-bottom: 1.5rem;
+}
+
+.recado-container button {
+  padding: 0.8rem 2rem;
+  background: linear-gradient(to right, var(--rosa-vibrante), var(--roxo-suave));
+  color: var(--branco-perola);
+  border: 2px solid var(--dourado-suave);
+  border-radius: 0.6rem;
+  cursor: pointer;
+  font-family: var(--font-titulo);
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+  font-weight: 700;
+  box-shadow: 0 0.3rem 0.6rem var(--sombra-romantica);
+  min-width: 48px;
+  min-height: 48px;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   pointer-events: auto;
   z-index: 20;
 }
 
-#sonhos ul li:hover {
+.recado-container button:hover,
+.recado-container button:focus {
   background: linear-gradient(to right, var(--roxo-suave), var(--rosa-vibrante));
-  color: var(--branco-perola);
   transform: translateY(-0.3rem);
   box-shadow: 0 0.4rem 0.8rem var(--sombra-romantica);
 }
 
-#sonhos ul li::before {
-  content: "🌟";
-  font-size: 1.2rem;
-}
-
-.dream-description {
-  display: none;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
-  color: var(--azul-noite);
-  background: var(--rosa-claro);
-  padding: 1rem;
-  margin-top: 0.75rem;
-  border-radius: 0.6rem;
-  box-shadow: 0 0.3rem 0.6rem var(--sombra-romantica);
-  animation: fadeIn 0.6s ease-in-out;
-  position: relative;
-  z-index: 10;
-}
-
-.dream-description.active {
-  display: block;
-}
-
-/* Contador */
-.contador {
-  position: relative;
-  z-index: 10;
-  background: linear-gradient(to bottom, var(--rosa-claro), var(--cinza-suave));
-  padding: clamp(1.5rem, 4vw, 2rem);
-  border-radius: 1rem;
-  text-align: center;
-  max-width: clamp(22rem, 90vw, 32rem);
-  color: var(--rosa-vibrante);
+#mensagemAleatoria {
   font-family: var(--font-corpo);
-  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
-  font-weight: bold;
-  letter-spacing: 0.1rem;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 0 0.8rem var(--sombra-romantica);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem;
-  min-height: calc(100vh - 4rem);
-}
-
-@keyframes heartbeat {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-#contador.heartbeat {
-  animation: heartbeat 1.5s ease-in-out infinite;
+  font-style: italic;
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  color: var(--rosa-vibrante);
+  margin-top: 1.5rem;
+  display: block;
 }
 
 /* Motivos */
 .motivos {
-  position: relative;
-  z-index: 10;
+  text-align: center;
+  max-width: 36rem;
+  margin: 0 auto;
 }
 
-.motivos div#motivo {
-  font-size: clamp(1rem, 3vw, 1.3rem);
-  max-width: clamp(22rem, 90vw, 32rem);
-  color: var(--azul-noite);
+.motivos p {
   font-family: var(--font-corpo);
-  margin: 1.5rem auto;
-  animation: fadeIn 1.2s ease-in-out;
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  color: var(--azul-noite);
+  margin-bottom: 1.5rem;
 }
 
 .motivos button {
-  margin-top: 1.5rem;
   padding: 0.8rem 2rem;
   background: linear-gradient(to right, var(--rosa-vibrante), var(--roxo-suave));
   color: var(--branco-perola);
@@ -878,24 +921,30 @@ h3 {
   box-shadow: 0 0.4rem 0.8rem var(--sombra-romantica);
 }
 
+#motivo {
+  font-family: var(--font-corpo);
+  font-style: italic;
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  color: var(--rosa-vibrante);
+  margin-top: 1.5rem;
+  display: block;
+}
+
 /* Footer */
 footer {
   text-align: center;
-  padding: 1rem;
-  color: var(--rosa-vibrante);
+  padding: clamp(1rem, 3vw, 1.5rem);
+  background: var(--rosa-claro);
+  color: var(--azul-noite);
   font-family: var(--font-corpo);
   font-size: clamp(0.9rem, 2.5vw, 1rem);
-  background: linear-gradient(to right, var(--rosa-claro), var(--cinza-suave));
-  backdrop-filter: blur(8px);
-  border-top: 2px solid var(--dourado-suave);
   box-shadow: 0 -0.3rem 0.6rem var(--sombra-romantica);
   position: relative;
-  bottom: 0;
-  width: 100%;
   z-index: 10;
+  margin-top: 2rem;
 }
 
-/* Animations */
+/* Animações */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -907,7 +956,65 @@ footer {
 }
 
 @keyframes heartPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+  }
+
+  .section {
+    padding: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  .gallery-container {
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  }
+
+  .track-cover {
+    width: 70px;
+    height: 70px;
+  }
+
+  .player-controls {
+    gap: 1rem;
+  }
+
+  .control-btn {
+    padding: 0.7rem;
+    font-size: 1.2rem;
+  }
+
+  .volume-bar {
+    width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
+
+  .hero p {
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+  }
+
+  .menu {
+    max-width: 100%;
+  }
+
+  .menu a {
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    padding: 0.7rem 1rem;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 4vw, 1.8rem);
+  }
+
+  .gallery-img {
+    max-height: 18rem;
+  }
 }

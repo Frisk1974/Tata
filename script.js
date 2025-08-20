@@ -463,7 +463,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (shuffleBtn) {
-      playNextTrack();
       shuffleBtn.addEventListener('click', () => {
         console.log('Shuffle clicked');
         try {
@@ -637,13 +636,13 @@ document.addEventListener('DOMContentLoaded', () => {
       function createConfetti() {
         const colors = ['#F472B6', '#C4B5FD', '#FBBF24'];
         confettiParticles.push({
-          x: Math.random() * confettiCanvas.width,
-          y: -10,
-          speedY: Math.random() * 3 + 2,
-          speedX: (Math.random() - 0.5) * 2,
-          size: Math.random() * 5 + 5,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          angle: Math.random() * 360,
+          x: Math.random() * confettiCanvas.width;
+          y: -10;
+          speedY: Math.random() * 3 + 2;
+          speedX: (Math.random() - 0.5) * 2;
+          size: Math.random() * 5 + 5;
+          color: colors[Math.floor(Math.random() * colors.length)];
+          angle: Math.random() * 360;
           rotationSpeed: (Math.random() - 0.5) * 5
         });
       }
@@ -862,13 +861,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Dreams (sonhos.html)
   if (window.location.pathname.includes('sonhos.html')) {
-    const dreamItems = document.querySelectorAll('#sonhos ul li');
-    dreamItems.forEach((li, index) => {
-      const description = li.querySelector('.dream-description');
-      if (description) {
-        description.classList.add('active');
-        li.setAttribute('aria-expanded', 'true');
-      }
+    const dreamToggles = document.querySelectorAll('.dream-toggle');
+    dreamToggles.forEach((toggle) => {
+      toggle.addEventListener('click', () => {
+        console.log('Dream toggle clicked:', toggle.textContent);
+        try {
+          const descriptionId = toggle.getAttribute('aria-controls');
+          const description = document.getElementById(descriptionId);
+          if (description) {
+            // Close all other descriptions
+            document.querySelectorAll('.dream-description.active').forEach((desc) => {
+              if (desc !== description) {
+                desc.classList.remove('active');
+                const relatedToggle = document.querySelector(`.dream-toggle[aria-controls="${desc.id}"]`);
+                if (relatedToggle) relatedToggle.setAttribute('aria-expanded', 'false');
+              }
+            });
+            // Toggle current description
+            const isActive = description.classList.toggle('active');
+            toggle.setAttribute('aria-expanded', isActive);
+          } else {
+            console.error(`Description not found for ID: ${descriptionId}`);
+          }
+        } catch (err) {
+          console.error('Dream toggle click error:', err);
+        }
+      });
+      toggle.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Dream toggle touched:', toggle.textContent);
+        try {
+          const descriptionId = toggle.getAttribute('aria-controls');
+          const description = document.getElementById(descriptionId);
+          if (description) {
+            // Close all other descriptions
+            document.querySelectorAll('.dream-description.active').forEach((desc) => {
+              if (desc !== description) {
+                desc.classList.remove('active');
+                const relatedToggle = document.querySelector(`.dream-toggle[aria-controls="${desc.id}"]`);
+                if (relatedToggle) relatedToggle.setAttribute('aria-expanded', 'false');
+              }
+            });
+            // Toggle current description
+            const isActive = description.classList.toggle('active');
+            toggle.setAttribute('aria-expanded', isActive);
+          } else {
+            console.error(`Description not found for ID: ${descriptionId}`);
+          }
+        } catch (err) {
+          console.error('Dream toggle touch error:', err);
+        }
+      }), { passive: false });
     });
   }
 
@@ -885,12 +928,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const seconds = Math.floor(timeDiff / 1000);
         const minutes = Math.floor(seconds / 60);
         const hours = Math.floor(minutes / 60);
-        const days = Math.floor(hours / 24);
-        const months = Math.floor(days / 30.42); // Média de dias por mês
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        const months = Math.floor(days / 30.42);
         const years = Math.floor(months / 12);
 
         const remainingMonths = months % 12;
-        const remainingDays = Math.floor(days % 30.42);
+        const remainingDays = days % 30;
         const remainingHours = hours % 24;
         const remainingMinutes = minutes % 60;
         const remainingSeconds = seconds % 60;
