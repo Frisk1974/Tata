@@ -11,25 +11,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const now = Date.now();
       if (now - lastTap < 200) return;
       lastTap = now;
-      if (e.type === 'touchstart') e.preventDefault();
       func(e);
     };
   }
 
-  // Combine click and touchstart events
-  function addButtonEvents(element, handler, label) {
-    if (!element) {
-      console.warn(`${label} element not found`);
-      return;
-    }
-    element.addEventListener('click', handler);
-    element.addEventListener('touchstart', debounceTouch(handler));
-  }
-
   // Stars Animation (all pages except index.html)
   const starsContainer = document.querySelector('.stars-container');
-  if (starsContainer) {
-    starsContainer.style.display = window.location.pathname.includes('index.html') ? 'none' : 'block';
+  if (starsContainer && !window.location.pathname.includes('index.html')) {
+    starsContainer.style.display = 'block';
+  } else if (starsContainer) {
+    starsContainer.style.display = 'none';
   }
 
   // Menu Toggle Functionality
@@ -38,23 +29,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuClose = document.querySelector('.menu-close');
 
   if (menuToggle && menu && menuClose) {
-    const toggleMenu = (e) => {
-      console.log('Menu toggle triggered:', e.type);
+    const toggleMenu = (e, type) => {
+      console.log('Menu toggle triggered:', type);
       try {
         const isOpen = menu.classList.toggle('open');
         menuToggle.setAttribute('aria-expanded', isOpen);
         document.body.classList.toggle('no-scroll', isOpen);
         if (isOpen) {
-          const firstLink = menu.querySelector('a');
-          if (firstLink) firstLink.focus();
+          menu.querySelector('a').focus();
         }
       } catch (err) {
         console.error('Toggle menu error:', err);
       }
     };
 
-    const closeMenu = (e) => {
-      console.log('Menu closed:', e.type);
+    const closeMenu = (e, type) => {
+      console.log('Menu closed:', type);
       try {
         menu.classList.remove('open');
         menuToggle.setAttribute('aria-expanded', 'false');
@@ -65,13 +55,22 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    addButtonEvents(menuToggle, toggleMenu, 'Menu toggle');
-    addButtonEvents(menuClose, closeMenu, 'Menu close');
+    menuToggle.addEventListener('click', (e) => toggleMenu(e, 'click'));
+    menuToggle.addEventListener('touchstart', debounceTouch((e) => {
+      e.preventDefault();
+      toggleMenu(e, 'touchstart');
+    }), { passive: false });
+
+    menuClose.addEventListener('click', (e) => closeMenu(e, 'click'));
+    menuClose.addEventListener('touchstart', debounceTouch((e) => {
+      e.preventDefault();
+      closeMenu(e, 'touchstart');
+    }), { passive: false });
 
     const menuLinks = document.querySelectorAll('.menu a');
     menuLinks.forEach(link => {
-      const navigate = (e) => {
-        console.log('Menu link clicked:', link.href, e.type);
+      link.addEventListener('click', (e) => {
+        console.log('Menu link clicked:', link.href);
         try {
           if (window.innerWidth <= 768) {
             menu.classList.remove('open');
@@ -82,30 +81,49 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Navigation error:', err);
         }
-      };
-      addButtonEvents(link, navigate, `Menu link: ${link.href}`);
+      });
+      link.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Menu link touched:', link.href);
+        try {
+          if (window.innerWidth <= 768) {
+            menu.classList.remove('open');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            document.body.classList.remove('no-scroll');
+          }
+          window.location.href = link.href;
+        } catch (err) {
+          console.error('Navigation touch error:', err);
+        }
+      }), { passive: false });
     });
 
     document.addEventListener('click', (e) => {
       if (!menu.contains(e.target) && !menuToggle.contains(e.target) && menu.classList.contains('open')) {
-        closeMenu(e);
+        closeMenu(e, 'click outside');
       }
     });
 
+    document.addEventListener('touchstart', (e) => {
+      if (!menu.contains(e.target) && !menuToggle.contains(e.target) && menu.classList.contains('open')) {
+        debounceTouch((ev) => closeMenu(ev, 'touch outside'))(e);
+      }
+    }, { passive: false });
+
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && menu.classList.contains('open')) {
-        closeMenu(e);
+        closeMenu(e, 'escape key');
       }
     });
   } else {
-    console.warn('Menu toggle elements not found');
+    console.warn('Menu toggle elements not found on this page');
   }
 
   // Hero Button (index.html)
   const heroButton = document.querySelector('.hero button');
   if (heroButton) {
-    const navigateHero = (e) => {
-      console.log('Hero button triggered:', e.type);
+    heroButton.addEventListener('click', (e) => {
+      console.log('Hero button clicked, redirecting to aniversario.html');
       try {
         window.location.href = 'aniversario.html';
         confetti({
@@ -116,8 +134,21 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (err) {
         console.error('Hero button error:', err);
       }
-    };
-    addButtonEvents(heroButton, navigateHero, 'Hero button');
+    });
+    heroButton.addEventListener('touchstart', debounceTouch((e) => {
+      e.preventDefault();
+      console.log('Hero button touched, redirecting to aniversario.html');
+      try {
+        window.location.href = 'aniversario.html';
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          colors: ['#F472B6', '#C4B5FD', '#FBBF24'],
+        });
+      } catch (err) {
+        console.error('Hero button touch error:', err);
+      }
+    }), { passive: false });
   }
 
   // Fireworks Animation (runs on all pages)
@@ -131,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  if (canvas && ctx) {
+  if (canvas) {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
@@ -157,18 +188,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function animateParticles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
       particles.forEach((p, index) => {
         const vx = Math.cos(p.angle) * p.speed;
         const vy = Math.sin(p.angle) * p.speed;
+
         p.x += vx;
         p.y += vy;
         p.alpha -= 0.02;
+
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
         ctx.fillStyle = `rgba(${hexToRgb(p.color)}, ${p.alpha})`;
         ctx.fill();
-        if (p.alpha <= 0) particles.splice(index, 1);
+
+        if (p.alpha <= 0) {
+          particles.splice(index, 1);
+        }
       });
+
       requestAnimationFrame(animateParticles);
     }
 
@@ -210,24 +248,28 @@ document.addEventListener('DOMContentLoaded', () => {
     let shuffleIndices = [];
 
     const tracks = Array.from(playlistItems).map(item => ({
-      src: item.dataset.src || 'musicas/default.mp3',
-      title: item.dataset.title || 'Unknown Title',
-      artist: item.dataset.artist || 'Unknown Artist',
-      cover: item.dataset.cover || 'images/default-cover.jpg',
+      src: item.dataset.src,
+      title: item.dataset.title,
+      artist: item.dataset.artist,
+      cover: item.dataset.cover,
     }));
 
     function loadTrack(index) {
       try {
         const track = tracks[index];
-        audioPlayer.src = track.src;
+        audioPlayer.src = track.src || 'musicas/default.mp3';
         trackTitle.textContent = track.title;
         trackArtist.textContent = track.artist;
-        trackCover.src = track.cover;
+        trackCover.src = track.cover || 'images/default-cover.jpg';
         trackCover.alt = `Capa de ${track.title}`;
-        playlistItems.forEach((item, i) => item.classList.toggle('playing', i === index));
+        playlistItems.forEach((item, i) => {
+          item.classList.toggle('playing', i === index);
+        });
         updateDuration();
         console.log('Loaded track:', track);
-        audioPlayer.addEventListener('error', () => console.error('Audio load error for:', track.src), { once: true });
+        audioPlayer.addEventListener('error', () => {
+          console.error('Audio load error for:', track.src);
+        }, { once: true });
       } catch (err) {
         console.error('Load track error:', err);
       }
@@ -235,7 +277,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function playTrack() {
       try {
-        audioPlayer.play().catch(err => console.error('Play error:', err));
+        audioPlayer.play().catch(err => {
+          console.error('Play error:', err);
+        });
         isPlaying = true;
         isPlayingAll = false;
         playPauseBtn.textContent = '⏸';
@@ -329,8 +373,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (playAllButton) {
-      const togglePlayAll = (e) => {
-        console.log('Play all triggered:', e.type);
+      playAllButton.addEventListener('click', () => {
+        console.log('Play all clicked');
         try {
           if (isPlayingAll) {
             pauseTrack();
@@ -348,40 +392,79 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Play all error:', err);
         }
-      };
-      addButtonEvents(playAllButton, togglePlayAll, 'Play all button');
+      });
+      playAllButton.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Play all touched');
+        try {
+          if (isPlayingAll) {
+            pauseTrack();
+            isPlayingAll = false;
+            playAllButton.textContent = 'Tocar Tudo';
+            playAllButton.classList.remove('playing');
+          } else {
+            if (currentTrackIndex === -1) currentTrackIndex = 0;
+            loadTrack(currentTrackIndex);
+            playTrack();
+            isPlayingAll = true;
+            playAllButton.textContent = 'Parar';
+            playAllButton.classList.add('playing');
+          }
+        } catch (err) {
+          console.error('Play all touch error:', err);
+        }
+      }), { passive: false });
     }
 
     if (playPauseBtn) {
-      const togglePlayPause = (e) => {
-        console.log('Play/pause triggered:', e.type);
+      playPauseBtn.addEventListener('click', () => {
+        console.log('Play/pause clicked');
         try {
           if (isPlaying) pauseTrack();
           else playTrack();
         } catch (err) {
           console.error('Play/pause error:', err);
         }
-      };
-      addButtonEvents(playPauseBtn, togglePlayPause, 'Play/pause button');
+      });
+      playPauseBtn.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Play/pause touched');
+        try {
+          if (isPlaying) pauseTrack();
+          else playTrack();
+        } catch (err) {
+          console.error('Play/pause touch error:', err);
+        }
+      }), { passive: false });
     }
 
     if (prevBtn) {
-      addButtonEvents(prevBtn, (e) => {
-        console.log('Previous triggered:', e.type);
+      prevBtn.addEventListener('click', () => {
+        console.log('Previous clicked');
         playPrevTrack();
-      }, 'Previous button');
+      });
+      prevBtn.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Previous touched');
+        playPrevTrack();
+      }), { passive: false });
     }
 
     if (nextBtn) {
-      addButtonEvents(nextBtn, (e) => {
-        console.log('Next triggered:', e.type);
+      nextBtn.addEventListener('click', () => {
+        console.log('Next clicked');
         playNextTrack();
-      }, 'Next button');
+      });
+      nextBtn.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Next touched');
+        playNextTrack();
+      }), { passive: false });
     }
 
     if (shuffleBtn) {
-      addButtonEvents(shuffleBtn, (e) => {
-        console.log('Shuffle triggered:', e.type);
+      shuffleBtn.addEventListener('click', () => {
+        console.log('Shuffle clicked');
         try {
           isShuffling = !isShuffling;
           shuffleBtn.classList.toggle('active', isShuffling);
@@ -390,12 +473,24 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Shuffle error:', err);
         }
-      }, 'Shuffle button');
+      });
+      shuffleBtn.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Shuffle touched');
+        try {
+          isShuffling = !isShuffling;
+          shuffleBtn.classList.toggle('active', isShuffling);
+          shuffleBtn.setAttribute('aria-pressed', isShuffling);
+          shuffleIndices = [];
+        } catch (err) {
+          console.error('Shuffle touch error:', err);
+        }
+      }), { passive: false });
     }
 
     if (loopBtn) {
-      addButtonEvents(loopBtn, (e) => {
-        console.log('Loop triggered:', e.type);
+      loopBtn.addEventListener('click', () => {
+        console.log('Loop clicked');
         try {
           isLooping = !isLooping;
           audioPlayer.loop = isLooping;
@@ -404,12 +499,24 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Loop error:', err);
         }
-      }, 'Loop button');
+      });
+      loopBtn.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Loop touched');
+        try {
+          isLooping = !isLooping;
+          audioPlayer.loop = isLooping;
+          loopBtn.classList.toggle('active', isLooping);
+          loopBtn.setAttribute('aria-pressed', isLooping);
+        } catch (err) {
+          console.error('Loop touch error:', err);
+        }
+      }), { passive: false });
     }
 
     if (volumeBtn) {
-      addButtonEvents(volumeBtn, (e) => {
-        console.log('Volume mute/unmute triggered:', e.type);
+      volumeBtn.addEventListener('click', () => {
+        console.log('Volume mute/unmute clicked');
         try {
           audioPlayer.muted = !audioPlayer.muted;
           volumeBtn.textContent = audioPlayer.muted ? '🔇' : '🔊';
@@ -417,7 +524,18 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Volume error:', err);
         }
-      }, 'Volume button');
+      });
+      volumeBtn.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Volume mute/unmute touched');
+        try {
+          audioPlayer.muted = !audioPlayer.muted;
+          volumeBtn.textContent = audioPlayer.muted ? '🔇' : '🔊';
+          volumeBtn.setAttribute('aria-label', audioPlayer.muted ? 'Ativar som' : 'Desativar som');
+        } catch (err) {
+          console.error('Volume touch error:', err);
+        }
+      }), { passive: false });
     }
 
     if (volumeBar) {
@@ -447,8 +565,11 @@ document.addEventListener('DOMContentLoaded', () => {
       audioPlayer.addEventListener('ended', () => {
         console.log('Track ended:', tracks[currentTrackIndex]);
         try {
-          if (!isLooping && isPlayingAll) playNextAll();
-          else if (!isLooping) playNextTrack();
+          if (!isLooping && isPlayingAll) {
+            playNextAll();
+          } else if (!isLooping) {
+            playNextTrack();
+          }
         } catch (err) {
           console.error('Track ended error:', err);
         }
@@ -456,8 +577,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     playlistItems.forEach((item, index) => {
-      addButtonEvents(item, (e) => {
-        console.log('Playlist item triggered:', tracks[index], e.type);
+      item.addEventListener('click', () => {
+        console.log('Playlist item clicked:', tracks[index]);
         try {
           currentTrackIndex = index;
           loadTrack(currentTrackIndex);
@@ -465,7 +586,18 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error('Playlist item error:', err);
         }
-      }, `Playlist item: ${index}`);
+      });
+      item.addEventListener('touchstart', debounceTouch((e) => {
+        e.preventDefault();
+        console.log('Playlist item touched:', tracks[index]);
+        try {
+          currentTrackIndex = index;
+          loadTrack(currentTrackIndex);
+          playTrack();
+        } catch (err) {
+          console.error('Playlist item touch error:', err);
+        }
+      }), { passive: false });
     });
 
     document.addEventListener('keydown', (e) => {
@@ -476,359 +608,4 @@ document.addEventListener('DOMContentLoaded', () => {
           if (isPlaying) pauseTrack();
           else playTrack();
         } catch (err) {
-          console.error('Spacebar error:', err);
-        }
-      } else if (e.key === 'ArrowRight') {
-        playNextTrack();
-      } else if (e.key === 'ArrowLeft') {
-        playPrevTrack();
-      }
-    });
-
-    if (tracks.length > 0) {
-      currentTrackIndex = 0;
-      loadTrack(currentTrackIndex);
-    }
-  }
-
-  // Confetti Animation (aniversario.html)
-  if (window.location.pathname.includes('aniversario.html')) {
-    const confettiCanvas = document.getElementById('confetti-canvas');
-    if (confettiCanvas) {
-      const ctx = confettiCanvas.getContext('2d');
-      confettiCanvas.width = window.innerWidth;
-      confettiCanvas.height = window.innerHeight;
-
-      let confettiParticles = [];
-
-      function createConfetti() {
-        const colors = ['#F472B6', '#C4B5FD', '#FBBF24'];
-        confettiParticles.push({
-          x: Math.random() * confettiCanvas.width,
-          y: -10,
-          speedY: Math.random() * 3 + 2,
-          speedX: (Math.random() - 0.5) * 2,
-          size: Math.random() * 5 + 5,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          angle: Math.random() * 360,
-          rotationSpeed: (Math.random() - 0.5) * 5
-        });
-      }
-
-      function animateConfetti() {
-        ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-        confettiParticles.forEach((p, index) => {
-          p.y += p.speedY;
-          p.x += p.speedX;
-          p.angle += p.rotationSpeed;
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate((p.angle * Math.PI) / 180);
-          ctx.fillStyle = p.color;
-          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
-          ctx.restore();
-          if (p.y > confettiCanvas.height) confettiParticles.splice(index, 1);
-        });
-        requestAnimationFrame(animateConfetti);
-      }
-
-      window.addEventListener('resize', () => {
-        confettiCanvas.width = window.innerWidth;
-        confettiCanvas.height = window.innerHeight;
-      });
-
-      setInterval(createConfetti, 100);
-      animateConfetti();
-    }
-  }
-
-  // Lightbox for Gallery (galeria.html)
-  if (window.location.pathname.includes('galeria.html')) {
-    const galleryImages = document.querySelectorAll('.gallery-img');
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.querySelector('.lightbox-img');
-    const lightboxClose = document.querySelector('.lightbox-close');
-
-    if (galleryImages.length === 0) {
-      console.warn('No gallery images found on galeria.html');
-    }
-
-    galleryImages.forEach(img => {
-      addButtonEvents(img, (e) => {
-        console.log('Gallery image triggered:', img.src, e.type);
-        try {
-          if (lightbox && lightboxImg) {
-            lightboxImg.src = img.src;
-            lightboxImg.alt = img.alt;
-            lightbox.classList.add('active');
-          } else {
-            console.error('Lightbox or lightbox-img not found');
-          }
-        } catch (err) {
-          console.error('Gallery image error:', err);
-        }
-      }, `Gallery image: ${img.src}`);
-    });
-
-    if (lightboxClose) {
-      addButtonEvents(lightboxClose, (e) => {
-        console.log('Lightbox close triggered:', e.type);
-        try {
-          lightbox.classList.remove('active');
-        } catch (err) {
-          console.error('Lightbox close error:', err);
-        }
-      }, 'Lightbox close');
-    }
-
-    if (lightbox) {
-      lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) {
-          console.log('Lightbox background clicked');
-          try {
-            lightbox.classList.remove('active');
-          } catch (err) {
-            console.error('Lightbox background error:', err);
-          }
-        }
-      });
-    } else {
-      console.warn('Lightbox element not found on galeria.html');
-    }
-  }
-
-  // Random Messages (recado.html)
-  if (window.location.pathname.includes('recado.html')) {
-    const mensagens = [
-      
-      "Sinto sua falta o tempo todo.",
-      "Te amo mais do que consigo explicar.",
-      "Você é meu lugar seguro.",
-      "Queria te abraçar agora.",
-      "Mesmo longe, você tá em mim.",
-      "Tudo lembra você.",
-      "Você me acalma só de existir.",
-      "Hoje eu pensei em você de novo (como sempre).",
-      "Queria poder te olhar agora.",
-      "Sinto que o tempo corre mais lento sem você.",
-      "Você é a melhor parte do meu dia.",
-      "Meu coração descansa quando penso em você.",
-      "Tudo fica melhor só porque você existe.",
-      "Você é a saudade que não passa.", 
-      "Até o silêncio tem a sua voz em mim.",
-      "Eu queria congelar o tempo no seu abraço.",
-      "Você é meu pedaço de calma nesse caos.",
-      "Minha vida tem mais cor desde você.",
-      "O mundo parece certo quando penso em você.",
-      "Você é a lembrança que me sorri todo dia.",
-      "Queria que o agora fosse ao seu lado.",
-      "Meu peito encontra paz só em você.",
-      "Nada é tão bonito quanto o teu jeito de existir.",
-      "Você é meu destino favorito.",
-      "Seus olhos são meu ponto de partida e chegada.",
-      "Minha saudade tem teu nome gravado.",
-      "Com você até o simples vira mágico.",
-      "Você é a resposta de todas as minhas faltas.",
-      "Meu mundo é mais leve porque tem você.",
-      "Meu peito aperta de saudade."
-    ];
-    const mensagemElement = document.getElementById('mensagemAleatoria');
-    function mostrarMensagemAleatoria() {
-      try {
-        const randomIndex = Math.floor(Math.random() * mensagens.length);
-        mensagemElement.textContent = mensagens[randomIndex];
-        confetti({
-          particleCount: 50,
-          spread: 60,
-          colors: ['#F472B6', '#C4B5FD', '#FBBF24'],
-        });
-      } catch (err) {
-        console.error('Random message error:', err);
-      }
-    }
-    if (mensagemElement) {
-      mostrarMensagemAleatoria();
-      const recadoButton = document.querySelector('.recado-container button');
-      if (recadoButton) {
-        addButtonEvents(recadoButton, (e) => {
-          console.log('Recado button triggered:', e.type);
-          mostrarMensagemAleatoria();
-        }, 'Recado button');
-      }
-    }
-  }
-
-  // Reasons (motivos.html)
-  if (window.location.pathname.includes('motivos.html')) {
-    const motivos = [
-      "Porque seu sorriso ilumina meu mundo.",
-"Porque você me faz querer ser uma pessoa melhor.",
-"Porque cada momento com você é inesquecível.",
-"Porque sua risada é minha música favorita.",
-"Porque você é meu porto seguro.",
-"Porque sonhar com você é melhor que qualquer realidade.",
-"Porque seu carinho me faz sentir completo.",
-"Porque você é a razão do meu coração bater mais forte.",
-"Porque cada detalhe seu é perfeito pra mim.",
-"Porque te amo mais a cada dia.",
-"Porque sua voz é meu som favorito.",
-"Porque até sua ausência me faz companhia.",
-"Porque sua existência torna tudo mais bonito.",
-"Porque ao seu lado tudo parece simples.",
-"Porque você é meu lar em qualquer lugar.",
-"Porque cada olhar seu me desmonta.",
-"Porque seu abraço é meu melhor remédio.",
-"Porque com você até o silêncio é confortável.",
-"Porque você me entende sem eu precisar falar.",
-"Porque sua felicidade é a minha prioridade.",
-"Porque seus olhos são meu horizonte.",
-"Porque o tempo voa quando estou com você.",
-"Porque cada palavra sua fica na minha memória.",
-"Porque você é meu ponto de paz.",
-"Porque amar você me ensina a viver melhor.",
-"Porque você é a resposta das minhas perguntas.",
-"Porque cada beijo seu é um universo.",
-"Porque você é a certeza em meio às minhas dúvidas.",
-"Porque sua presença me traz equilíbrio.",
-"Porque você é meu sonho mais real.",
-"Porque cada toque seu é inesquecível.",
-"Porque você me inspira todos os dias.",
-"Porque você é minha sorte disfarçada de gente.",
-"Porque sua essência me prende.",
-"Porque eu me perco e me encontro em você.",
-"Porque nada faz sentido sem você.",
-"Porque você transforma o comum em especial.",
-"Porque minha vida tem mais cor com você.",
-"Porque amar você é natural como respirar.",
-"Porque você é meu melhor destino.",
-"Porque cada lembrança sua é doce.",
-"Porque você me faz acreditar no impossível.",
-"Porque sua presença muda meu humor instantaneamente.",
-"Porque sua forma de amar é única.",
-"Porque você é o motivo da minha esperança.",
-"Porque você é o detalhe que faz diferença.",
-"Porque sem você o dia não tem graça.",
-"Porque sua alma conversa com a minha.",
-"Porque você é minha coragem em dias difíceis.",
-"Porque você é a calma depois da tempestade.",
-"Porque só você me faz sentir inteiro.",
-"Porque seu jeito é minha maior inspiração.",
-"Porque você me ensina o que é amor de verdade.",
-"Porque cada manhã é melhor pensando em você.",
-"Porque seu riso é meu combustível.",
-"Porque você é a pessoa que eu sempre procurei.",
-"Porque eu quero envelhecer ao seu lado.",
-"Porque cada despedida dói só por ser de você.",
-"Porque até seu jeito imperfeito é perfeito pra mim.",
-"Porque com você o mundo faz sentido.",
-"Porque você me dá forças quando eu penso em desistir.",
-"Porque você é a poesia que eu nunca soube escrever.",
-"Porque estar com você é meu maior presente.",
-"Porque sua alegria é contagiante.",
-"Porque meu coração escolheu você sem dúvidas.",
-"Porque cada vez que te vejo é como a primeira vez.",
-"Porque você é meu pedaço favorito do universo.",
-"Porque tudo em mim te reconhece.",
-"Porque você é meu sempre e meu agora.",
-"Porque meu amor por você não conhece limites.",
-"Porque com você até o futuro assusta menos.",
-"Porque você é o motivo do meu sorriso mais sincero.",
-"Porque a vida ganha sentido só por ter você.",
-"Porque meu coração sabe que é você.",
-
-    ];
-    const motivoElement = document.getElementById('motivo');
-    const motivoButton = document.querySelector('.motivos button');
-
-    function mostrarMotivoAleatorio() {
-      try {
-        const randomIndex = Math.floor(Math.random() * motivos.length);
-        motivoElement.textContent = motivos[randomIndex];
-        confetti({
-          particleCount: 50,
-          spread: 60,
-          colors: ['#F472B6', '#C4B5FD', '#FBBF24'],
-        });
-      } catch (err) {
-        console.error('Random motivo error:', err);
-      }
-    }
-
-    if (motivoButton && motivoElement) {
-      addButtonEvents(motivoButton, (e) => {
-        console.log('Motivo button triggered:', e.type);
-        mostrarMotivoAleatorio();
-      }, 'Motivo button');
-      mostrarMotivoAleatorio();
-    }
-  }
-
-  // Dreams (sonhos.html)
-  if (window.location.pathname.includes('sonhos.html')) {
-    const dreamToggles = document.querySelectorAll('.dream-toggle');
-    dreamToggles.forEach(toggle => {
-      addButtonEvents(toggle, (e) => {
-        console.log('Dream toggle triggered:', toggle.textContent, e.type);
-        try {
-          const descriptionId = toggle.getAttribute('aria-controls');
-          const description = document.getElementById(descriptionId);
-          if (description) {
-            document.querySelectorAll('.dream-description.active').forEach(desc => {
-              if (desc !== description) {
-                desc.classList.remove('active');
-                const relatedToggle = document.querySelector(`.dream-toggle[aria-controls="${desc.id}"]`);
-                if (relatedToggle) relatedToggle.setAttribute('aria-expanded', 'false');
-              }
-            });
-            const isActive = description.classList.toggle('active');
-            toggle.setAttribute('aria-expanded', isActive);
-          } else {
-            console.error(`Description not found for ID: ${descriptionId}`);
-          }
-        } catch (err) {
-          console.error('Dream toggle error:', err);
-        }
-      }, `Dream toggle: ${toggle.textContent}`);
-    });
-  }
-
-  // Contador (contador.html)
-  if (window.location.pathname.includes('contador.html')) {
-    const contadorElement = document.getElementById('contador');
-    const startDate = new Date('2024-11-09T13:00:00-03:00');
-
-    function updateContador() {
-      try {
-        const now = new Date();
-        const timeDiff = now - startDate;
-        const seconds = Math.floor(timeDiff / 1000);
-        const minutes = Math.floor(seconds / 60);
-        const hours = Math.floor(minutes / 60);
-        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-        const months = Math.floor(days / 30.42);
-        const years = Math.floor(months / 12);
-        const remainingMonths = months % 12;
-        const remainingDays = days % 30;
-        const remainingHours = hours % 24;
-        const remainingMinutes = minutes % 60;
-        const remainingSeconds = seconds % 60;
-
-        contadorElement.innerHTML = `
-          ${years > 0 ? `<span>${years} ano${years > 1 ? 's' : ''}</span>` : ''}
-          ${remainingMonths > 0 ? `<span>${remainingMonths} mese${remainingMonths > 1 ? 's' : ''}</span>` : ''}
-          ${remainingDays > 0 ? `<span>${remainingDays} dia${remainingDays > 1 ? 's' : ''}</span>` : ''}
-          ${remainingHours > 0 ? `<span>${remainingHours} hora${remainingHours > 1 ? 's' : ''}</span>` : ''}
-          ${remainingMinutes > 0 ? `<span>${remainingMinutes} minuto${remainingMinutes > 1 ? 's' : ''}</span>` : ''}
-          ${remainingSeconds > 0 ? `<span>${remainingSeconds} segundo${remainingSeconds > 1 ? 's' : ''}</span>` : ''}
-        `;
-      } catch (err) {
-        console.error('Contador error:', err);
-      }
-    }
-
-    if (contadorElement) {
-      updateContador();
-      setInterval(updateContador, 1000);
-    }
-  }
-});
+          console.error('Spacebar e
